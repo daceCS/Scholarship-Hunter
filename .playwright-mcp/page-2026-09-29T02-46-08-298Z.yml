@@ -1,0 +1,262 @@
+- generic [active] [ref=f26e1]:
+  - navigation [ref=f26e2]:
+    - generic [ref=f26e3]:
+      - link " Grantly" [ref=f26e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f26e5]: 
+        - text: Grantly
+      - generic [ref=f26e7]:
+        - link "How it works" [ref=f26e8] [cursor=pointer]:
+          - /url: "#how"
+        - link "Try the questionnaire" [ref=f26e9] [cursor=pointer]:
+          - /url: "#demo"
+        - link "Why it works" [ref=f26e10] [cursor=pointer]:
+          - /url: "#why"
+        - link "FAQ" [ref=f26e11] [cursor=pointer]:
+          - /url: "#faq"
+      - link "Get matched" [ref=f26e12] [cursor=pointer]:
+        - /url: "#start"
+  - banner [ref=f26e13]:
+    - generic [ref=f26e14]:
+      - generic [ref=f26e15]:
+        - heading "Scholarships that fit you, not everyone." [level=1] [ref=f26e16]
+        - paragraph [ref=f26e17]: Answer one short questionnaire. Our agent searches the web and sends you only the awards you actually qualify for.
+        - generic [ref=f26e18]:
+          - link "Get matched " [ref=f26e19] [cursor=pointer]:
+            - /url: "#start"
+            - text: Get matched
+            - generic [ref=f26e20]: 
+          - link "See how it works" [ref=f26e21] [cursor=pointer]:
+            - /url: "#how"
+      - generic "Example of matched scholarships" [ref=f26e22]:
+        - generic [ref=f26e23]:
+          - generic [ref=f26e24]: Searching for Maya
+          - generic [ref=f26e26]: Updated 2 min ago
+        - article [ref=f26e27]:
+          - generic [ref=f26e28]:
+            - heading "Tri-County Nursing Futures Award" [level=3] [ref=f26e29]
+            - generic [ref=f26e30]: Community Foundation of Lake County
+          - generic [ref=f26e31]: $5,000
+          - generic [ref=f26e32]:
+            - generic [ref=f26e33]:
+              - generic [ref=f26e34]: 
+              - text: 96% match
+            - generic [ref=f26e35]:
+              - generic [ref=f26e36]: 
+              - text: Verified
+            - generic [ref=f26e37]: Due Nov 14
+        - article [ref=f26e38]:
+          - generic [ref=f26e39]:
+            - heading "First-Generation Scholars Grant" [level=3] [ref=f26e40]
+            - generic [ref=f26e41]: State Higher Education Office
+          - generic [ref=f26e42]: $2,500
+          - generic [ref=f26e43]:
+            - generic [ref=f26e44]: 91% match
+            - generic [ref=f26e45]:
+              - generic [ref=f26e46]: 
+              - text: Verified
+            - generic [ref=f26e47]: Due Dec 1
+        - article [ref=f26e48]:
+          - generic [ref=f26e49]:
+            - heading "Women in Healthcare Bursary" [level=3] [ref=f26e50]
+            - generic [ref=f26e51]: Regional Nurses Association
+          - generic [ref=f26e52]: $1,800
+          - generic [ref=f26e53]:
+            - generic [ref=f26e54]: 88% match
+            - generic [ref=f26e55]:
+              - generic [ref=f26e56]: 
+              - text: Verified
+            - generic [ref=f26e57]: Due Jan 9
+        - article [ref=f26e58]:
+          - generic [ref=f26e59]:
+            - heading "Lake County Local Merit Award" [level=3] [ref=f26e60]
+            - generic [ref=f26e61]: County Bar Auxiliary
+          - generic [ref=f26e62]: $1,000
+          - generic [ref=f26e63]:
+            - generic [ref=f26e64]: 84% match
+            - generic [ref=f26e65]:
+              - generic [ref=f26e66]: 
+              - text: Verified
+            - generic [ref=f26e67]: Due Jan 30
+        - generic [ref=f26e68]:
+          - generic [ref=f26e69]: 
+          - text: Sent to her inbox every Monday
+  - generic [ref=f26e71]:
+    - generic [ref=f26e72]:
+      - generic [ref=f26e73]: 3 min
+      - text: to fill in the questionnaire
+    - generic [ref=f26e74]:
+      - generic [ref=f26e75]: 4 levels
+      - text: "of location: city to county to state to national"
+    - generic [ref=f26e76]:
+      - generic [ref=f26e77]: 100%
+      - text: of matches checked against the official source
+    - generic [ref=f26e78]:
+      - generic [ref=f26e79]: $0
+      - text: to use. No application fees, ever
+  - generic [ref=f26e81]:
+    - generic [ref=f26e82]:
+      - generic [ref=f26e83]: How it works
+      - heading "You answer once. The agent does the searching." [level=2] [ref=f26e84]
+      - paragraph [ref=f26e85]: No more scrolling through thousands of awards you can't win. Your answers become a profile, and the profile does the hunting.
+    - generic [ref=f26e86]:
+      - generic [ref=f26e87]:
+        - generic [ref=f26e88]: "01"
+        - generic [ref=f26e89]:
+          - heading "Tell us about you" [level=3] [ref=f26e90]
+          - paragraph [ref=f26e91]: School, major, where you live, what you've done. It adapts as you go and skips what doesn't apply.
+        - generic [ref=f26e92]:
+          - generic [ref=f26e93]: Nursing major
+          - generic [ref=f26e94]: First-gen
+          - generic [ref=f26e95]: Lake County, FL
+          - generic [ref=f26e96]: Min. award $1,000
+          - generic [ref=f26e97]: 5 hrs / week
+      - generic [ref=f26e98]:
+        - generic [ref=f26e99]: "02"
+        - generic [ref=f26e100]:
+          - heading "The agent searches the open web" [level=3] [ref=f26e101]
+          - paragraph [ref=f26e102]: Not just the big databases. It reads community foundations, county offices, employers and niche associations, where the smaller applicant pools are.
+        - generic [ref=f26e104]:
+          - generic [ref=f26e105]:
+            - generic [ref=f26e106]: lakecountyfoundation.org
+            - emphasis [ref=f26e107]: Match found
+          - generic [ref=f26e108]:
+            - generic [ref=f26e109]: stateheo.gov/aid
+            - emphasis [ref=f26e110]: Match found
+          - generic [ref=f26e111]:
+            - generic [ref=f26e112]: quick-cash-scholarship.biz
+            - generic [ref=f26e113]: "Rejected: asks for a fee"
+      - generic [ref=f26e114]:
+        - generic [ref=f26e115]: "03"
+        - generic [ref=f26e116]:
+          - heading "Verified matches land in your inbox" [level=3] [ref=f26e117]
+          - paragraph [ref=f26e118]: Every award is re-checked for deadline, eligibility and legitimacy before we send it. You get a short ranked list, not a firehose.
+        - generic [ref=f26e119]:
+          - generic [ref=f26e120]:
+            - generic [ref=f26e121]: 
+            - text: Deadline confirmed
+          - generic [ref=f26e122]:
+            - generic [ref=f26e123]: 
+            - text: Eligibility confirmed
+          - generic [ref=f26e124]:
+            - generic [ref=f26e125]: 
+            - text: No fee
+  - generic [ref=f26e128]:
+    - generic [ref=f26e129]:
+      - heading "Try it. Watch your list change." [level=2] [ref=f26e130]
+      - paragraph [ref=f26e131]: This is a taste of the real questionnaire. Every answer narrows the search.
+    - generic [ref=f26e132]:
+      - generic [ref=f26e133]:
+        - generic [ref=f26e134]:
+          - generic [ref=f26e135]: Where are you in school?
+          - group "Where are you in school?" [ref=f26e136]:
+            - button "High school senior" [ref=f26e137] [cursor=pointer]
+            - button "Undergrad" [ref=f26e138] [cursor=pointer]
+            - button "Grad" [ref=f26e139] [cursor=pointer]
+            - button "Trade or certificate" [ref=f26e140] [cursor=pointer]
+        - generic [ref=f26e141]:
+          - generic [ref=f26e142]: What do you study?
+          - group "What do you study?" [ref=f26e143]:
+            - button "Nursing" [ref=f26e144] [cursor=pointer]
+            - button "Engineering" [ref=f26e145] [cursor=pointer]
+            - button "Education" [ref=f26e146] [cursor=pointer]
+            - button "Arts" [ref=f26e147] [cursor=pointer]
+        - generic [ref=f26e148]:
+          - generic [ref=f26e149]: Anything that applies to you?
+          - group "Anything that applies to you?" [ref=f26e150]:
+            - button "First-generation" [ref=f26e151] [cursor=pointer]
+            - button "Military family" [ref=f26e152] [cursor=pointer]
+            - button "Work while studying" [ref=f26e153] [cursor=pointer]
+          - paragraph [ref=f26e154]: Every personal question can be skipped with "Prefer not to say".
+      - generic [ref=f26e155]:
+        - generic [ref=f26e156]:
+          - generic [ref=f26e157]: "0"
+          - generic [ref=f26e158]: awards you could apply for
+        - generic [ref=f26e160]: Pick an option to start the search.
+  - generic [ref=f26e164]:
+    - heading "Why tailored beats a giant database." [level=2] [ref=f26e166]
+    - generic [ref=f26e167]:
+      - generic [ref=f26e168]:
+        - heading "We look where the odds are better." [level=3] [ref=f26e169]
+        - paragraph [ref=f26e170]: County foundations and local associations often see a handful of applicants. We search there first.
+        - generic [ref=f26e171]:
+          - generic [ref=f26e172]:
+            - generic [ref=f26e173]: National
+            - generic [ref=f26e176]: many applicants
+          - generic [ref=f26e177]:
+            - generic [ref=f26e178]: State
+            - generic [ref=f26e181]: fewer
+          - generic [ref=f26e182]:
+            - generic [ref=f26e183]: Your county
+            - generic [ref=f26e186]: few
+      - generic [ref=f26e187]:
+        - heading "Scams filtered out." [level=3] [ref=f26e188]
+        - paragraph [ref=f26e189]: Fees, fake deadlines and data-harvesting forms never reach you.
+        - generic [ref=f26e190]: 
+      - generic [ref=f26e192]:
+        - heading "Sized to your time." [level=3] [ref=f26e193]
+        - paragraph [ref=f26e194]: Tell us your minimum award and weekly hours. We skip anything not worth it.
+        - generic [ref=f26e195]: $1,000+
+      - generic [ref=f26e196]:
+        - heading "Deadlines you can plan around." [level=3] [ref=f26e197]
+        - paragraph [ref=f26e198]: Every match arrives with its due date, so nothing sneaks up on you.
+        - generic [ref=f26e199]:
+          - generic [ref=f26e200]:
+            - generic [ref=f26e201]: Nov 14
+            - text: Nursing Futures
+          - generic [ref=f26e202]:
+            - generic [ref=f26e203]: Dec 1
+            - text: First-Gen Grant
+          - generic [ref=f26e204]:
+            - generic [ref=f26e205]: Jan 9
+            - text: Healthcare Bursary
+          - generic [ref=f26e206]:
+            - generic [ref=f26e207]: Jan 30
+            - text: Local Merit
+  - generic [ref=f26e209]:
+    - heading "Questions, answered." [level=2] [ref=f26e211]
+    - generic [ref=f26e212]:
+      - group [ref=f26e213]:
+        - generic "Is it really free? " [ref=f26e214] [cursor=pointer]:
+          - text: Is it really free?
+          - generic [ref=f26e215]: 
+      - group [ref=f26e216]:
+        - generic "What do you do with my answers? " [ref=f26e217] [cursor=pointer]:
+          - text: What do you do with my answers?
+          - generic [ref=f26e218]: 
+      - group [ref=f26e219]:
+        - generic "How do you know a scholarship is real? " [ref=f26e220] [cursor=pointer]:
+          - text: How do you know a scholarship is real?
+          - generic [ref=f26e221]: 
+      - group [ref=f26e222]:
+        - generic "Do I have to answer everything? " [ref=f26e223] [cursor=pointer]:
+          - text: Do I have to answer everything?
+          - generic [ref=f26e224]: 
+      - group [ref=f26e225]:
+        - generic "Does it apply for me? " [ref=f26e226] [cursor=pointer]:
+          - text: Does it apply for me?
+          - generic [ref=f26e227]: 
+  - generic [ref=f26e230]:
+    - generic [ref=f26e231]:
+      - heading "Your first matches are 3 minutes away." [level=2] [ref=f26e232]
+      - paragraph [ref=f26e233]: Start the questionnaire and see your first results before you finish.
+    - generic [ref=f26e234]:
+      - generic [ref=f26e235]:
+        - textbox "Email address" [ref=f26e236]:
+          - /placeholder: you@school.edu
+        - button "Get matched" [ref=f26e237] [cursor=pointer]
+      - paragraph [ref=f26e238]: Free. No spam. Unsubscribe anytime.
+  - contentinfo [ref=f26e239]:
+    - generic [ref=f26e240]:
+      - link " Grantly" [ref=f26e241] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f26e242]: 
+        - text: Grantly
+      - navigation [ref=f26e244]:
+        - link "Privacy" [ref=f26e245] [cursor=pointer]:
+          - /url: "#"
+        - link "Terms" [ref=f26e246] [cursor=pointer]:
+          - /url: "#"
+        - link "Contact" [ref=f26e247] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=f26e248]: © 2026 Grantly

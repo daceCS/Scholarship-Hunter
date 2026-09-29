@@ -1,0 +1,69 @@
+- generic [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - link "Tuitionwing home" [ref=f1e4] [cursor=pointer]:
+        - /url: ../landing/index.html
+        - generic [ref=f1e5]: 
+        - generic [ref=f1e7]: Tuitionwing
+      - list "Progress" [ref=f1e8]:
+        - listitem [ref=f1e9]:
+          - button "Core" [ref=f1e10] [cursor=pointer]
+        - listitem [ref=f1e14]:
+          - button "Branch" [disabled] [ref=f1e15]
+        - listitem [ref=f1e18]:
+          - button "Sensitive" [disabled] [ref=f1e19]
+        - listitem [ref=f1e22]:
+          - button "History" [disabled] [ref=f1e23]
+      - generic [ref=f1e26]:
+        - text: 
+        - button "Start over" [ref=f1e27] [cursor=pointer]
+  - main [ref=f1e28]:
+    - generic [ref=f1e31]:
+      - generic [ref=f1e32]: Core · Academic
+      - heading "Where are you in school right now?" [active] [level=1] [ref=f1e33]
+      - paragraph [ref=f1e34]: This sets which questions we ask next. Nothing here is permanent.
+      - group "Current stageRequired" [ref=f1e36]:
+        - generic [ref=f1e40]:
+          - generic [ref=f1e41] [cursor=pointer]:
+            - radio "High school senior Applying to or heading to college" [ref=f1e42]
+            - generic [ref=f1e43]:
+              - generic [ref=f1e44]: High school senior
+              - generic [ref=f1e45]: Applying to or heading to college
+          - generic [ref=f1e47] [cursor=pointer]:
+            - radio "High school underclassman Freshman to junior year" [ref=f1e48]
+            - generic [ref=f1e49]:
+              - generic [ref=f1e50]: High school underclassman
+              - generic [ref=f1e51]: Freshman to junior year
+          - generic [ref=f1e53] [cursor=pointer]:
+            - radio "Undergraduate Community college or university" [ref=f1e54]
+            - generic [ref=f1e55]:
+              - generic [ref=f1e56]: Undergraduate
+              - generic [ref=f1e57]: Community college or university
+          - generic [ref=f1e59] [cursor=pointer]:
+            - radio "Graduate student Master's, doctoral, or professional" [ref=f1e60]
+            - generic [ref=f1e61]:
+              - generic [ref=f1e62]: Graduate student
+              - generic [ref=f1e63]: Master's, doctoral, or professional
+          - generic [ref=f1e65] [cursor=pointer]:
+            - radio "Returning after a gap Back in school after time away" [ref=f1e66]
+            - generic [ref=f1e67]:
+              - generic [ref=f1e68]: Returning after a gap
+              - generic [ref=f1e69]: Back in school after time away
+          - generic [ref=f1e71] [cursor=pointer]:
+            - radio "Trade or certificate program Skilled trades, technical, or vocational" [ref=f1e72]
+            - generic [ref=f1e73]:
+              - generic [ref=f1e74]: Trade or certificate program
+              - generic [ref=f1e75]: Skilled trades, technical, or vocational
+      - generic [ref=f1e77]:
+        - button "Back" [ref=f1e78] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f1e79]: 
+          - text: Back
+        - button "Continue" [ref=f1e80] [cursor=pointer]:
+          - text: Continue
+          - generic [aria-hidden] [ref=f1e81]: 
+    - complementary "Your profile so far" [ref=f1e82]:
+      - generic [ref=f1e83]:
+        - generic [ref=f1e84]: Your profile
+        - generic [ref=f1e86]: 0 answers
+      - text: 
+      - paragraph [ref=f1e87]: Finish the core questions to see your first matches.

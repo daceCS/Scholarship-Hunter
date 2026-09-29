@@ -1,0 +1,44 @@
+- generic [active] [ref=f16e1]:
+  - link "Skip to content" [ref=f16e2] [cursor=pointer]:
+    - /url: "#site-content"
+  - alert
+  - generic [ref=f16e15]:
+    - heading "Airbnb homepage" [level=1] [ref=f16e16]
+    - banner [ref=f16e20]:
+      - link "Airbnb homepage" [ref=f16e22] [cursor=pointer]:
+        - /url: /
+      - search [ref=f16e26]:
+        - generic:
+          - generic:
+            - tablist [ref=f16e28]:
+              - tab "All" [selected] [ref=f16e29] [cursor=pointer]
+              - tab "Homes" [ref=f16e36] [cursor=pointer]
+              - tab "Experiences" [ref=f16e43] [cursor=pointer]
+              - tab "Services" [ref=f16e50] [cursor=pointer]
+            - generic [ref=f16e57]:
+              - generic [ref=f16e61]:
+                - generic [ref=f16e62] [cursor=pointer]
+                - button "When" [ref=f16e68] [cursor=pointer]
+                - button "Who" [ref=f16e74] [cursor=pointer]
+              - button "Search" [ref=f16e79] [cursor=pointer]
+      - navigation "Profile" [ref=f16e87]:
+        - generic [ref=f16e88]:
+          - link "Become a host" [ref=f16e89] [cursor=pointer]:
+            - /url: "#guest-header-become-a-host-menu"
+          - button "Log in or sign up" [ref=f16e92] [cursor=pointer]
+        - generic [ref=f16e99]:
+          - link "Main navigation menu" [ref=f16e100] [cursor=pointer]:
+            - /url: "#guest-header-dropdownmenu"
+          - link "Close":
+            - /url: "#"
+    - main [ref=f16e106]:
+      - group [ref=f16e112]:
+        - generic [ref=f16e116]: 0 of 0 items showing
+        - generic [ref=f16e121]:
+          - group [ref=f16e123]
+          - group [ref=f16e129]
+          - group [ref=f16e135]
+          - group [ref=f16e141]
+          - group [ref=f16e147]
+          - group [ref=f16e153]
+          - group [ref=f16e159]

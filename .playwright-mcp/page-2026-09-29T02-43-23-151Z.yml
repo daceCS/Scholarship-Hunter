@@ -1,0 +1,425 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e6]:
+        - link [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Duolingo" [ref=e8]
+        - 'button "Site language: English" [ref=e10] [cursor=pointer]'
+      - generic [ref=e49]:
+        - heading "The most fun way to learn languages, chess, and more!" [level=1] [ref=e50]
+        - generic [ref=e51]:
+          - link "Get started" [ref=e52] [cursor=pointer]:
+            - /url: /register
+          - button "I ALREADY HAVE AN ACCOUNT" [ref=e54] [cursor=pointer]
+      - navigation [ref=e57]:
+        - img [ref=e58] [cursor=pointer]
+        - list [ref=e61]:
+          - listitem [ref=e62]:
+            - link "English" [ref=e63] [cursor=pointer]:
+              - /url: /course/en/en/Learn-English
+          - listitem [ref=e66]:
+            - link "Chess" [ref=e67] [cursor=pointer]:
+              - /url: /chess
+          - listitem [ref=e70]:
+            - link "Math" [ref=e71] [cursor=pointer]:
+              - /url: /math
+          - listitem [ref=e74]:
+            - link "Spanish" [ref=e75] [cursor=pointer]:
+              - /url: /course/es/en/Learn-Spanish
+          - listitem [ref=e78]:
+            - link "French" [ref=e79] [cursor=pointer]:
+              - /url: /course/fr/en/Learn-French
+          - listitem [ref=e82]:
+            - link "German" [ref=e83] [cursor=pointer]:
+              - /url: /course/de/en/Learn-German
+          - listitem [ref=e86]:
+            - link "Italian" [ref=e87] [cursor=pointer]:
+              - /url: /course/it/en/Learn-Italian
+          - listitem [ref=e90]:
+            - link "Portuguese" [ref=e91] [cursor=pointer]:
+              - /url: /course/pt/en/Learn-Portuguese
+          - listitem [ref=e94]:
+            - link "Dutch" [ref=e95] [cursor=pointer]:
+              - /url: /course/nl-NL/en/Learn-Dutch
+          - listitem [ref=e98]:
+            - link "Japanese" [ref=e99] [cursor=pointer]:
+              - /url: /course/ja/en/Learn-Japanese
+          - listitem [ref=e102]:
+            - link "Arabic" [ref=e103] [cursor=pointer]:
+              - /url: /course/ar/en/Learn-Arabic
+          - listitem [ref=e106]:
+            - link "Czech" [ref=e107] [cursor=pointer]:
+              - /url: /course/cs/en/Learn-Czech
+          - listitem [ref=e110]:
+            - link "Welsh" [ref=e111] [cursor=pointer]:
+              - /url: /course/cy/en/Learn-Welsh
+          - listitem [ref=e114]:
+            - link "Danish" [ref=e115] [cursor=pointer]:
+              - /url: /course/da/en/Learn-Danish
+          - listitem [ref=e118]:
+            - link "Greek" [ref=e119] [cursor=pointer]:
+              - /url: /course/el/en/Learn-Greek
+          - listitem [ref=e122]:
+            - link "Esperanto" [ref=e123] [cursor=pointer]:
+              - /url: /course/eo/en/Learn-Esperanto
+          - listitem [ref=e126]:
+            - link "Finnish" [ref=e127] [cursor=pointer]:
+              - /url: /course/fi/en/Learn-Finnish
+          - listitem [ref=e130]:
+            - link "Irish" [ref=e131] [cursor=pointer]:
+              - /url: /course/ga/en/Learn-Irish
+          - listitem [ref=e134]:
+            - link "Scottish Gaelic" [ref=e135] [cursor=pointer]:
+              - /url: /course/gd/en/Learn-Scottish%20Gaelic
+          - listitem [ref=e138]:
+            - link "Hebrew" [ref=e139] [cursor=pointer]:
+              - /url: /course/he/en/Learn-Hebrew
+          - listitem [ref=e142]:
+            - link "Hindi" [ref=e143] [cursor=pointer]:
+              - /url: /course/hi/en/Learn-Hindi
+          - listitem [ref=e146]:
+            - link "Haitian Creole" [ref=e147] [cursor=pointer]:
+              - /url: /course/ht/en/Learn-Haitian%20Creole
+          - listitem [ref=e150]:
+            - link "Hungarian" [ref=e151] [cursor=pointer]:
+              - /url: /course/hu/en/Learn-Hungarian
+          - listitem [ref=e154]:
+            - link "High Valyrian" [ref=e155] [cursor=pointer]:
+              - /url: /course/hv/en/Learn-High%20Valyrian
+          - listitem [ref=e158]:
+            - link "Hawaiian" [ref=e159] [cursor=pointer]:
+              - /url: /course/hw/en/Learn-Hawaiian
+          - listitem [ref=e162]:
+            - link "Indonesian" [ref=e163] [cursor=pointer]:
+              - /url: /course/id/en/Learn-Indonesian
+          - listitem [ref=e166]:
+            - link "Korean" [ref=e167] [cursor=pointer]:
+              - /url: /course/ko/en/Learn-Korean
+          - listitem [ref=e170]:
+            - link "Latin" [ref=e171] [cursor=pointer]:
+              - /url: /course/la/en/Learn-Latin
+          - listitem [ref=e174]:
+            - link "Norwegian (Bokmål)" [ref=e175] [cursor=pointer]:
+              - /url: /course/no-BO/en/Learn-Norwegian%20Bokm%C3%A5l
+          - listitem [ref=e178]:
+            - link "Navajo" [ref=e179] [cursor=pointer]:
+              - /url: /course/nv/en/Learn-Navajo
+          - listitem [ref=e182]:
+            - link "Polish" [ref=e183] [cursor=pointer]:
+              - /url: /course/pl/en/Learn-Polish
+          - listitem [ref=e186]:
+            - link "Romanian" [ref=e187] [cursor=pointer]:
+              - /url: /course/ro/en/Learn-Romanian
+          - listitem [ref=e190]:
+            - link "Russian" [ref=e191] [cursor=pointer]:
+              - /url: /course/ru/en/Learn-Russian
+          - listitem [ref=e194]:
+            - link "Swedish" [ref=e195] [cursor=pointer]:
+              - /url: /course/sv/en/Learn-Swedish
+          - listitem [ref=e198]:
+            - link "Swahili" [ref=e199] [cursor=pointer]:
+              - /url: /course/sw/en/Learn-Swahili
+          - listitem [ref=e202]:
+            - link "Klingon" [ref=e203] [cursor=pointer]:
+              - /url: /course/tlh/en/Learn-Klingon
+          - listitem [ref=e206]:
+            - link "Turkish" [ref=e207] [cursor=pointer]:
+              - /url: /course/tr/en/Learn-Turkish
+          - listitem [ref=e210]:
+            - link "Ukrainian" [ref=e211] [cursor=pointer]:
+              - /url: /course/uk/en/Learn-Ukrainian
+          - listitem [ref=e214]:
+            - link "Vietnamese" [ref=e215] [cursor=pointer]:
+              - /url: /course/vi/en/Learn-Vietnamese
+          - listitem [ref=e218]:
+            - link "Yiddish" [ref=e219] [cursor=pointer]:
+              - /url: /course/yi/en/Learn-Yiddish
+          - listitem [ref=e222]:
+            - link "Chinese (Simplified)" [ref=e223] [cursor=pointer]:
+              - /url: /course/zh/en/Learn-Chinese%20Simplified
+          - listitem [ref=e226]:
+            - link "Zulu" [ref=e227] [cursor=pointer]:
+              - /url: /course/zu/en/Learn-Zulu
+        - img [ref=e230] [cursor=pointer]
+    - main [ref=e232]:
+      - generic [ref=e233]:
+        - generic [ref=e235]:
+          - generic [ref=e237]:
+            - heading "free. fun. effective." [level=2] [ref=e238]
+            - paragraph [ref=e239]:
+              - generic [ref=e240]:
+                - text: Learning with Duolingo is fun, and
+                - link "research shows that it works" [ref=e241] [cursor=pointer]:
+                  - /url: /efficacy
+                - text: "! With quick, bite-sized lessons, you’ll earn points and unlock new levels while gaining real-world communication skills."
+          - generic [ref=e244]:
+            - heading "backed by science" [level=2] [ref=e245]
+            - paragraph [ref=e246]: We use a combination of research-backed teaching methods and delightful content to create courses that effectively teach reading, writing, listening, and speaking skills!
+          - generic [ref=e249]:
+            - heading "stay motivated" [level=2] [ref=e250]
+            - paragraph [ref=e251]: We make it easy to form a habit of language learning with game-like features, fun challenges, and reminders from our friendly mascot, Duo the owl.
+          - generic [ref=e254]:
+            - heading "personalized learning" [level=2] [ref=e255]
+            - paragraph [ref=e256]: Combining the best of AI and language science, lessons are tailored to help you learn at just the right level and pace.
+        - generic [ref=e260]:
+          - heading "learn anytime, anywhere" [level=1] [ref=e261]
+          - generic [ref=e262]:
+            - link "badge-app-store Download on the App Store" [ref=e263] [cursor=pointer]:
+              - /url: //itunes.apple.com/app/duolingo-learn-spanish-french/id570060128?mt=8
+              - img "badge-app-store" [ref=e265]
+              - generic [ref=e269]:
+                - generic [ref=e270]: Download on the
+                - text: App Store
+            - link "badge-app-store Get it on Google Play" [ref=e271] [cursor=pointer]:
+              - /url: //play.google.com/store/apps/details?hl=en&id=com.duolingo&referrer=utm_source%3Dduolingo.com%26utm_medium%3Dduolingo_web%26utm_content%3Ddownload_button%26utm_campaign%3Dsplash
+              - img "badge-app-store" [ref=e273]
+              - generic [ref=e276]:
+                - generic [ref=e277]: Get it on
+                - text: Google Play
+      - generic [ref=e282]:
+        - img "Super Duolingo" [ref=e284]
+        - button "Try 1 week free" [ref=e285] [cursor=pointer]
+      - generic [ref=e289]:
+        - heading "duolingo english test" [level=2] [ref=e290]
+        - paragraph [ref=e292]: Our convenient, fast, and affordable English test integrates the latest assessment science and AI — empowering anyone to accurately test their English where and when they’re at their best.
+        - link "Certify your English" [ref=e293] [cursor=pointer]:
+          - /url: https://englishtest.duolingo.com/en
+      - generic [ref=e298]:
+        - heading "learn a language with duolingo" [level=1] [ref=e299]
+        - link "Get started" [ref=e300] [cursor=pointer]:
+          - /url: /register
+    - contentinfo [ref=e302]:
+      - generic [ref=e303]:
+        - generic [ref=e305]:
+          - generic [ref=e306]: About us
+          - list [ref=e307]:
+            - listitem [ref=e308]:
+              - link "Courses" [ref=e309] [cursor=pointer]:
+                - /url: /courses
+            - listitem [ref=e310]:
+              - link "Mission" [ref=e311] [cursor=pointer]:
+                - /url: https://about.duolingo.com
+            - listitem [ref=e312]:
+              - link "Approach" [ref=e313] [cursor=pointer]:
+                - /url: https://about.duolingo.com
+            - listitem [ref=e314]:
+              - link "Efficacy" [ref=e315] [cursor=pointer]:
+                - /url: /efficacy
+            - listitem [ref=e316]:
+              - link "Duolingo Handbook" [ref=e317] [cursor=pointer]:
+                - /url: https://duolingo.com/handbook
+            - listitem [ref=e318]:
+              - link "Research" [ref=e319] [cursor=pointer]:
+                - /url: https://research.duolingo.com
+            - listitem [ref=e320]:
+              - link "Careers" [ref=e321] [cursor=pointer]:
+                - /url: https://careers.duolingo.com/#careers
+            - listitem [ref=e322]:
+              - link "Store" [ref=e323] [cursor=pointer]:
+                - /url: https://store.duolingo.com/
+            - listitem [ref=e324]:
+              - link "Press" [ref=e325] [cursor=pointer]:
+                - /url: https://press.duolingo.com
+            - listitem [ref=e326]:
+              - link "Investors" [ref=e327] [cursor=pointer]:
+                - /url: https://investors.duolingo.com
+            - listitem [ref=e328]:
+              - link "Contact us" [ref=e329] [cursor=pointer]:
+                - /url: https://about.duolingo.com#contact
+        - generic [ref=e331]:
+          - generic [ref=e332]: Products
+          - list [ref=e333]:
+            - listitem [ref=e334]:
+              - link "Duolingo" [ref=e335] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e336]:
+              - link "Duolingo for Schools" [ref=e337] [cursor=pointer]:
+                - /url: https://schools.duolingo.com
+            - listitem [ref=e338]:
+              - link "Duolingo English Test" [ref=e339] [cursor=pointer]:
+                - /url: https://englishtest.duolingo.com/en
+            - listitem [ref=e340]:
+              - link "Podcast" [ref=e341] [cursor=pointer]:
+                - /url: https://podcast.duolingo.com
+            - listitem [ref=e342]:
+              - link "Duolingo for Business" [ref=e343] [cursor=pointer]:
+                - /url: /business
+            - listitem [ref=e344]:
+              - link "Super Duolingo" [ref=e345] [cursor=pointer]:
+                - /url: /super
+            - listitem [ref=e346]:
+              - link "Gift Super Duolingo" [ref=e347] [cursor=pointer]:
+                - /url: /gift
+            - listitem [ref=e348]:
+              - link "Duolingo Max" [ref=e349] [cursor=pointer]:
+                - /url: https://blog.duolingo.com/duolingo-max/
+        - generic [ref=e351]:
+          - generic [ref=e352]: Apps
+          - list [ref=e353]:
+            - listitem [ref=e354]:
+              - link "Duolingo for Android" [ref=e355] [cursor=pointer]:
+                - /url: //play.google.com/store/apps/details?hl=en&id=com.duolingo&referrer=utm_source%3Dduolingo.com%26utm_medium%3Dduolingo_web%26utm_content%3Ddownload_button%26utm_campaign%3Dsite_map
+            - listitem [ref=e356]:
+              - link "Duolingo for iOS" [ref=e357] [cursor=pointer]:
+                - /url: //itunes.apple.com/app/duolingo-learn-spanish-french/id570060128?mt=8
+        - generic [ref=e359]:
+          - generic [ref=e360]: Help and support
+          - list [ref=e361]:
+            - listitem [ref=e362]:
+              - link "Duolingo FAQs" [ref=e363] [cursor=pointer]:
+                - /url: /help
+            - listitem [ref=e364]:
+              - link "Schools FAQs" [ref=e365] [cursor=pointer]:
+                - /url: https://duolingoschools.zendesk.com/hc/en-us
+            - listitem [ref=e366]:
+              - link "Duolingo English Test FAQs" [ref=e367] [cursor=pointer]:
+                - /url: https://englishtest.duolingo.com/faq
+            - listitem [ref=e368]:
+              - link "Status" [ref=e369] [cursor=pointer]:
+                - /url: https://status.duolingo.com/
+        - generic [ref=e370]:
+          - generic [ref=e371]:
+            - generic [ref=e372]: Privacy and terms
+            - list [ref=e373]:
+              - listitem [ref=e374]:
+                - link "Community guidelines" [ref=e375] [cursor=pointer]:
+                  - /url: /guidelines
+              - listitem [ref=e376]:
+                - link "Terms" [ref=e377] [cursor=pointer]:
+                  - /url: /terms
+              - listitem [ref=e378]:
+                - link "Privacy" [ref=e379] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e380]:
+                - link "Do Not Sell or Share My Personal Information" [ref=e381] [cursor=pointer]:
+                  - /url: https://about.duolingo.com?dnsspi#dnsspi
+          - generic [ref=e382]:
+            - generic [ref=e383]: Social
+            - list [ref=e384]:
+              - listitem [ref=e385]:
+                - link "Blog" [ref=e386] [cursor=pointer]:
+                  - /url: https://blog.duolingo.com
+              - listitem [ref=e387]:
+                - link "Instagram" [ref=e388] [cursor=pointer]:
+                  - /url: https://www.instagram.com/duolingo
+              - listitem [ref=e389]:
+                - link "TikTok" [ref=e390] [cursor=pointer]:
+                  - /url: https://www.tiktok.com/@duolingo
+              - listitem [ref=e391]:
+                - link "Twitter" [ref=e392] [cursor=pointer]:
+                  - /url: https://twitter.com/duolingo
+              - listitem [ref=e393]:
+                - link "YouTube" [ref=e394] [cursor=pointer]:
+                  - /url: https://www.youtube.com/user/duolingo
+              - listitem [ref=e395]:
+                - link "LinkedIn" [ref=e396] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/company/duolingo
+      - separator [ref=e397]
+      - generic [ref=e398]:
+        - generic [ref=e399]: "Site language:"
+        - list [ref=e400]:
+          - listitem [ref=e401]:
+            - link "العربية" [ref=e402] [cursor=pointer]:
+              - /url: //ar.duolingo.com
+          - listitem [ref=e403]:
+            - link "বাংলা" [ref=e404] [cursor=pointer]:
+              - /url: //bn.duolingo.com
+          - listitem [ref=e405]:
+            - link "Čeština" [ref=e406] [cursor=pointer]:
+              - /url: //cs.duolingo.com
+          - listitem [ref=e407]:
+            - link "Deutsch" [ref=e408] [cursor=pointer]:
+              - /url: //de.duolingo.com
+          - listitem [ref=e409]:
+            - link "Ελληνικά" [ref=e410] [cursor=pointer]:
+              - /url: //el.duolingo.com
+          - listitem [ref=e411]:
+            - link "English" [ref=e412] [cursor=pointer]:
+              - /url: //en.duolingo.com
+          - listitem [ref=e413]:
+            - link "Español" [ref=e414] [cursor=pointer]:
+              - /url: //es.duolingo.com
+          - listitem [ref=e415]:
+            - link "Français" [ref=e416] [cursor=pointer]:
+              - /url: //fr.duolingo.com
+          - listitem [ref=e417]:
+            - link "हिंदी" [ref=e418] [cursor=pointer]:
+              - /url: //hi.duolingo.com
+          - listitem [ref=e419]:
+            - link "Magyar" [ref=e420] [cursor=pointer]:
+              - /url: //hu.duolingo.com
+          - listitem [ref=e421]:
+            - link "Bahasa Indonesia" [ref=e422] [cursor=pointer]:
+              - /url: //id.duolingo.com
+          - listitem [ref=e423]:
+            - link "Italiano" [ref=e424] [cursor=pointer]:
+              - /url: //it.duolingo.com
+          - listitem [ref=e425]:
+            - link "日本語" [ref=e426] [cursor=pointer]:
+              - /url: //ja.duolingo.com
+          - listitem [ref=e427]:
+            - link "ಕನ್ನಡ" [ref=e428] [cursor=pointer]:
+              - /url: //kn.duolingo.com
+          - listitem [ref=e429]:
+            - link "한국어" [ref=e430] [cursor=pointer]:
+              - /url: //ko.duolingo.com
+          - listitem [ref=e431]:
+            - link "मराठी" [ref=e432] [cursor=pointer]:
+              - /url: //mr.duolingo.com
+          - listitem [ref=e433]:
+            - link "Nederlands" [ref=e434] [cursor=pointer]:
+              - /url: //dn.duolingo.com
+          - listitem [ref=e435]:
+            - link "ਪੰਜਾਬੀ" [ref=e436] [cursor=pointer]:
+              - /url: //pa.duolingo.com
+          - listitem [ref=e437]:
+            - link "Polski" [ref=e438] [cursor=pointer]:
+              - /url: //pl.duolingo.com
+          - listitem [ref=e439]:
+            - link "Português" [ref=e440] [cursor=pointer]:
+              - /url: //pt.duolingo.com
+          - listitem [ref=e441]:
+            - link "Română" [ref=e442] [cursor=pointer]:
+              - /url: //ro.duolingo.com
+          - listitem [ref=e443]:
+            - link "Русский" [ref=e444] [cursor=pointer]:
+              - /url: //ru.duolingo.com
+          - listitem [ref=e445]:
+            - link "svenska" [ref=e446] [cursor=pointer]:
+              - /url: //sv.duolingo.com
+          - listitem [ref=e447]:
+            - link "தமிழ்" [ref=e448] [cursor=pointer]:
+              - /url: //ta.duolingo.com
+          - listitem [ref=e449]:
+            - link "తెలుగు" [ref=e450] [cursor=pointer]:
+              - /url: //te.duolingo.com
+          - listitem [ref=e451]:
+            - link "ภาษาไทย" [ref=e452] [cursor=pointer]:
+              - /url: //th.duolingo.com
+          - listitem [ref=e453]:
+            - link "Tagalog" [ref=e454] [cursor=pointer]:
+              - /url: //tl.duolingo.com
+          - listitem [ref=e455]:
+            - link "Türkçe" [ref=e456] [cursor=pointer]:
+              - /url: //tr.duolingo.com
+          - listitem [ref=e457]:
+            - link "Українською" [ref=e458] [cursor=pointer]:
+              - /url: //uk.duolingo.com
+          - listitem [ref=e459]:
+            - link "اُردُو" [ref=e460] [cursor=pointer]:
+              - /url: //ur.duolingo.com
+          - listitem [ref=e461]:
+            - link "Tiếng Việt" [ref=e462] [cursor=pointer]:
+              - /url: //vi.duolingo.com
+          - listitem [ref=e463]:
+            - link "中文" [ref=e464] [cursor=pointer]:
+              - /url: //zs.duolingo.com
+  - region "Cookie banner" [ref=e465]:
+    - alertdialog "Privacy" [ref=e466]:
+      - generic [ref=e468]:
+        - generic [ref=e469]: This website uses cookies to enhance user experience and to analyze performance and traffic on our website. We also share information about your use of our site with our social media, advertising and analytics partners.
+        - generic [ref=e473]:
+          - button "Do Not Sell My Personal Information" [active] [ref=e474] [cursor=pointer]
+          - button "Reject All" [ref=e475] [cursor=pointer]
+          - button "Accept Cookies" [ref=e476] [cursor=pointer]

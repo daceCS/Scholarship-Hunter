@@ -1,0 +1,18 @@
+[    2521ms] [WARNING] %cPlease turn back! color: red; font-size: 2em; @ https://mercury.com/_next/static/chunks/2203-ebb21654eb20d1a7.js:8
+[    2524ms] [WARNING] %cThis browser feature is for developers. If you copy-paste something here, it could give someone access to your Mercury account! font-size: 1em; @ https://mercury.com/_next/static/chunks/2203-ebb21654eb20d1a7.js:8
+[    5937ms] [ERROR] Load failed, error in settings @ https://mercury.com/_next/static/chunks/2203-ebb21654eb20d1a7.js:8
+[    5938ms] [ERROR] No visitor ID available. Load may have failed. @ https://mercury.com/_next/static/chunks/2203-ebb21654eb20d1a7.js:8
+[    5940ms] [ERROR] identify error: Error: No visitor ID available. Load may have failed.
+    at https://cdn.vector.co/pixel.js:2:219512
+    at Generator.<anonymous> (https://cdn.vector.co/pixel.js:2:212684)
+    at Generator.next (https://cdn.vector.co/pixel.js:2:213514)
+    at l (https://cdn.vector.co/pixel.js:2:213694)
+    at a (https://cdn.vector.co/pixel.js:2:213896) @ https://mercury.com/_next/static/chunks/2203-ebb21654eb20d1a7.js:8
+[    5972ms] Uncaught (in promise) Error: No visitor ID available. Load may have failed.
+    at <anonymous> (https://cdn.vector.co/pixel.js:1:219511)
+    at <anonymous> (https://cdn.vector.co/pixel.js:1:212683)
+    at <anonymous> (https://cdn.vector.co/pixel.js:1:213513)
+    at l (https://cdn.vector.co/pixel.js:1:213693)
+    at a (https://cdn.vector.co/pixel.js:1:213895)
+[    6042ms] [WARNING] The resource https://unpkg.com/@ungap/global-this@0.4.4/min.js was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://mercury.com/:0
+[    6042ms] [WARNING] The resource https://mercury.com/_next/static/css/07557762f31a5b1f.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://mercury.com/:0

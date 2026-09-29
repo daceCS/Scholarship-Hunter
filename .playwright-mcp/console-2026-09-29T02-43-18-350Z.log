@@ -1,0 +1,3 @@
+[    2122ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://zombie.duolingo.com/0/web.json?user=0&ts=1790649799&tzoffset=-7:0
+[    2150ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.duolingo.com/users/undefined/streak-goal-current?_=1790649799749:0
+[    2168ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.duolingo.com/users/undefined/streak-goal-next-options?_=1790649799752:0

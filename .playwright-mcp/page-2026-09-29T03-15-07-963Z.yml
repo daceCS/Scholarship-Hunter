@@ -1,0 +1,113 @@
+- generic [ref=f3e1]:
+  - banner [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - link "Tuitionwing home" [ref=f3e4] [cursor=pointer]:
+        - /url: ../landing/index.html
+        - generic [ref=f3e5]: 
+      - list "Progress" [ref=f3e7]:
+        - listitem [ref=f3e8]:
+          - button "Core" [ref=f3e9] [cursor=pointer]
+        - listitem [ref=f3e13]:
+          - button "Branch" [ref=f3e14] [cursor=pointer]
+        - listitem [ref=f3e18]:
+          - button "Sensitive" [ref=f3e19] [cursor=pointer]
+        - listitem [ref=f3e23]:
+          - button "History" [ref=f3e24] [cursor=pointer]
+      - generic [ref=f3e28]:
+        - generic [ref=f3e29]:
+          - generic [ref=f3e30]: 
+          - generic [ref=f3e31]: "152"
+          - text: awards
+        - text: 
+        - button "Start over" [ref=f3e32] [cursor=pointer]
+  - main [ref=f3e33]:
+    - generic [ref=f3e36]:
+      - generic [ref=f3e37]: History · Summary
+      - heading "Your profile is ready." [active] [level=1] [ref=f3e38]
+      - paragraph [ref=f3e39]: Check it over. You can edit any section, and you can come back later to add more.
+      - generic [ref=f3e40]:
+        - generic [ref=f3e41]: "152"
+        - generic [ref=f3e42]: awards you could apply for
+      - generic [ref=f3e43]:
+        - generic [aria-hidden] [ref=f3e44]: 
+        - generic [ref=f3e45]: 9 more service-commitment awards (SMART, CyberCorps SFS, NHSC and similar) are kept in their own list.
+      - paragraph [ref=f3e46]:
+        - generic [aria-hidden] [ref=f3e47]: 
+        - text: Preview estimate. Real counts come from the search agent.
+      - tablist [ref=f3e48]:
+        - tab "Profile" [selected] [ref=f3e49] [cursor=pointer]
+        - tab "JSON" [ref=f3e50] [cursor=pointer]
+      - generic [ref=f3e51]:
+        - generic [ref=f3e52]:
+          - heading "Academic" [level=3] [ref=f3e53]
+          - generic [ref=f3e54]:
+            - generic [ref=f3e55]: "status: undergrad"
+            - generic [ref=f3e56]: "institution: San Diego State University"
+            - generic [ref=f3e57]: "year: 2"
+            - generic [ref=f3e58]: "majors: Cybersecurity"
+            - generic [ref=f3e59]: "gpa: 3.67"
+          - button "Edit" [ref=f3e60] [cursor=pointer]
+        - generic [ref=f3e61]:
+          - heading "Location" [level=3] [ref=f3e62]
+          - generic [ref=f3e63]: "zip: 92028"
+          - button "Edit" [ref=f3e65] [cursor=pointer]
+        - generic [ref=f3e66]:
+          - heading "Affiliations" [level=3] [ref=f3e67]
+          - generic [ref=f3e68]:
+            - generic [ref=f3e69]: "union: IBEW · 569"
+            - generic [ref=f3e70]: "military: parent · navy"
+          - button "Edit" [ref=f3e71] [cursor=pointer]
+        - generic [ref=f3e72]:
+          - heading "Activities" [level=3] [ref=f3e73]
+          - generic [ref=f3e74]:
+            - generic [ref=f3e75]: "unusual_skills: beekeeping"
+            - generic [ref=f3e76]: "unusual_skills: bagpiping"
+          - button "Edit" [ref=f3e77] [cursor=pointer]
+        - generic [ref=f3e78]:
+          - heading "Career" [level=3] [ref=f3e79]
+          - generic [ref=f3e80]: "service_obligation: yes"
+          - button "Edit" [ref=f3e82] [cursor=pointer]
+        - generic [ref=f3e83]:
+          - heading "Identity" [level=3] [ref=f3e84]
+          - generic [ref=f3e85]:
+            - generic [ref=f3e86]: "status: no"
+            - generic [ref=f3e87]: "first_gen: true"
+            - generic [ref=f3e88]: "withheld: lgbtq"
+          - button "Edit" [ref=f3e89] [cursor=pointer]
+        - generic [ref=f3e90]:
+          - heading "Circumstances" [level=3] [ref=f3e91]
+          - generic [ref=f3e92]:
+            - generic [ref=f3e93]: "withheld: disability"
+            - generic [ref=f3e94]: "withheld: family_illness"
+            - generic [ref=f3e95]: "withheld: parent_status"
+          - button "Edit" [ref=f3e96] [cursor=pointer]
+        - generic [ref=f3e97]:
+          - heading "Financial" [level=3] [ref=f3e98]
+          - generic [ref=f3e99]: "fafsa_filed: true"
+          - button "Edit" [ref=f3e101] [cursor=pointer]
+        - generic [ref=f3e102]:
+          - heading "Effort budget" [level=3] [ref=f3e103]
+          - generic [ref=f3e104]:
+            - generic [ref=f3e105]: "min_award_usd: 1000"
+            - generic [ref=f3e106]: "hours_per_week: 1_3"
+            - generic [ref=f3e107]: "max_essay_words: 500"
+          - button "Edit" [ref=f3e108] [cursor=pointer]
+        - generic [ref=f3e109]:
+          - heading "Already tried" [level=3] [ref=f3e110]
+          - generic [ref=f3e111]: Nothing added
+          - button "Edit" [ref=f3e112] [cursor=pointer]
+      - generic [ref=f3e113]:
+        - button "Download" [ref=f3e114] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f3e115]: 
+          - text: Download
+        - button "Copy JSON" [ref=f3e116] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f3e117]: 
+          - text: Copy JSON
+      - generic [ref=f3e118]:
+        - button "Back" [ref=f3e119] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f3e120]: 
+          - text: Back
+        - button "Send to the search agent" [ref=f3e121] [cursor=pointer]:
+          - text: Send to the search agent
+          - generic [aria-hidden] [ref=f3e122]: 
+    - text: 

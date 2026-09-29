@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tuitionwing – Personalized scholarship matching</title>
+<meta name="description" content="Answer one short questionnaire. An AI agent searches the web for scholarships you actually qualify for and sends only verified matches to your inbox.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+/*
+  Design read: consumer landing for students (HS seniors → grad), trust-first but warm,
+  Linear-clean structure with a single highlighter accent. Sans only, one accent, one palette.
+  Shape rule: buttons = pill, cards = 20px, inputs/chips = 12px / pill. No exceptions.
+  Name: Tuitionwing (tuitionwing.com).
+  Fonts/icons load from CDN for the draft; self-host before production.
+*/
+:root{
+  --bg:#F6F7F9; --surface:#FFFFFF; --ink:#0E1116; --ink-2:#4A515C; --ink-3:#6B7280;
+  --line:#E3E6EB; --dark:#0E1116; --dark-2:#171B22; --dark-line:#262C36;
+  --accent:#FFC93C; --accent-ink:#0E1116; --ok:#127A4B;
+  --r-card:20px; --r-input:12px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --shadow:0 1px 2px rgba(14,17,22,.04),0 12px 32px -12px rgba(30,40,60,.18);
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'Geist',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+h1,h2,h3{letter-spacing:-.035em;line-height:1.04;font-weight:600}
+.mono{font-family:'Geist Mono',ui-monospace,monospace}
+i.ph,i.ph-fill{vertical-align:-.125em}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:.5rem;height:48px;padding:0 24px;border-radius:999px;font-weight:600;font-size:15px;border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:transform .2s var(--ease),background .2s,box-shadow .2s}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 1px 0 rgba(14,17,22,.15),inset 0 -2px 0 rgba(14,17,22,.12)}
+.btn-primary:hover{background:#FFD35E}
+.btn-ghost{background:transparent;color:var(--ink);border-color:#C9CED6}
+.btn-ghost:hover{background:#fff}
+.btn:focus-visible,a:focus-visible,summary:focus-visible,.chip:focus-visible,input:focus-visible{outline:3px solid #2A6BFF;outline-offset:2px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:rgba(246,247,249,.82);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
+nav.scrolled{border-color:var(--line)}
+.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-.04em}
+.logo-mark{width:28px;height:28px;border-radius:9px;background:var(--ink);display:grid;place-items:center;color:var(--accent);font-size:17px}
+.nav-links{display:flex;gap:32px;font-size:15px;color:var(--ink-2)}
+.nav-links a:hover{color:var(--ink)}
+.nav-btn{height:40px;padding:0 18px;font-size:14px}
+
+/* hero */
+.hero{padding:56px 0 88px}
+.hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(40px,4.7vw,66px)}
+.hl{background:linear-gradient(transparent 60%,var(--accent) 60% 92%,transparent 92%);padding:0 .06em;margin:0 -.06em}
+.hero p.sub{font-size:20px;color:var(--ink-2);max-width:30rem;margin:24px 0 32px;line-height:1.45}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+
+/* feed mock */
+.feed{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow);padding:8px;position:relative}
+.feed-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 12px;font-size:13px;color:var(--ink-3)}
+.live{display:inline-flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(18,122,75,.5);animation:pulse 2.2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(18,122,75,0)}100%{box-shadow:0 0 0 0 rgba(18,122,75,0)}}
+.match{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:16px;border-radius:14px;border-top:1px solid var(--line)}
+.match:first-of-type{border-top:0}
+.match.top{background:#FFF8E1;border:1px solid #F5DE93}
+.match h3{font-size:16px;letter-spacing:-.02em;line-height:1.25;font-weight:600}
+.match .org{font-size:13px;color:var(--ink-3)}
+.match .amt{font-size:22px;font-weight:600;letter-spacing:-.03em;text-align:right}
+.match .meta{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:3px 10px;border-radius:999px;background:#EEF0F3;color:var(--ink-2);font-weight:500}
+.tag.ok{background:#E3F4EB;color:var(--ok)}
+.tag.pct{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.feed-foot{padding:12px 16px 8px;font-size:13px;color:var(--ink-3);display:flex;align-items:center;gap:8px}
+
+/* facts strip (no logo wall: nothing to claim yet) */
+.facts{border-block:1px solid var(--line);background:var(--surface)}
+.facts-in{display:grid;grid-template-columns:repeat(4,1fr)}
+.fact{padding:28px 24px;border-left:1px solid var(--line)}
+.fact:first-child{border-left:0;padding-left:0}
+.fact b{display:block;font-size:30px;letter-spacing:-.04em;font-weight:600}
+.fact span{font-size:14px;color:var(--ink-3)}
+
+section{padding:112px 0}
+h2{font-size:clamp(34px,4.2vw,56px)}
+.lede{font-size:18px;color:var(--ink-2);max-width:34rem;margin-top:20px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:16px;display:block}
+
+/* how it works: sticky heading + stacked steps */
+.how-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:72px}
+.how-sticky{position:sticky;top:110px;align-self:start}
+.steps{display:flex;flex-direction:column;gap:20px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:32px;display:grid;grid-template-columns:auto 1fr;gap:8px 24px}
+.step .n{font-size:14px;color:var(--ink-3);padding-top:6px}
+.step h3{font-size:26px}
+.step p{color:var(--ink-2);margin-top:10px;max-width:32rem}
+.step .viz{grid-column:2;margin-top:20px;background:var(--bg);border-radius:14px;padding:16px;font-size:13px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:8px}
+.viz .tag{background:#fff;border:1px solid var(--line)}
+.srcs{display:flex;flex-direction:column;gap:8px;width:100%}
+.src{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.src em{font-style:normal;color:var(--ok);font-weight:500}
+.src .strike{color:#B42318;font-weight:500}
+
+/* interactive questionnaire (dark) */
+.dark{background:var(--dark);color:#EEF0F3;border-radius:36px;margin:0 16px}
+.dark h2{color:#fff}
+.dark .lede{color:#A9B0BC}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px}
+.panel{background:var(--dark-2);border:1px solid var(--dark-line);border-radius:var(--r-card);padding:32px}
+.q{margin-bottom:28px}
+.q label{display:block;font-weight:600;font-size:17px;margin-bottom:12px;letter-spacing:-.02em}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:14px;padding:9px 16px;border-radius:999px;border:1px solid #363E4B;background:transparent;color:#D5DAE1;cursor:pointer;transition:all .18s var(--ease)}
+.chip:hover{border-color:#5A6473}
+.chip:active{transform:scale(.97)}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.zip{height:46px;width:180px;border-radius:var(--r-input);border:1px solid #363E4B;background:#0E1116;color:#fff;padding:0 14px;font:inherit;font-size:15px}
+.zip::placeholder{color:#8C95A3}
+.skip{font-size:13px;color:#8C95A3;margin-top:8px}
+.result-top{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.count{font-size:80px;font-weight:600;letter-spacing:-.05em;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.result-top span{color:#A9B0BC}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0;min-height:32px}
+.tags .mono{font-size:12px;padding:4px 10px;border-radius:8px;background:#0E1116;border:1px solid var(--dark-line);color:#B7C0CD}
+.rows{border-top:1px solid var(--dark-line)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--dark-line);font-size:15px}
+.row b{font-weight:600;color:#fff}
+.row span{color:#A9B0BC;font-size:13px}
+
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:56px}
+.cell{border-radius:var(--r-card);padding:32px;border:1px solid var(--line);background:var(--surface);overflow:hidden;position:relative}
+.cell h3{font-size:24px;margin-bottom:10px}
+.cell p{color:var(--ink-2);max-width:26rem}
+.c1{grid-column:span 4;background:var(--accent);border-color:var(--accent)}
+.c1 p{color:#3B3411}
+.c2{grid-column:span 2}
+.c3{grid-column:span 2;background:var(--ink);border-color:var(--ink);color:#fff}
+.c3 p{color:#A9B0BC}
+.c4{grid-column:span 4}
+.ladder{margin-top:24px;display:flex;flex-direction:column;gap:8px}
+.rung{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.55);border-radius:12px;padding:10px 14px;font-size:14px;font-weight:500}
+.rung .bar{flex:1;height:8px;border-radius:99px;background:rgba(14,17,22,.12);overflow:hidden}
+.rung .bar i{display:block;height:100%;background:var(--ink);border-radius:99px}
+.rung small{width:110px;font-weight:600}
+.big{font-size:56px;font-weight:600;letter-spacing:-.05em;line-height:1;margin:18px 0 6px}
+.cal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:22px}
+.cal div{background:var(--bg);border-radius:12px;padding:12px;font-size:13px;color:var(--ink-2)}
+.cal b{display:block;font-size:20px;color:var(--ink);letter-spacing:-.03em}
+.cal .hot{background:#FFF1C7}
+
+
+/* pricing: plain included-list on the left, one dark plan card carries the hierarchy */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:56px;align-items:stretch}
+.included{border-top:1px solid var(--line);padding-top:32px}
+.included h3{font-size:26px}
+.perks{list-style:none;padding:0;margin:24px 0 28px;display:flex;flex-direction:column;gap:14px}
+.perks li{display:flex;gap:12px;align-items:flex-start;color:var(--ink-2)}
+.perks i{font-size:20px;color:var(--ok);margin-top:2px;flex:none}
+.fine{font-size:14px;color:var(--ink-3);display:flex;gap:8px;align-items:center}
+.plan-plus{background:var(--dark);color:#fff;border-radius:var(--r-card);padding:36px;display:flex;flex-direction:column;gap:20px;box-shadow:var(--shadow)}
+.trial b{display:block;font-size:72px;font-weight:600;letter-spacing:-.05em;line-height:1;color:var(--accent)}
+.trial span{color:#A9B0BC;font-size:16px}
+.opts{border:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.opt{position:relative;display:flex;align-items:center;gap:16px;padding:16px 18px;border:1px solid #363E4B;border-radius:var(--r-input);cursor:pointer;transition:border-color .18s,background .18s}
+.opt:hover{border-color:#5A6473}
+.opt input{position:absolute;opacity:0}
+.opt:has(input:checked){border-color:var(--accent);background:rgba(255,201,60,.08)}
+.opt:has(input:focus-visible){outline:3px solid #2A6BFF;outline-offset:2px}
+.opt-body{flex:1;display:flex;flex-direction:column;gap:2px}
+.opt-l{font-weight:600;display:flex;align-items:center;gap:10px}
+.opt-l .tag{font-size:11px;padding:2px 8px}
+.opt-s{font-size:13px;color:#A9B0BC}
+.opt-p{font-size:28px;font-weight:600;letter-spacing:-.03em}
+.opt-p small{font-size:14px;color:#A9B0BC;font-weight:400;margin-left:2px}
+.plan-plus .btn{width:100%;justify-content:center}
+.trial-note{font-size:13px;color:#A9B0BC;text-align:center}
+/* faq */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:72px}
+details{border-top:1px solid var(--line);padding:22px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:19px;font-weight:600;letter-spacing:-.02em}
+summary::-webkit-details-marker{display:none}
+summary i{transition:transform .25s var(--ease);flex:none}
+details[open] summary i{transform:rotate(45deg)}
+details p{color:var(--ink-2);margin-top:12px;max-width:40rem}
+
+/* final CTA */
+.final{padding:0 0 96px}
+.final-card{background:var(--accent);border-radius:36px;padding:80px 56px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.final h2{font-size:clamp(36px,4.6vw,64px)}
+.final p{margin-top:16px;color:#3B3411;font-size:18px;max-width:28rem}
+.signup{display:flex;gap:8px;background:#fff;border-radius:999px;padding:6px;box-shadow:0 12px 32px -12px rgba(14,17,22,.3)}
+.signup input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:16px;padding:0 20px;color:var(--ink)}
+.signup input::placeholder{color:#6B7280}
+.signup .btn{background:var(--ink);color:#fff;height:52px}
+.signup .btn:hover{background:#232A35}
+.note{font-size:13px;color:#3B3411;margin-top:12px;padding-left:20px}
+
+footer{padding:40px 0 56px;border-top:1px solid var(--line);color:var(--ink-3);font-size:14px}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+.foot nav{all:unset;display:flex;gap:24px}
+
+/* reveal motion */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.hero .match{opacity:0;transform:translateY(14px);animation:up .7s var(--ease) forwards}
+.hero .match:nth-of-type(1){animation-delay:.25s}.hero .match:nth-of-type(2){animation-delay:.4s}
+.hero .match:nth-of-type(3){animation-delay:.55s}.hero .match:nth-of-type(4){animation-delay:.7s}
+@keyframes up{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.rv,.hero .match{opacity:1;transform:none;animation:none;transition:none}.dot{animation:none}html{scroll-behavior:auto}}
+
+/* mobile collapse: every multi-column block declares its <900px fallback */
+@media (max-width:900px){
+  .wrap{padding:0 20px}
+  .nav-links{display:none}
+  .hero{padding:32px 0 64px}
+  .hero-grid,.how-grid,.faq-grid,.demo,.final-card,.plans{grid-template-columns:1fr;gap:40px}
+  .plan-plus{padding:28px 24px}
+  .how-sticky{position:static}
+  .facts-in{grid-template-columns:1fr 1fr}
+  .fact:nth-child(3){border-left:0;padding-left:0}
+  .fact{border-top:1px solid var(--line)}.fact:nth-child(-n+2){border-top:0}
+  section{padding:72px 0}
+  .bento{grid-template-columns:1fr}.c1,.c2,.c3,.c4{grid-column:auto}
+  .cal{grid-template-columns:repeat(2,1fr)}
+  .dark{margin:0 8px;border-radius:28px}
+  .final-card{padding:48px 24px;border-radius:28px}
+  .step{grid-template-columns:1fr}.step .viz{grid-column:1}
+  .count{font-size:64px}
+  .signup{flex-direction:column;border-radius:20px}.signup input{height:48px}
+  .note{padding-left:4px}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#"><span class="logo-mark"><i class="ph-fill ph-bird"></i></span>Tuitionwing</a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#demo">Try the questionnaire</a>
+      <a href="#why">Why it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-primary nav-btn" href="#start">Get matched</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Scholarships that fit <span class="hl">you</span>, not everyone.</h1>
+      <p class="sub">Answer one short questionnaire. Our agent searches the web and sends you only the awards you actually qualify for.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#start">Get matched <i class="ph ph-arrow-right"></i></a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+    </div>
+
+    <div class="feed" aria-label="Example of matched scholarships">
+      <div class="feed-head">
+        <span class="live"><span class="dot"></span>Searching for Maya</span>
+        <span class="mono">Updated 2 min ago</span>
+      </div>
+      <article class="match top">
+        <div><h3>Tri-County Nursing Futures Award</h3><div class="org">Community Foundation of Lake County</div></div>
+        <div class="amt">$5,000</div>
+        <div class="meta"><span class="tag pct"><i class="ph-fill ph-target"></i>96% match</span><span class="tag ok"><i class="ph-fill ph-seal-check"></i>Verified</span><span class="tag">Due Nov 14</span></div>
+      </article>
+      <article class="match">
+        <div><h3>First-Generation Scholars Grant</h3><div class="org">State Higher Education Office</div></div>
+        <div class="amt">$2,500</div>
+        <div class="meta"><span class="tag pct">91% match</span><span class="tag ok"><i class="ph-fill ph-seal-check"></i>Verified</span><span class="tag">Due Dec 1</span></div>
+      </article>
+      <article class="match">
+        <div><h3>Women in Healthcare Bursary</h3><div class="org">Regional Nurses Association</div></div>
+        <div class="amt">$1,800</div>
+        <div class="meta"><span class="tag pct">88% match</span><span class="tag ok"><i class="ph-fill ph-seal-check"></i>Verified</span><span class="tag">Due Jan 9</span></div>
+      </article>
+      <article class="match">
+        <div><h3>Lake County Local Merit Award</h3><div class="org">County Bar Auxiliary</div></div>
+        <div class="amt">$1,000</div>
+        <div class="meta"><span class="tag pct">84% match</span><span class="tag ok"><i class="ph-fill ph-seal-check"></i>Verified</span><span class="tag">Due Jan 30</span></div>
+      </article>
+      <div class="feed-foot"><i class="ph ph-envelope-simple"></i>Sent to her inbox every Monday</div>
+    </div>
+  </div>
+</header>
+
+<div class="facts">
+  <div class="wrap facts-in">
+    <div class="fact"><b>3 min</b><span>to fill in the questionnaire</span></div>
+    <div class="fact"><b>4 levels</b><span>of location: city to county to state to national</span></div>
+    <div class="fact"><b>100%</b><span>of matches checked against the official source</span></div>
+    <div class="fact"><b>7 days</b><span>free to try. No application fees, ever</span></div>
+  </div>
+</div>
+
+<section id="how">
+  <div class="wrap how-grid">
+    <div class="how-sticky rv">
+      <span class="eyebrow">How it works</span>
+      <h2>You answer once. The agent does the searching.</h2>
+      <p class="lede">No more scrolling through thousands of awards you can't win. Your answers become a profile, and the profile does the hunting.</p>
+    </div>
+    <div class="steps">
+      <div class="step rv">
+        <span class="n mono">01</span>
+        <div><h3>Tell us about you</h3><p>School, major, where you live, what you've done. It adapts as you go and skips what doesn't apply.</p></div>
+        <div class="viz"><span class="tag">Nursing major</span><span class="tag">First-gen</span><span class="tag">Lake County, FL</span><span class="tag">Min. award $1,000</span><span class="tag">5 hrs / week</span></div>
+      </div>
+      <div class="step rv">
+        <span class="n mono">02</span>
+        <div><h3>The agent searches the open web</h3><p>Not just the big databases. It reads community foundations, county offices, employers and niche associations, where the smaller applicant pools are.</p></div>
+        <div class="viz"><div class="srcs">
+          <div class="src"><span>lakecountyfoundation.org</span><em>Match found</em></div>
+          <div class="src"><span>stateheo.gov/aid</span><em>Match found</em></div>
+          <div class="src"><span>quick-cash-scholarship.biz</span><span class="strike">Rejected: asks for a fee</span></div>
+        </div></div>
+      </div>
+      <div class="step rv">
+        <span class="n mono">03</span>
+        <div><h3>Verified matches land in your inbox</h3><p>Every award is re-checked for deadline, eligibility and legitimacy before we send it. You get a short ranked list, not a firehose.</p></div>
+        <div class="viz"><span class="tag ok"><i class="ph-fill ph-seal-check"></i>Deadline confirmed</span><span class="tag ok"><i class="ph-fill ph-seal-check"></i>Eligibility confirmed</span><span class="tag ok"><i class="ph-fill ph-seal-check"></i>No fee</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dark" id="demo">
+  <section>
+    <div class="wrap">
+      <div class="rv">
+        <h2>Try it. Watch your list change.</h2>
+        <p class="lede">This is a taste of the real questionnaire. Every answer narrows the search.</p>
+      </div>
+      <div class="demo rv">
+        <div class="panel">
+          <div class="q">
+            <label id="l1">Where are you in school?</label>
+            <div class="chips" data-q="edu.status" role="group" aria-labelledby="l1">
+              <button class="chip" aria-pressed="false" data-tag="hs_senior" data-w="120">High school senior</button>
+              <button class="chip" aria-pressed="false" data-tag="undergrad" data-w="140">Undergrad</button>
+              <button class="chip" aria-pressed="false" data-tag="grad" data-w="90">Grad</button>
+              <button class="chip" aria-pressed="false" data-tag="trade" data-w="60">Trade or certificate</button>
+            </div>
+          </div>
+          <div class="q">
+            <label id="l2">What do you study?</label>
+            <div class="chips" data-q="edu.major" role="group" aria-labelledby="l2">
+              <button class="chip" aria-pressed="false" data-tag="nursing" data-w="34">Nursing</button>
+              <button class="chip" aria-pressed="false" data-tag="engineering" data-w="41">Engineering</button>
+              <button class="chip" aria-pressed="false" data-tag="education" data-w="28">Education</button>
+              <button class="chip" aria-pressed="false" data-tag="arts" data-w="19">Arts</button>
+            </div>
+          </div>
+          <div class="q">
+            <label id="l3">Anything that applies to you?</label>
+            <div class="chips" data-q="bg" data-multi role="group" aria-labelledby="l3">
+              <button class="chip" aria-pressed="false" data-tag="first_gen" data-w="26">First-generation</button>
+              <button class="chip" aria-pressed="false" data-tag="veteran_family" data-w="12">Military family</button>
+              <button class="chip" aria-pressed="false" data-tag="part_time_work" data-w="9">Work while studying</button>
+            </div>
+            <p class="skip">Every personal question can be skipped with "Prefer not to say".</p>
+          </div>
+        </div>
+        <div class="panel" aria-live="polite">
+          <div class="result-top"><div class="count" id="count">0</div><span>awards you could apply for</span></div>
+          <div class="tags" id="tags"></div>
+          <div class="rows" id="rows"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section id="why">
+  <div class="wrap">
+    <div class="rv">
+      <h2>Why tailored beats a giant database.</h2>
+    </div>
+    <div class="bento">
+      <div class="cell c1 rv">
+        <h3>We look where the odds are better.</h3>
+        <p>County foundations and local associations often see a handful of applicants. We search there first.</p>
+        <div class="ladder">
+          <div class="rung"><small>National</small><span class="bar"><i style="width:96%"></i></span><span class="mono">many applicants</span></div>
+          <div class="rung"><small>State</small><span class="bar"><i style="width:58%"></i></span><span class="mono">fewer</span></div>
+          <div class="rung"><small>Your county</small><span class="bar"><i style="width:14%"></i></span><span class="mono">few</span></div>
+        </div>
+      </div>
+      <div class="cell c2 rv">
+        <h3>Scams filtered out.</h3>
+        <p>Fees, fake deadlines and data-harvesting forms never reach you.</p>
+        <div class="big"><i class="ph-fill ph-shield-check"></i></div>
+      </div>
+      <div class="cell c3 rv">
+        <h3>Sized to your time.</h3>
+        <p>Tell us your minimum award and weekly hours. We skip anything not worth it.</p>
+        <div class="big" style="color:var(--accent)">$1,000+</div>
+      </div>
+      <div class="cell c4 rv">
+        <h3>Deadlines you can plan around.</h3>
+        <p>Every match arrives with its due date, so nothing sneaks up on you.</p>
+        <div class="cal">
+          <div class="hot"><b>Nov 14</b>Nursing Futures</div>
+          <div><b>Dec 1</b>First-Gen Grant</div>
+          <div><b>Jan 9</b>Healthcare Bursary</div>
+          <div><b>Jan 30</b>Local Merit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="rv">
+      <h2>Try it free for 7 days.</h2>
+      <p class="lede">Then $9 a month, or $60 for the year. We'll email you before your trial ends, and you can cancel anytime.</p>
+    </div>
+    <div class="plans">
+      <div class="included rv">
+        <h3>Everything is included</h3>
+        <ul class="perks">
+          <li><i class="ph-fill ph-check-circle"></i>The full questionnaire and your matching profile</li>
+          <li><i class="ph-fill ph-check-circle"></i>Every verified match, ranked for you</li>
+          <li><i class="ph-fill ph-check-circle"></i>Deep search of county foundations and niche sources</li>
+          <li><i class="ph-fill ph-check-circle"></i>Instant alerts the moment a new match appears</li>
+          <li><i class="ph-fill ph-check-circle"></i>Deadline reminders before each due date</li>
+        </ul>
+        <p class="fine"><i class="ph ph-shield-check"></i>We will never charge an application fee, and we will never send you an award that does.</p>
+      </div>
+      <form class="plan-plus rv" onsubmit="event.preventDefault()" aria-label="Choose a billing plan">
+        <div class="trial"><b>7 days</b><span>free, then pick a plan</span></div>
+        <fieldset class="opts">
+          <legend class="sr">Billing period</legend>
+          <label class="opt"><input type="radio" name="bill" value="year" checked>
+            <span class="opt-body"><span class="opt-l">Yearly <em class="tag pct">Save 45%</em></span><span class="opt-s">$5 a month, billed as $60</span></span>
+            <span class="opt-p">$60<small>/yr</small></span></label>
+          <label class="opt"><input type="radio" name="bill" value="month">
+            <span class="opt-body"><span class="opt-l">Monthly</span><span class="opt-s">Cancel anytime</span></span>
+            <span class="opt-p">$9<small>/mo</small></span></label>
+        </fieldset>
+        <button class="btn btn-primary" type="submit">Get matched</button>
+        <p class="trial-note" id="trialNote">Free for 7 days, then $60 a year. Cancel before day 7 and pay nothing.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:32px">
+  <div class="wrap faq-grid">
+    <div class="rv">
+      <h2>Questions, answered.</h2>
+    </div>
+    <div class="rv">
+      <details><summary>How much does it cost?<i class="ph ph-plus"></i></summary><p>Your first 7 days are free. After that it is $9 a month or $60 for the year. We email you before the trial ends, and you can cancel anytime. There are never any application fees.</p></details>
+      <details><summary>What do you do with my answers?<i class="ph ph-plus"></i></summary><p>They build your matching profile and nothing else. We don't sell them, and you can delete your profile at any time.</p></details>
+      <details><summary>How do you know a scholarship is real?<i class="ph ph-plus"></i></summary><p>Each award is traced back to the official source page, then checked for a live deadline, clear eligibility rules and no fees before it reaches you.</p></details>
+      <details><summary>Do I have to answer everything?<i class="ph ph-plus"></i></summary><p>No. Only a short core block is required. Everything personal is optional, and skipping is never treated as a "no".</p></details>
+      <details><summary>Does it apply for me?<i class="ph ph-plus"></i></summary><p>No. You keep control of your applications. We find and verify; you decide what's worth your time.</p></details>
+    </div>
+  </div>
+</section>
+
+<div class="final" id="start">
+  <div class="wrap">
+    <div class="final-card rv">
+      <div>
+        <h2>Your first matches are 3 minutes away.</h2>
+        <p>Start the questionnaire and see your first results before you finish.</p>
+      </div>
+      <div>
+        <form class="signup" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="you@school.edu" aria-label="Email address" required>
+          <button class="btn" type="submit">Get matched</button>
+        </form>
+        <p class="note">7 days free. Cancel anytime.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="#"><span class="logo-mark"><i class="ph-fill ph-bird"></i></span>Tuitionwing</a>
+    <nav><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></nav>
+    <span>© 2026 Tuitionwing</span>
+  </div>
+</footer>
+
+<script>
+// nav border on scroll
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>8),{passive:true});
+
+// scroll reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// questionnaire demo
+const sel={};const countEl=document.getElementById('count');
+const tagsEl=document.getElementById('tags');const rowsEl=document.getElementById('rows');
+const samples={
+  nursing:['Nursing Futures Award','Community foundation'],
+  engineering:['Future Engineers Grant','Regional STEM council'],
+  education:['Teachers of Tomorrow Fund','State education office'],
+  arts:['Emerging Artists Award','Local arts league'],
+  first_gen:['First-Generation Scholars Grant','State higher-ed office'],
+  veteran_family:['Military Family Tuition Aid','Veterans auxiliary'],
+  part_time_work:['Working Student Relief Award','Employer foundation'],
+  hs_senior:['Senior Year Merit Award','County high school fund'],
+  undergrad:['Continuing Student Grant','University foundation'],
+  grad:['Graduate Research Stipend','Professional association'],
+  trade:['Skilled Trades Starter Grant','Workforce board']
+};
+let shown=0,raf;
+function tween(to){cancelAnimationFrame(raf);const from=shown,t0=performance.now();
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  (function s(t){const p=reduce?1:Math.min((t-t0)/500,1);shown=Math.round(from+(to-from)*(1-Math.pow(1-p,3)));
+    countEl.textContent=shown;if(p<1)raf=requestAnimationFrame(s)})(t0)}
+function render(){
+  const items=Object.entries(sel).filter(([,v])=>v).flatMap(([q,v])=>[].concat(v));
+  const total=items.reduce((a,el)=>a+ +el.dataset.w,0);
+  tween(total);
+  tagsEl.innerHTML=[...Object.entries(sel)].flatMap(([q,v])=>[].concat(v||[]).map(el=>`<span class="mono">${q}: ${el.dataset.tag}</span>`)).join('');
+  rowsEl.innerHTML=items.slice(0,4).map(el=>{const s=samples[el.dataset.tag];return `<div class="row"><div><b>${s[0]}</b><br><span>${s[1]}</span></div><span class="mono">verified</span></div>`}).join('')
+   ||'<div class="row"><span>Pick an option to start the search.</span></div>';
+}
+document.querySelectorAll('.chips').forEach(g=>{
+  const multi=g.hasAttribute('data-multi');const q=g.dataset.q;
+  g.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
+    const on=b.getAttribute('aria-pressed')==='true';
+    if(multi){b.setAttribute('aria-pressed',!on);sel[q]=[...g.querySelectorAll('[aria-pressed=true]')]}
+    else{g.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed',!on);sel[q]=on?null:b}
+    render()});
+});
+render();
+
+// pricing note
+document.querySelectorAll('input[name=bill]').forEach(r=>r.addEventListener('change',()=>{
+  document.getElementById('trialNote').textContent=r.value==='year'
+    ?'Free for 7 days, then $60 a year. Cancel before day 7 and pay nothing.'
+    :'Free for 7 days, then $9 a month. Cancel before day 7 and pay nothing.'}));
+</script>
+</body>
+</html>

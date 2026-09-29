@@ -1,0 +1,226 @@
+- generic [ref=f10e3]:
+  - link "Skip Navigation to Main Content" [ref=f10e5] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=f10e6]:
+    - generic [ref=f10e7]:
+      - banner [ref=f10e8]:
+        - navigation [ref=f10e9]:
+          - generic [ref=f10e13]:
+            - link "Oura home" [ref=f10e16] [cursor=pointer]:
+              - /url: /
+            - menubar [ref=f10e19]:
+              - menuitem "Shop" [ref=f10e20] [cursor=pointer]
+              - menuitem "Your Health" [ref=f10e27] [cursor=pointer]
+              - menuitem "Why Oura" [ref=f10e34] [cursor=pointer]
+              - menuitem "For Organizations" [ref=f10e41] [cursor=pointer]
+            - link "There are no items in your cart" [ref=f10e48] [cursor=pointer]:
+              - /url: https://ouraring.com/cart
+      - main "mainLabel" [ref=f10e54]:
+        - generic [ref=f10e55]:
+          - generic [ref=f10e56]:
+            - generic [ref=f10e64]:
+              - generic [ref=f10e65]:
+                - img "Oura Ring 5" [ref=f10e66]
+                - heading "Subtle. Power." [level=1] [ref=f10e69]
+                - paragraph [ref=f10e70]: The world's smallest smart ring is here.
+              - generic [ref=f10e71]:
+                - link "Explore" [ref=f10e72] [cursor=pointer]:
+                  - /url: /store/rings/oura-ring-5
+                - generic [ref=f10e76]:
+                  - generic [ref=f10e77]: FSA or HSA
+                  - img "HSA/FSA" [ref=f10e78]
+                  - text: eligible
+            - generic [ref=f10e89]:
+              - generic [ref=f10e91]:
+                - heading "Understand your body. Own your health." [level=2] [ref=f10e93]
+                - paragraph [ref=f10e94]: Oura gives you insights unique to your body, so every day adds up to a longer, healthier life.
+                - generic [ref=f10e95]:
+                  - link "Why Oura" [ref=f10e96] [cursor=pointer]:
+                    - /url: /why-oura
+                  - link "How It Works" [ref=f10e99] [cursor=pointer]:
+                    - /url: /how-it-works
+              - list [ref=f10e109]:
+                - listitem [ref=f10e110]:
+                  - generic "Sleep and Rest" [ref=f10e111]:
+                    - generic [ref=f10e113]:
+                      - img "Man lying in bed wearing an Oura Ring 5" [ref=f10e116]
+                      - generic [ref=f10e117]: Sleep and Rest
+                      - button "Expand Sleep and Rest card" [ref=f10e124] [cursor=pointer]
+                      - heading "Get the best sleep of your life" [level=3] [ref=f10e130]
+                - listitem [ref=f10e131]:
+                  - generic "Wellness and Longevity" [ref=f10e132]:
+                    - generic [ref=f10e134]:
+                      - img "Holding hands each wearing an Oura Ring 5" [ref=f10e137]
+                      - generic [ref=f10e138]: Wellness and Longevity
+                      - button "Expand Wellness and Longevity card" [ref=f10e145] [cursor=pointer]
+                      - heading "Don't just live longer, live healthier" [level=3] [ref=f10e151]
+                - listitem [ref=f10e152]:
+                  - generic "Activity and Fitness" [ref=f10e153]:
+                    - generic [ref=f10e155]:
+                      - img "Woman doing a curl up wearing an Oura Ring 5" [ref=f10e158]
+                      - generic [ref=f10e159]: Activity and Fitness
+                      - button "Expand Activity and Fitness card" [ref=f10e166] [cursor=pointer]
+                      - heading "Bring your fitness goals into focus" [level=3] [ref=f10e172]
+                - listitem [ref=f10e173]:
+                  - generic "Heart Health" [ref=f10e174]:
+                    - generic [ref=f10e176]:
+                      - img "Person putting their hand on the shoulder of another person both wearing an Oura Ring 5" [ref=f10e179]
+                      - generic [ref=f10e180]: Heart Health
+                      - button "Expand Heart Health card" [ref=f10e187] [cursor=pointer]
+                      - heading "Listen to what your heart is telling you" [level=3] [ref=f10e193]
+                - listitem [ref=f10e194]:
+                  - generic "Women's Health" [ref=f10e195]:
+                    - generic [ref=f10e197]:
+                      - img "Woman wearing an Oura Ring 5" [ref=f10e200]
+                      - generic [ref=f10e201]: Women's Health
+                      - button "Expand Women's Health card" [ref=f10e211] [cursor=pointer]
+                      - heading "Understand the ins and outs of women's health" [level=3] [ref=f10e217]
+                - listitem [ref=f10e218]:
+                  - generic "Stress" [ref=f10e219]:
+                    - generic [ref=f10e221]:
+                      - img "Person with their fingers interlaced behind their head wearing an Oura Ring 5" [ref=f10e224]
+                      - generic [ref=f10e225]: Stress
+                      - button "Expand Stress card" [ref=f10e234] [cursor=pointer]
+                      - heading "Put your stress to the test" [level=3] [ref=f10e240]
+            - generic [ref=f10e241]:
+              - generic [ref=f10e244]:
+                - heading [level=2] [ref=f10e246]:
+                  - text: 86% of Oura Members see their health improve
+                  - superscript [ref=f10e247]:
+                    - link "1" [ref=f10e248] [cursor=pointer]:
+                      - /url: "#legal-footnotes"
+                - paragraph [ref=f10e250]: Track over 50 health metrics and get personalized insights into your sleep, activity, stress, and more — all in the Oura App.
+                - paragraph [ref=f10e252]: Available on iOS and Android.
+                - link "Explore Membership" [ref=f10e254] [cursor=pointer]:
+                  - /url: /membership
+              - img "A collage of screenshots from the Oura App, including the home screen and the Daytime Stress, Symptom Radar, Activity, and Meals features" [ref=f10e261]
+            - generic [ref=f10e262]:
+              - heading "Real members, real stories of impact" [level=2] [ref=f10e263]
+              - generic [ref=f10e266]:
+                - generic [ref=f10e268]:
+                  - paragraph [ref=f10e271]: Heart Health
+                  - blockquote [ref=f10e272]:
+                    - paragraph [ref=f10e273]: My cardiologist told me, 'If you hadn't caught this, you might have gone to sleep and never woken up.' Oura didn't just track my health — it saved my life.
+                    - generic [ref=f10e274]:
+                      - img "Profile photo of Tim S., Oura member" [ref=f10e275]
+                      - paragraph [ref=f10e276]: Tim S.
+                - generic [ref=f10e278]:
+                  - paragraph [ref=f10e281]: Symptom Radar
+                  - blockquote [ref=f10e282]:
+                    - paragraph [ref=f10e283]: "[The Symptom Radar notifications] are my sign to back off and give myself a day of rest. It's good to say that to yourself sometimes."
+                    - generic [ref=f10e284]:
+                      - img "Profile photo of Tabitha P., Oura member" [ref=f10e285]
+                      - paragraph [ref=f10e286]: Tabitha P.
+                - generic [ref=f10e288]:
+                  - paragraph [ref=f10e291]: Women’s Health
+                  - blockquote [ref=f10e292]:
+                    - paragraph [ref=f10e293]: The information from Oura made all the difference for us. We're finally starting our family and couldn't be more excited.
+                    - generic [ref=f10e294]:
+                      - img "Profile photo of Ashley W., Oura member" [ref=f10e295]
+                      - paragraph [ref=f10e296]: Ashley W.
+          - generic [ref=f10e298]:
+            - generic [ref=f10e300]:
+              - paragraph [ref=f10e302]: New Features
+              - heading "Meet Health Radar" [level=2] [ref=f10e304]
+              - paragraph [ref=f10e306]:
+                - text: A suite of features designed to continuously monitor your biometrics for patterns worth noting, so you can stay proactive about your health.
+                - superscript [ref=f10e307]:
+                  - link "*" [ref=f10e308] [cursor=pointer]:
+                    - /url: "#legal-footnotes"
+              - link "Explore" [ref=f10e310] [cursor=pointer]:
+                - /url: /health-radar
+            - img "The Oura App Health Radar feature displayed on a smartphone, showing health monitoring insights" [ref=f10e315]
+          - generic [ref=f10e318]:
+            - paragraph [ref=f10e320]: IN THE NEWS
+            - img "Two hands touching, each wearing an Oura Ring in different finishes" [ref=f10e323]
+            - article [ref=f10e326]:
+              - paragraph [ref=f10e329]: FEATURED ARTICLE
+              - generic [ref=f10e330]:
+                - heading "How Oura Measures Sleep and Validates Accuracy" [level=2] [ref=f10e331]
+                - link "Read More" [ref=f10e332] [cursor=pointer]:
+                  - /url: https://ouraring.com/blog/how-oura-measures-sleep-and-validates-accuracy/
+            - generic [ref=f10e338]:
+              - article [ref=f10e339]:
+                - 'heading "The Guardian: Oura Ring 5 review: a stunning generational leap for smart rings" [level=3] [ref=f10e340]'
+                - link "Read the article" [ref=f10e342] [cursor=pointer]:
+                  - /url: https://www.theguardian.com/technology/2026/jun/30/oura-ring-5-review-smart-ring-health-tracking
+              - article [ref=f10e345]:
+                - 'heading "Esquire: We Got Our Hands on the New Oura Ring 5, and It''s Thinner Than We Could''ve Imagined" [level=3] [ref=f10e346]'
+                - link "Read the article" [ref=f10e348] [cursor=pointer]:
+                  - /url: https://www.esquire.com/lifestyle/tech/a71431255/oura-ring-5-buy-now/
+              - article [ref=f10e351]:
+                - 'heading "CNET: 48 Hours With the Oura Ring 5: The New Gold Standard" [level=3] [ref=f10e352]'
+                - link "Read the article" [ref=f10e354] [cursor=pointer]:
+                  - /url: https://www.cnet.com/tech/mobile/oura-ring-5-first-impressions-oura-struck-gold/
+        - list [ref=f10e361]:
+          - listitem [ref=f10e362]:
+            - superscript [ref=f10e363]: "1"
+            - text: Based on a 2026 survey with 3,501 Oura members after using Oura Ring for 30 days.
+          - listitem [ref=f10e364]:
+            - superscript [ref=f10e365]: "2"
+            - text: Health Radar features are intended for general wellness purposes only. They are not intended to diagnose, treat, cure, mitigate, monitor, or prevent any disease, illness, or medical condition, and they do not provide medical advice. Do not use Health Radar information to replace clinical assessment, make medical decisions, or delay, stop, or modify medical care. If you have health concerns, consult your doctor or another qualified healthcare professional. If you think you may be experiencing a medical emergency, seek emergency medical care immediately.
+    - contentinfo [ref=f10e367]:
+      - generic [ref=f10e372]:
+        - generic [ref=f10e373]:
+          - heading "Payment Options" [level=2] [ref=f10e376]
+          - generic [ref=f10e377]:
+            - generic [ref=f10e378]:
+              - img "HSA/FSA" [ref=f10e379]
+              - generic [ref=f10e399]: HSA/FSA Eligible
+            - generic [ref=f10e400]:
+              - img "PayPal" [ref=f10e401]
+              - generic [ref=f10e408]: PayPal
+            - generic [ref=f10e409]:
+              - img "Apple Pay" [ref=f10e410]
+              - generic [ref=f10e412]: Apple Pay
+            - generic [ref=f10e413]:
+              - img "Google Pay" [ref=f10e414]
+              - generic [ref=f10e422]: Google Pay
+            - generic [ref=f10e423]:
+              - img "Visa" [ref=f10e424]
+              - generic [ref=f10e426]: Visa
+            - generic [ref=f10e427]:
+              - img "Mastercard" [ref=f10e428]
+              - generic [ref=f10e433]: Mastercard
+            - generic [ref=f10e434]:
+              - img "American Express" [ref=f10e435]
+              - generic [ref=f10e437]: American Express
+        - generic [ref=f10e439]:
+          - heading "Receive articles, tips, and offers from Oura" [level=2] [ref=f10e440]
+          - generic [ref=f10e442]:
+            - generic [ref=f10e443]:
+              - textbox "Email address" [ref=f10e444]
+              - button "submit email for newsletter" [ref=f10e445] [cursor=pointer]
+              - alert
+            - status [ref=f10e448]
+          - generic [ref=f10e449]:
+            - paragraph [ref=f10e450]: We care about protecting your data.
+            - generic [ref=f10e451]:
+              - text: Read more in our
+              - link "Privacy Policy" [ref=f10e452] [cursor=pointer]:
+                - /url: /privacy-policy
+              - text: .
+        - generic [ref=f10e455]:
+          - list [ref=f10e456]:
+            - listitem [ref=f10e457]:
+              - link "Terms & Conditions" [ref=f10e458] [cursor=pointer]:
+                - /url: /terms-and-conditions
+            - listitem [ref=f10e459]:
+              - link "Privacy Policy" [ref=f10e460] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=f10e461]:
+              - link "Accessibility" [ref=f10e462] [cursor=pointer]:
+                - /url: /accessibility
+            - listitem [ref=f10e463]:
+              - link "FCC Compliance" [ref=f10e464] [cursor=pointer]:
+                - /url: /fcc-compliance-statements
+            - listitem [ref=f10e465]:
+              - link "IP Notice" [ref=f10e466] [cursor=pointer]:
+                - /url: /intellectual-property-notice
+            - listitem [ref=f10e467]:
+              - link "Security Center" [ref=f10e468] [cursor=pointer]:
+                - /url: /trust-center
+          - paragraph [ref=f10e470]: © 2026 Oura Health Oy. All rights reserved. ŌURA, OURA, and Ō are trademarks of Oura Health Oy and may not be used without permission.
+          - 'button "Language Preference: English" [ref=f10e472] [cursor=pointer]':
+            - generic [ref=f10e475]: "Language Preference:"
+            - text: English

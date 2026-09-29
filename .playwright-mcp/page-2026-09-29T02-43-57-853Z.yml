@@ -1,0 +1,308 @@
+- generic [ref=f19e3]:
+  - generic [ref=f19e7]:
+    - generic [ref=f19e8]:
+      - link [ref=f19e10] [cursor=pointer]:
+        - /url: ./
+      - generic [ref=f19e15]:
+        - paragraph [ref=f19e20] [cursor=pointer]: Features
+        - link [ref=f19e22] [cursor=pointer]:
+          - /url: https://www.rocketmoney.com/learn
+          - paragraph [ref=f19e25]: Learn
+        - link [ref=f19e27] [cursor=pointer]:
+          - /url: https://www.rocketmoney.com/rowan
+          - paragraph [ref=f19e30]: Rowan
+    - generic [ref=f19e31]:
+      - link [ref=f19e33] [cursor=pointer]:
+        - /url: https://app.rocketmoney.com
+        - button "Log in" [ref=f19e34]
+      - link [ref=f19e36] [cursor=pointer]:
+        - /url: https://app.rocketmoney.com/signup
+        - button "Sign up" [ref=f19e37]
+  - generic [ref=f19e38]:
+    - generic [ref=f19e39]:
+      - generic [ref=f19e42]:
+        - generic [ref=f19e43]:
+          - generic [ref=f19e44]:
+            - heading "The money app that works for you" [level=1] [ref=f19e46]
+            - paragraph [ref=f19e48]: Managing money is hard, but you don’t have to do it alone. Rocket Money empowers you to save more, spend less, see everything, and take back control of your financial life.
+          - link [ref=f19e50] [cursor=pointer]:
+            - /url: https://app.rocketmoney.com/signup?hero-cta-click
+            - button "Sign up today" [ref=f19e51]
+        - paragraph [ref=f19e59]: Scan to download the app
+      - generic [ref=f19e118]:
+        - heading "Join 10 million+ members" [level=2] [ref=f19e121]
+        - paragraph [ref=f19e123]: Featured in
+      - generic [ref=f19e169]:
+        - img "Man looking at his phone" [ref=f19e173]
+        - generic [ref=f19e178]:
+          - generic [ref=f19e179]:
+            - heading "Get control over your subscriptions" [level=2] [ref=f19e181]
+            - paragraph [ref=f19e183]: Rocket Money instantly finds and tracks your subscriptions. We’re there when you need us to cancel services so you don’t have to.
+          - link [ref=f19e185] [cursor=pointer]:
+            - /url: ./feature/manage-subscriptions
+            - button "Manage my subscriptions" [ref=f19e186]
+      - generic [ref=f19e190]:
+        - img "Man enjoying a cup of coffee" [ref=f19e194]
+        - generic [ref=f19e199]:
+          - generic [ref=f19e200]:
+            - heading "Stay on top of your everyday spending" [level=2] [ref=f19e202]
+            - paragraph [ref=f19e204]: Get an effortless breakdown of your finances to see where your money is going and how to improve. We’ll notify you of important events that need your attention so you’re never caught off guard.
+          - link [ref=f19e206] [cursor=pointer]:
+            - /url: ./feature/spending-insights
+            - button "Track my spending" [ref=f19e207]
+      - generic [ref=f19e211]:
+        - img "Woman with her arms open in a field" [ref=f19e215]
+        - generic [ref=f19e220]:
+          - generic [ref=f19e221]:
+            - heading "Put your financial goals on autopilot" [level=2] [ref=f19e223]
+            - paragraph [ref=f19e225]: Turn on autopilot to save money without thinking about it. Rocket Money learns your habits and saves the right amount at the right time while helping you avoid overdraft fees.
+          - link [ref=f19e227] [cursor=pointer]:
+            - /url: ./feature/autopilot-savings
+            - button "Automate my savings" [ref=f19e228]
+    - generic [ref=f19e229]:
+      - generic [ref=f19e230]:
+        - heading "Get more from your finances with Rocket Money Premium" [level=2] [ref=f19e233]
+        - paragraph [ref=f19e236]: Premium is more than just software features! You’ll also get real access to humans who can help you cancel subscriptions, lower your bills or help with questions about your personal finances.
+      - generic [ref=f19e237]:
+        - generic [ref=f19e238]:
+          - heading "without Premium" [level=3] [ref=f19e241]
+          - generic [ref=f19e242]:
+            - generic [ref=f19e246]:
+              - heading "Account Linking" [level=3] [ref=f19e248]
+              - paragraph [ref=f19e250]: Link your checking, savings, credit cards, and investments accounts to see everything in one place.
+            - generic [ref=f19e254]:
+              - heading "Balance Alerts" [level=3] [ref=f19e256]
+              - paragraph [ref=f19e258]: Get alerted when your checking account falls below a safe balance or when your credit spend is too high.
+            - generic [ref=f19e262]:
+              - heading "Subscription Management" [level=3] [ref=f19e264]
+              - paragraph [ref=f19e266]: Our algorithm works its magic to find all of your recurring subscriptions and bills.
+            - generic [ref=f19e270]:
+              - heading "Spend Tracking" [level=3] [ref=f19e272]
+              - paragraph [ref=f19e274]: With all of your accounts in one place, see and understand your spending trends.
+        - generic [ref=f19e275]:
+          - heading "with Premium" [level=3] [ref=f19e278]
+          - generic [ref=f19e279]:
+            - paragraph [ref=f19e281]: "You get everything on the free plan, plus these additional services:"
+            - generic [ref=f19e290]:
+              - heading "Subscription Cancellation Assistant" [level=3] [ref=f19e292]
+              - paragraph [ref=f19e294]: Let us cancel your subscriptions for you.
+            - generic [ref=f19e303]:
+              - heading "Automated Savings Plan" [level=3] [ref=f19e305]
+              - paragraph [ref=f19e307]: Reach your financial goals with ease.
+            - generic [ref=f19e315]:
+              - heading "...and more!" [level=3] [ref=f19e317]
+              - paragraph [ref=f19e319]: Turbocharge your finances with net worth tracking, shared accounts, unlimited budgets, and more.
+    - generic [ref=f19e320]:
+      - heading "Explore more Rocket Money features" [level=2] [ref=f19e323]
+      - generic [ref=f19e326]:
+        - generic [ref=f19e327]:
+          - generic [ref=f19e332]:
+            - heading "Track and understand your credit score" [level=3] [ref=f19e334]
+            - paragraph [ref=f19e336]: Access your complete credit report and history. Get alerted to important changes that impact your score.
+          - link [ref=f19e338] [cursor=pointer]:
+            - /url: ./feature/credit-score
+            - paragraph [ref=f19e340]: Check my credit score
+        - generic [ref=f19e342]:
+          - generic [ref=f19e347]:
+            - heading "Get the best rates on your existing bills" [level=3] [ref=f19e349]
+            - paragraph [ref=f19e351]: Our concierge will identify bills that can be lowered and negotiate on your behalf for the best rates available.
+          - link [ref=f19e353] [cursor=pointer]:
+            - /url: ./feature/lower-your-bills
+            - paragraph [ref=f19e355]: Lower my bills
+        - generic [ref=f19e357]:
+          - generic [ref=f19e362]:
+            - heading "Create a budget that works for you" [level=3] [ref=f19e364]
+            - paragraph [ref=f19e366]: Set up a budget that automatically monitors your spending by category and keeps you on track towards your goals.
+          - link [ref=f19e368] [cursor=pointer]:
+            - /url: ./feature/create-a-budget
+            - paragraph [ref=f19e370]: Build my budget
+        - generic [ref=f19e372]:
+          - generic [ref=f19e377]:
+            - heading "Understand and grow your net worth" [level=3] [ref=f19e379]
+            - paragraph [ref=f19e381]: Get a full picture of your assets & debt in one place. Make improvements and track your financial journey over time.
+          - link [ref=f19e383] [cursor=pointer]:
+            - /url: ./feature/net-worth
+            - paragraph [ref=f19e385]: Calculate my net worth
+    - generic [ref=f19e387]:
+      - generic [ref=f19e388]:
+        - heading "Feel the love" [level=2] [ref=f19e391]
+        - paragraph [ref=f19e394]: No need to take our word for it! Here’s just a few of our thousands of 5 star reviews*.
+        - paragraph [ref=f19e417]: "*Reviews may have been edited for clarity and/or conciseness."
+      - generic [ref=f19e421]:
+        - generic [ref=f19e422]:
+          - paragraph [ref=f19e424]: Rocket Money saved me over $200 in the first week alone! I realized I still had a subscription that I thought had been canceled, and when I contacted the merchant they refunded me. 🎉
+          - paragraph [ref=f19e427]: Jessica O.
+        - generic [ref=f19e444]:
+          - paragraph [ref=f19e446]: I'm an accountant/finance person and didn't think I would have much use for this app. I was wrong. The app keeps track of all my expenses, tells me when there is a difference in bills, helps me lower bills that compared to other people are too high. It does all of that and more in a simple to understand dashboard.
+          - paragraph [ref=f19e449]: Joel N.
+        - generic [ref=f19e466]:
+          - paragraph [ref=f19e468]: This is kind of wild. Also, I was wrong. Rocket Money is significantly better than mint.
+          - paragraph [ref=f19e471]: Peter Z.
+        - generic [ref=f19e488]:
+          - paragraph [ref=f19e490]: This app has helped me so much with budgeting and everything to do with my money!
+          - paragraph [ref=f19e493]: Stephen H.
+        - generic [ref=f19e510]:
+          - paragraph [ref=f19e512]: This app and financial management tips are great! I highly recommend it!
+          - paragraph [ref=f19e515]: Matthew W.
+        - generic [ref=f19e532]:
+          - paragraph [ref=f19e534]: Once you get used to it (short time), it's a phenomenal money saving tool.
+          - paragraph [ref=f19e537]: Peter O.
+        - generic [ref=f19e554]:
+          - paragraph [ref=f19e556]: The app is easy to set up and it keeps track of all my money. I love it. I never overdraw anymore.
+          - paragraph [ref=f19e559]: Stevie D.
+        - generic [ref=f19e576]:
+          - paragraph [ref=f19e578]: Quintessential money management app. Nothing but high remarks from me. The app has only gotten better from when I first used it. Cannot recommend it enough.
+          - paragraph [ref=f19e581]: Casey R.
+        - generic [ref=f19e598]:
+          - paragraph [ref=f19e600]: Used mint since it launched and really just wanted a basic tracking capability. Rocket Money is more than an alternative to the retired Mint... It's better.
+          - paragraph [ref=f19e603]: Mika A.
+        - generic [ref=f19e620]:
+          - paragraph [ref=f19e622]: Love this app! So useful for me since I'm so terrible with money. Keeps things easy now that my husband and I share an account.
+          - paragraph [ref=f19e625]: Whitney B.
+        - generic [ref=f19e642]:
+          - paragraph [ref=f19e644]: We have created a perhaps needlessly complex financial circumstance with multiple credit cards and accounts but Rocket Money has given us the wherewithal to stay on top of the situation. Highly recommended!
+          - paragraph [ref=f19e647]: Mike G.
+        - generic [ref=f19e664]:
+          - paragraph [ref=f19e666]: The Rocket Money app has been a gamechanger. It has helped me cancel subscriptions I didn’t know I had. It is also helping me stay on track with my spending and budgeting. 10/10!
+          - paragraph [ref=f19e669]: Michelle G.
+  - generic [ref=f19e688]:
+    - generic [ref=f19e689]:
+      - generic [ref=f19e690]:
+        - link [ref=f19e696] [cursor=pointer]:
+          - /url: https://redfin.com/
+          - heading "Redfin" [level=6] [ref=f19e698]
+          - paragraph [ref=f19e700]: Get a real estate agent handpicked for you and search the latest home listings.
+        - link [ref=f19e702] [cursor=pointer]:
+          - /url: https://www.rocketmortgage.com
+          - heading "Rocket Mortgage" [level=6] [ref=f19e704]
+          - paragraph [ref=f19e706]: Buy a home, refinance or manage your mortgage online with America’s largest retail mortgage lender.*
+        - link [ref=f19e708] [cursor=pointer]:
+          - /url: https://www.rocketmoney.com/
+          - heading "Rocket Money" [level=6] [ref=f19e710]
+          - paragraph [ref=f19e712]: Save more, spend less, see everything, and take back control of your financial life.
+        - link [ref=f19e714] [cursor=pointer]:
+          - /url: https://www.rocketloans.com/
+          - heading "Rocket Loans" [level=6] [ref=f19e716]
+          - paragraph [ref=f19e718]: Get a personal loan to consolidate debt, renovate your home and more.
+        - link [ref=f19e720] [cursor=pointer]:
+          - /url: https://www.rocketpro.com/
+          - heading "Rocket Pro" [level=6] [ref=f19e722]
+          - paragraph [ref=f19e724]: Build and grow your wholesale lending business.
+        - link [ref=f19e726] [cursor=pointer]:
+          - /url: https://www.rocketclose.com/
+          - heading "Rocket Close" [level=6] [ref=f19e728]
+          - paragraph [ref=f19e730]: Appraisal, title, and closing solutions that drive speed, confidence, and savings for Rocket clients.
+      - generic [ref=f19e731]:
+        - generic [ref=f19e732]:
+          - heading "Features" [level=3] [ref=f19e734]
+          - paragraph [ref=f19e736]:
+            - link "Manage Subscriptions" [ref=f19e737] [cursor=pointer]:
+              - /url: ./feature/manage-subscriptions
+          - paragraph [ref=f19e739]:
+            - link "Financial Goals" [ref=f19e740] [cursor=pointer]:
+              - /url: ./feature/autopilot-savings
+          - paragraph [ref=f19e742]:
+            - link "Spending Insights" [ref=f19e743] [cursor=pointer]:
+              - /url: ./feature/spending-insights
+          - paragraph [ref=f19e745]:
+            - link "Credit Scores" [ref=f19e746] [cursor=pointer]:
+              - /url: ./feature/credit-score
+          - paragraph [ref=f19e748]:
+            - link "Bill Negotiation" [ref=f19e749] [cursor=pointer]:
+              - /url: ./feature/lower-your-bills
+          - paragraph [ref=f19e751]:
+            - link "Budgeting" [ref=f19e752] [cursor=pointer]:
+              - /url: ./feature/create-a-budget
+          - paragraph [ref=f19e754]:
+            - link "Net Worth" [ref=f19e755] [cursor=pointer]:
+              - /url: ./feature/net-worth
+          - paragraph [ref=f19e757]:
+            - link "Widgets" [ref=f19e758] [cursor=pointer]:
+              - /url: ./feature/widgets
+          - paragraph [ref=f19e760]:
+            - link "Rowan" [ref=f19e761] [cursor=pointer]:
+              - /url: ./rowan
+        - generic [ref=f19e762]:
+          - heading "Compare" [level=3] [ref=f19e764]
+          - paragraph [ref=f19e766]:
+            - link "Best Budgeting Apps" [ref=f19e767] [cursor=pointer]:
+              - /url: https://www.rocketmoney.com/learn/personal-finance/best-budgeting-apps
+          - paragraph [ref=f19e769]:
+            - link "Mint" [ref=f19e770] [cursor=pointer]:
+              - /url: ./compare/mint-alternative
+          - paragraph [ref=f19e772]:
+            - link "Monarch Money" [ref=f19e773] [cursor=pointer]:
+              - /url: ./compare/monarch-money
+          - paragraph [ref=f19e775]:
+            - link "Origin" [ref=f19e776] [cursor=pointer]:
+              - /url: ./compare/origin-finance
+          - paragraph [ref=f19e778]:
+            - link "YNAB" [ref=f19e779] [cursor=pointer]:
+              - /url: ./compare/ynab
+          - paragraph [ref=f19e781]:
+            - link "Copilot" [ref=f19e782] [cursor=pointer]:
+              - /url: ./compare/copilot
+        - generic [ref=f19e783]:
+          - heading "About" [level=3] [ref=f19e785]
+          - paragraph [ref=f19e787]:
+            - link "Careers" [ref=f19e788] [cursor=pointer]:
+              - /url: ./careers
+          - paragraph [ref=f19e790]:
+            - link "About us" [ref=f19e791] [cursor=pointer]:
+              - /url: ./about
+          - paragraph [ref=f19e793]:
+            - link "Company updates" [ref=f19e794] [cursor=pointer]:
+              - /url: ./company-updates
+          - paragraph [ref=f19e796]:
+            - link "Frequently asked questions" [ref=f19e797] [cursor=pointer]:
+              - /url: ./faq
+          - paragraph [ref=f19e799]:
+            - link "Rocket" [ref=f19e800] [cursor=pointer]:
+              - /url: https://www.rocket.com/
+        - generic [ref=f19e801]:
+          - heading "Support" [level=3] [ref=f19e803]
+          - paragraph [ref=f19e805]:
+            - link "Security" [ref=f19e806] [cursor=pointer]:
+              - /url: ./security
+          - paragraph [ref=f19e808]:
+            - link "Contact us" [ref=f19e809] [cursor=pointer]:
+              - /url: https://help.rocketmoney.com/en/articles/2684134-contacting-rocket-money
+          - paragraph [ref=f19e811]:
+            - link "Help center" [ref=f19e812] [cursor=pointer]:
+              - /url: https://help.rocketmoney.com/en/
+          - paragraph [ref=f19e814]:
+            - link "Affiliates" [ref=f19e815] [cursor=pointer]:
+              - /url: ./affiliates
+          - paragraph [ref=f19e817]:
+            - link "Press inquiries" [ref=f19e818] [cursor=pointer]:
+              - /url: ./press-inquiries
+          - paragraph [ref=f19e820]:
+            - link "Terms of service" [ref=f19e821] [cursor=pointer]:
+              - /url: ./terms
+          - paragraph [ref=f19e823]:
+            - link "Privacy policy" [ref=f19e824] [cursor=pointer]:
+              - /url: https://rocketaccount.com/#/privacy-policy
+          - paragraph [ref=f19e826]:
+            - link "Notice at collections" [ref=f19e827] [cursor=pointer]:
+              - /url: https://www.rocketaccount.com/#/privacy-policy#information-we-collect
+          - paragraph [ref=f19e830] [cursor=pointer]: Do Not Sell or Share My Personal Information
+      - generic [ref=f19e831]:
+        - generic [ref=f19e832]:
+          - link [ref=f19e834] [cursor=pointer]:
+            - /url: https://www.instagram.com/rocketmoney/?hl=en
+          - link [ref=f19e840] [cursor=pointer]:
+            - /url: https://www.linkedin.com/company/rocketmoney/
+        - generic [ref=f19e845]:
+          - link [aria-hidden] [ref=f19e846] [cursor=pointer]:
+            - /url: https://truebill.sng.link/D772e/zia9/hfwg
+          - link [aria-hidden] [ref=f19e850] [cursor=pointer]:
+            - /url: https://truebill.sng.link/D772e/64ifh/hzdn
+    - generic [ref=f19e857]:
+      - paragraph [ref=f19e859]: © 2015-2026 Rocket Money All Rights Reserved
+      - generic [ref=f19e860]:
+        - paragraph [ref=f19e861]:
+          - text: We don’t accept cash, crypto, tacos, or private jets in exchange for your personal information. Some states (hi, California) have their own rules, so check out our
+          - link "Privacy Policy" [ref=f19e862] [cursor=pointer]:
+            - /url: https://www.rocketaccount.com/#/privacy-policy
+          - text: for the full scoop.
+        - paragraph [ref=f19e863]: "Banking services provided by nbkc bank, member FDIC* Based on Rocket Mortgage data in comparison to public data records.Rocket Mortgage, LLC, Rocket Homes Real Estate LLC, Rocket Card, LLC, RockLoans Marketplace LLC (doing business as Rocket Loans) and Rocket Money, Inc. are separate operating subsidiaries of Rocket, LLC. Each company is a separate legal entity operated and managed through its own management and governance structure. Rocket Companies, Inc. (NYSE: RKT) is the sole managing member of Rocket, LLC.Apple and the Apple logo are trademarks of Apple Inc. registered in the U.S. and other countries. App Store is a service mark of Apple Inc.Wear OS by Google and Google Play are trademarks of Google LLC."
