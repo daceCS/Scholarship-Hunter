@@ -231,5 +231,5 @@
     }
     render();
   }
-  start();
+  await start();
 })();
