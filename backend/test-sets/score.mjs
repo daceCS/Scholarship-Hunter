@@ -60,9 +60,11 @@ const prf = (tp, fp, fn) => {
 
 /* Options: reviewed = only labels a person has reviewed; valid = only labels that pass the validator (schema, vocabulary, quotes);
    lenient = skip rule comparison on from-scratch labels (their rules are plain-text fuzzy rules, not comparable); details = per-page diffs. */
-export function scoreRun({ dir = DEFAULT_DIR, predDir, split = 'all', reviewed = false, valid = false, lenient = false, details = false }) {
-  const rows = readManifest(dir).filter(r => {
-    if (r.status !== 200 || !(split === 'all' || r.split === split) || !fs.existsSync(path.join(dir, r.id, 'gold.json'))) return false;
+export function scoreRun({ dir = DEFAULT_DIR, predDir, split = 'all', reviewed = false, valid = false, lenient = false, details = false, limit = 0 }) {
+  // limit = first N pages of the split (same order the extractor uses), applied before the label filters
+  let base = readManifest(dir).filter(r => r.status === 200 && (split === 'all' || r.split === split) && fs.existsSync(path.join(dir, r.id, 'gold.json')));
+  if (limit) base = base.slice(0, limit);
+  const rows = base.filter(r => {
     if (!reviewed && !valid) return true;
     const g = readJson(path.join(dir, r.id, 'gold.json'));
     if (reviewed && (g.review_status || 'draft') === 'draft') return false;
@@ -72,7 +74,7 @@ export function scoreRun({ dir = DEFAULT_DIR, predDir, split = 'all', reviewed =
   const diffs = [];
   const notes = [];
   const triage = { tp: 0, fp: 0, fn: 0, tn: 0, type_ok: 0 };
-  const field = { name: [0, 0], amount: [0, 0], deadline: [0, 0], apply_url: [0, 0] };
+  const field = { name: [0, 0], amount: [0, 0], amount_min: [0, 0], deadline: [0, 0], apply_url: [0, 0] };
   const rules = { tp: 0, fp: 0, fn: 0 };
   const awards = { tp: 0, fp: 0, fn: 0 };
   const quotes = { total: 0, found: 0, missing: [] };
@@ -105,11 +107,12 @@ export function scoreRun({ dir = DEFAULT_DIR, predDir, split = 'all', reviewed =
     for (const [g, p] of pairs) {
       const ok = {
         name: normText(g.name) === normText(p.name),
-        amount: g.amount?.min === p.amount?.min && g.amount?.max === p.amount?.max,
+        amount: g.amount?.max === p.amount?.max,   // max = the most one winner could receive; min is reported separately (amount_min)
         deadline: (g.deadline ?? null) === (p.deadline ?? null),
         apply_url: normUrl(g.apply_url) === normUrl(p.apply_url)
       };
       for (const k of Object.keys(ok)) { field[k][1]++; if (ok[k]) field[k][0]++; }
+      field.amount_min[1]++; if (g.amount?.min === p.amount?.min) field.amount_min[0]++;   // informational; not part of record correctness
       const gs = ruleSet(g), ps = ruleSet(p);
       const skipRules = lenient && gold.from_scratch;
       const tp = [...ps].filter(x => gs.has(x)).length;
@@ -201,8 +204,8 @@ export function report(s) {
 
 if (isMain(import.meta.url)) {
   const args = parseArgs(process.argv.slice(2));
-  if (!args.pred) { console.error('usage: node score.mjs --pred <dir> [--dir pages] [--split dev|test|all] [--reviewed] [--valid] [--lenient] [--details] [--json out.json]'); process.exit(2); }
-  const s = scoreRun({ dir: args.dir || DEFAULT_DIR, predDir: args.pred, split: args.split || 'all', reviewed: !!args.reviewed, valid: !!args.valid, lenient: !!args.lenient, details: !!args.details });
+  if (!args.pred) { console.error('usage: node score.mjs --pred <dir> [--dir pages] [--split dev|test|all] [--reviewed] [--valid] [--lenient] [--details] [--limit N] [--json out.json]'); process.exit(2); }
+  const s = scoreRun({ dir: args.dir || DEFAULT_DIR, predDir: args.pred, split: args.split || 'all', reviewed: !!args.reviewed, valid: !!args.valid, lenient: !!args.lenient, details: !!args.details, limit: Number(args.limit || 0) });
   console.log(report(s));
   if (args.details) { console.log('\nPer-page differences:'); for (const d of s.diffs) console.log(' ', JSON.stringify(d)); }
   if (args.json) fs.writeFileSync(args.json, JSON.stringify(s, null, 2));
