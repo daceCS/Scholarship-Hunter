@@ -1,4 +1,4 @@
-// E2E: anonymous questionnaire -> submit -> sign-in prompt -> (magic link simulated) -> dashboard shows matches.
+// E2E: anonymous questionnaire -> submit -> sign-up form -> create account -> dashboard shows matches.
 // Also checks the API rejects unauthenticated / forged requests.
 import 'dotenv/config';
 import assert from 'assert';
@@ -8,6 +8,7 @@ import { createClient } from '@supabase/supabase-js';
 const BASE = 'http://localhost:3000';
 const admin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 const email = `e2e-${Date.now()}@example.com`;
+const password = 'e2e-Passw0rd!';
 
 // API rejects missing / bogus tokens
 for (const [path, opts] of [['/matches', {}], ['/profile', { method: 'POST', body: '{}' }], ['/matches?user_id=x', { headers: { Authorization: 'Bearer nope' } }]]) {
@@ -39,26 +40,32 @@ try {
   await page.getByRole('heading', { name: 'Save your profile.' }).waitFor({ timeout: 5000 });
   console.log('✓ submit without session asks for email');
 
-  // Simulate clicking the magic link: mint an OTP with the admin API and verify it in the page
-  const { data, error } = await admin.auth.admin.generateLink({ type: 'magiclink', email });
-  assert.ifError(error);
-  const err = await page.evaluate(async ({ email, token }) => {
-    const c = await (await fetch('/config')).json();
-    const { error } = await supabase.createClient(c.supabaseUrl, c.supabaseAnonKey).auth.verifyOtp({ email, token, type: 'email' });
-    return error?.message;
-  }, { email, token: data.properties.email_otp });
-  assert.ok(!err, 'verifyOtp: ' + err);
-  // Same origin => createClient above shares the stored session with the dashboard
-  await page.goto(BASE + '/dashboard/');
+  // Create the account through the real form; submit then saves the pending profile
+  await page.getByPlaceholder('you@example.com').fill(email);
+  await page.getByPlaceholder(/Password/).fill(password);
+  await page.getByRole('button', { name: 'Create account' }).click();
+  await page.getByRole('heading', { name: 'Profile submitted.' }).waitFor({ timeout: 15000 });
+  await page.getByRole('button', { name: /dashboard/ }).click();
   await page.getByText('Burger King Scholars').first().waitFor({ timeout: 10000 });
   assert.equal(await page.evaluate(() => localStorage.getItem('tw.pending')), null, 'pending profile should be flushed');
-  console.log('✓ dashboard shows matches after sign-in; pending profile flushed');
+  console.log('✓ create account -> profile saved -> dashboard shows matches');
 
   assert.equal(await page.getByText('Amount varies').count() > 0, true, 'zero-amount awards should show "Amount varies"');
   assert.equal(await page.getByText('$0', { exact: true }).count(), 0, 'no bare $0 awards');
   await page.getByRole('button', { name: 'Sign out' }).click();
   await page.getByRole('heading', { name: 'Sign in to see your matches.' }).waitFor({ timeout: 5000 });
   console.log('✓ zero-amount awards labelled; sign-out returns to sign-in');
+
+  // Wrong password rejected, right password signs back in
+  await page.getByRole('button', { name: 'Already have an account? Sign in' }).click();
+  await page.getByPlaceholder('you@example.com').fill(email);
+  await page.getByPlaceholder(/Password/).fill('wrong-password-1');
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByText(/invalid login credentials/i).waitFor({ timeout: 10000 });
+  await page.getByPlaceholder(/Password/).fill(password);
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByText('Burger King Scholars').first().waitFor({ timeout: 10000 });
+  console.log('✓ wrong password rejected; sign-in restores matches');
 
   // Stored under the verified user, not a client-supplied id
   const { data: u } = await admin.auth.admin.listUsers({ perPage: 200 });

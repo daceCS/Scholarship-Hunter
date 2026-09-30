@@ -68,21 +68,12 @@
   /* ───────────── first run ───────────── */
   function signInCard() {
     document.getElementById('who').textContent = '';
-    const email = h('input', { class: 'input', type: 'email', autocomplete: 'email', placeholder: 'you@example.com', 'aria-label': 'Email address' });
-    const msg = h('p', { role: 'status' });
-    const send = h('button', { class: 'btn btn-primary', type: 'button' }, 'Email me a sign-in link');
-    send.onclick = async () => {
-      if (!email.value || !email.checkValidity()) { msg.textContent = 'Enter a valid email address.'; return; }
-      send.disabled = true; msg.textContent = 'Sending...';
-      try { await TW.auth.sendLink(email.value.trim()); msg.textContent = 'Check your email for the sign-in link.'; }
-      catch (e) { send.disabled = false; msg.textContent = 'Could not send the link: ' + e.message; }
-    };
     app.replaceChildren(h('div', { class: 'first' },
       h('span', { class: 'eyebrow' }, 'Dashboard'),
       h('h1', {}, 'Sign in to see your matches.'),
-      h('p', {}, 'We email you a link. No password needed.'),
-      email, msg,
-      h('div', { class: 'row' }, send,
+      h('p', {}, 'New here? Build your profile first, or create an account now.'),
+      TW.auth.form(() => location.reload()),
+      h('div', { class: 'row' },
         h('a', { class: 'btn btn-ghost', href: '/questionnaire/' }, 'Build my profile'),
         h('a', { class: 'btn btn-ghost', href: '?demo' }, 'See a sample'))));
   }
@@ -121,7 +112,7 @@
 
     if (session) {
       try {
-        await TW.api.flushPending(); // profile saved before the magic link was clicked
+        await TW.api.flushPending(); // profile saved before the user signed in
         const response = await TW.auth.fetch('/matches?limit=99');
         if (response.ok) {
           const data = await response.json();

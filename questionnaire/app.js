@@ -668,7 +668,7 @@
       submit.disabled = true; submit.textContent = 'Sending...';
       try {
         const r = await TW.api.submitAvatar(avatar);
-        card.replaceChildren(r.needsAuth ? signInScreen() : doneScreen());
+        card.replaceChildren(r.needsAuth ? signInScreen(avatar) : doneScreen());
         focusHeading();
       }
       catch (e) {
@@ -691,20 +691,11 @@
       h('div', { class: 'actions' }, backBtn(), h('span', { class: 'grow' }), submit));
   }
 
-  function signInScreen() {
-    const email = h('input', { class: 'input', type: 'email', autocomplete: 'email', placeholder: 'you@example.com', 'aria-label': 'Email address' });
-    const msg = h('p', { class: 'fine', role: 'status' });
-    const send = h('button', { class: 'btn btn-primary', type: 'button' }, 'Email me a sign-in link', icon('ph ph-arrow-right'));
-    send.onclick = async () => {
-      if (!email.checkValidity() || !email.value) { msg.textContent = 'Enter a valid email address.'; return; }
-      send.disabled = true; msg.textContent = 'Sending...';
-      try { await TW.auth.sendLink(email.value.trim()); card.replaceChildren(h('div', { class: 'screen' }, h('h1', { tabindex: '-1' }, 'Check your email.'), h('p', { class: 'lede' }, 'We sent a sign-in link to ' + email.value.trim() + '. Open it on this device and your matches will be waiting.'))); focusHeading(); }
-      catch (e) { console.error('Sign-in error:', e); send.disabled = false; msg.textContent = 'Could not send the link: ' + e.message; }
-    };
+  function signInScreen(avatar) {
     return h('div', { class: 'screen' },
       h('h1', { tabindex: '-1' }, 'Save your profile.'),
-      h('p', { class: 'lede' }, 'Enter your email and we will send a sign-in link. No password needed.'),
-      email, msg, h('div', { class: 'actions' }, h('span', { class: 'grow' }), send));
+      h('p', { class: 'lede' }, 'Create an account so your matches are saved, or sign in if you already have one.'),
+      TW.auth.form(async () => { await TW.api.submitAvatar(avatar); card.replaceChildren(doneScreen()); focusHeading(); }));
   }
 
   function doneScreen() {
