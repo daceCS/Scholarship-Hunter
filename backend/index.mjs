@@ -172,6 +172,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✓ Match engine API listening on port ${PORT}`);
   console.log(`  POST /match/count - stateless teaser`);
-  console.log(`  POST /profile - save profile + match`);
-  console.log(`  GET /matches?user_id=xxx - fetch matches`);
+  console.log(`  POST /profile - save profile + match (auth required)`);
+  console.log(`  GET /matches - fetch matches (auth required)`);
 });
