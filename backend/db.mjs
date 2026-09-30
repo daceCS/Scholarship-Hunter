@@ -5,12 +5,12 @@ import { createClient } from '@supabase/supabase-js';
 import { loadScholarships } from './match.mjs';
 import { evaluateScholarship, score } from './match.mjs';
 
-// Initialize Supabase client
+// Initialize Supabase client with SERVICE_ROLE_KEY (backend bypasses RLS)
 export function initSupabase() {
   const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_ANON_KEY;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
   if (!url || !key) {
-    throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY required');
+    throw new Error('SUPABASE_URL and (SUPABASE_SERVICE_ROLE_KEY or SUPABASE_ANON_KEY) required');
   }
   return createClient(url, key);
 }
