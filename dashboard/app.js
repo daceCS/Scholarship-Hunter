@@ -85,15 +85,12 @@
   let filter = 'all', sort = 'match';
 
   async function start() {
-    const state = loadState();
-    if (!state) return firstRun();
-    const A = effective(state);
-    const W = new Set(Object.keys(state.withheld).filter(id => TW.qById[id]));
-    const avatar = TW.buildAvatar(A, W, { id: state.id, updated: state.updated, visited: state.visited });
-
-    // Fetch matches from API
+    // Check for userId first (from questionnaire submission via API)
     const userId = window.TW?.userId || localStorage.getItem('tw.user.id');
-    let all = [], total = 0, service = 0;
+
+    // Try to fetch from API if we have a userId
+    let all = [], total = 0, service = 0, state = null, A = {}, W = new Set();
+    let avatar = null;
 
     if (userId) {
       try {
@@ -111,19 +108,31 @@
           }));
           total = all.length;
           service = 0; // TODO: separate service obligations
+
+          // Create a minimal state for consistency
+          state = { id: 'api', answers: {}, withheld: {}, updated: Date.now() };
+          A = {};
+          avatar = { id: 'api', updated: Date.now(), visited: [] };
         }
       } catch (error) {
-        console.warn('Failed to fetch matches:', error);
-        // Fall back to mock if API fails
+        console.warn('Failed to fetch matches from API:', error);
+      }
+    }
+
+    // Fall back to saved questionnaire state if no API data
+    if (!state) {
+      state = loadState();
+      if (!state) return firstRun();
+      A = effective(state);
+      W = new Set(Object.keys(state.withheld).filter(id => TW.qById[id]));
+      avatar = TW.buildAvatar(A, W, { id: state.id, updated: state.updated, visited: state.visited });
+
+      // Use mock data if no API matches
+      if (all.length === 0) {
         total = TW.mock.estimate(A);
         service = TW.mock.serviceBucket?.(A) || 0;
         all = TW.mock.awards(A, 99).map(m => ({ ...m, id: m.name, due2: nextDue(m.due) }));
       }
-    } else {
-      // No userId: show mock or prompt to take questionnaire
-      total = TW.mock.estimate(A);
-      service = TW.mock.serviceBucket?.(A) || 0;
-      all = TW.mock.awards(A, 99).map(m => ({ ...m, id: m.name, due2: nextDue(m.due) }));
     }
 
     const city = (A['geo.current'] || '').split(',')[0];
