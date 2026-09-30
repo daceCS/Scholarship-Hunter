@@ -10,6 +10,7 @@ TW.auth = (() => {
       const { error } = await (await client()).auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin + '/dashboard/' } });
       if (error) throw error;
     },
+    async signOut() { await (await client()).auth.signOut(); },
     async fetch(path, opts = {}) {
       const s = await session();
       if (!s) throw new Error('not signed in');

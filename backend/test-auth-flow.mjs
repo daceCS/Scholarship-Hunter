@@ -54,6 +54,12 @@ try {
   assert.equal(await page.evaluate(() => localStorage.getItem('tw.pending')), null, 'pending profile should be flushed');
   console.log('✓ dashboard shows matches after sign-in; pending profile flushed');
 
+  assert.equal(await page.getByText('Amount varies').count() > 0, true, 'zero-amount awards should show "Amount varies"');
+  assert.equal(await page.getByText('$0', { exact: true }).count(), 0, 'no bare $0 awards');
+  await page.getByRole('button', { name: 'Sign out' }).click();
+  await page.getByRole('heading', { name: 'Sign in to see your matches.' }).waitFor({ timeout: 5000 });
+  console.log('✓ zero-amount awards labelled; sign-out returns to sign-in');
+
   // Stored under the verified user, not a client-supplied id
   const { data: u } = await admin.auth.admin.listUsers({ perPage: 200 });
   const uid = u.users.find(x => x.email === email)?.id;

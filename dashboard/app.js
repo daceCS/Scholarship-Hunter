@@ -8,6 +8,7 @@
   const INTAKE = 'tw.intake.v1', DASH = 'tw.dash.v1';
   const app = document.getElementById('app');
   const money = n => '$' + Math.round(n).toLocaleString('en-US');
+  const award = n => n ? money(n) : 'Amount varies'; // 0 in the data means the page states no amount
 
   function h(tag, props, ...kids) {
     const el = document.createElement(tag);
@@ -108,6 +109,11 @@
   async function start() {
     const session = isDemo ? null : await TW.auth.session();
     if (!isDemo && !session) return signInCard();
+    if (session) {
+      const out = document.getElementById('signout');
+      out.hidden = false;
+      out.onclick = async () => { await TW.auth.signOut(); location.reload(); };
+    }
 
     // Try to fetch from API when signed in
     let all = [], total = 0, service = 0, state = null, A = {}, W = new Set();
@@ -200,7 +206,7 @@
         const soon = m.due2.days <= 14;
         return h('article', { class: 'match' + (i === 0 && sort === 'match' && filter === 'all' ? ' top' : '') + (st === 'dismissed' ? ' is-dismissed' : '') },
           h('div', {}, h('h3', {}, m.name), h('div', { class: 'org' }, m.org)),
-          h('div', { class: 'amt' }, money(m.amt)),
+          h('div', { class: 'amt' }, award(m.amt)),
           h('div', { class: 'meta' },
             h('span', { class: 'tagp pct' }, icon('ph-fill ph-target'), (m.possible ? 'Possible match' : 'Eligible')),
             h('span', { class: 'tagp' + (soon ? ' warn' : '') }, icon('ph ph-calendar-blank'), 'Due ' + m.due + ' · ' + leftText(m.due2.days)),
@@ -224,7 +230,7 @@
         h('div', { class: 'card-head' }, h('h2', { id: 'dh' }, 'Coming up')),
         upcoming.length ? h('ul', { class: 'dl' }, upcoming.map(m => h('li', {},
           h('div', { class: 'date' }, h('small', {}, MONTHS[m.due2.date.getMonth()]), h('b', {}, String(m.due2.date.getDate()))),
-          h('div', {}, h('div', { class: 't' }, m.name), h('div', { class: 'd' }, money(m.amt) + (status[m.id] ? ' · ' + status[m.id] : ''))),
+          h('div', {}, h('div', { class: 't' }, m.name), h('div', { class: 'd' }, award(m.amt) + (status[m.id] ? ' · ' + status[m.id] : ''))),
           h('span', { class: 'left' + (m.due2.days <= 14 ? ' soon' : '') }, leftText(m.due2.days)))))
           : h('div', { class: 'empty' }, 'No open deadlines.'));
 
