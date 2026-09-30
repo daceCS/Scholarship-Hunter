@@ -62,11 +62,14 @@ for (const page of answers.pages) {
       };
 
       if (award.org) sch.provider_org = award.org;
-      if (award.basis) sch.eligibility.push(...buildBasisRule(award.basis));
-      if (award.essay) sch.eligibility.push(buildEssayRule(award.essay));
-      if (award.recs) sch.eligibility.push(buildRecsRule(award.recs));
-      if (award.service) sch.eligibility.push(serviceRule());
-      if (award.formats?.length) sch.eligibility.push(buildFormatsRule(award.formats));
+      // Effort, basis and service answers are facts about the award, not eligibility rules (no invented quotes, no pseudo-rules).
+      if (award.basis === 'need' || award.basis === 'merit') sch.need_based = award.basis;
+      const effort = {};
+      if (award.essay) effort.essay_words = Number(award.essay);
+      if (award.recs) effort.recs_required = Number(award.recs);
+      if (award.formats?.length) effort.formats = award.formats;
+      if (Object.keys(effort).length) sch.effort = effort;
+      if (award.service) sch.service_obligation = true;
 
       gold.scholarships.push(sch);
     }
@@ -107,56 +110,6 @@ function buildEligibility(reqs) {
     }
   }
   return Object.values(groups);
-}
-
-function buildBasisRule(basis) {
-  const map = {
-    need: { field: 'financial.need', op: 'exists', kind: 'hard', value: true },
-    merit: { field: 'academic.gpa', op: 'exists', kind: 'hard', value: true },
-    either: null
-  };
-  return map[basis] ? [{ any_of: [{ ...map[basis], source_quote: basis }] }] : [];
-}
-
-function buildEssayRule(words) {
-  return [{
-    any_of: [{
-      kind: 'hard',
-      description: `Essay required (${words} words)`,
-      source_quote: `Essay required: ${words} words`
-    }]
-  }];
-}
-
-function buildRecsRule(count) {
-  return [{
-    any_of: [{
-      kind: 'hard',
-      description: `${count} letter(s) of recommendation required`,
-      source_quote: `${count} recommendation(s) required`
-    }]
-  }];
-}
-
-function serviceRule() {
-  return [{
-    any_of: [{
-      kind: 'fuzzy',
-      description: 'Service obligation required',
-      relevant_fields: [],
-      source_quote: 'Service obligation required'
-    }]
-  }];
-}
-
-function buildFormatsRule(formats) {
-  return [{
-    any_of: [{
-      kind: 'hard',
-      description: `Formats: ${formats.join(', ')}`,
-      source_quote: `Required formats: ${formats.join(', ')}`
-    }]
-  }];
 }
 
 console.log(`Transcribed ${count.created} gold.json files`);

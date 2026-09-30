@@ -4,3 +4,4 @@ predictions/
 .env
 snapshot-run*.log
 review/
+backups/
