@@ -698,7 +698,7 @@
       h('p', { class: 'lede' }, 'The agent is searching now. Verified matches will be sent to your inbox.'),
       h('div', { class: 'actions' }, h('button', { class: 'btn btn-ghost', type: 'button', onclick: () => go('summary', -1) }, 'Back to my profile'),
         h('span', { class: 'grow' }),
-        h('button', { class: 'btn btn-primary', type: 'button', onclick: () => window.location.href = 'http://localhost:8081/index.html' }, 'Go to my dashboard', icon('ph ph-arrow-right'))));
+        h('button', { class: 'btn btn-primary', type: 'button', onclick: () => window.location.href = 'http://localhost:8081/index.html?uid=' + encodeURIComponent(localStorage.getItem('tw.user.id') || '') }, 'Go to my dashboard', icon('ph ph-arrow-right'))));
   }
 
   function focusHeading() {

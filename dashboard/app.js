@@ -86,6 +86,8 @@
 
   async function start() {
     // Check for userId first (from questionnaire submission via API)
+    const uid = new URLSearchParams(location.search).get('uid');
+    if (uid) { try { localStorage.setItem('tw.user.id', uid); } catch (e) {} history.replaceState(null, '', location.pathname); }
     const userId = window.TW?.userId || localStorage.getItem('tw.user.id');
 
     // Try to fetch from API if we have a userId
