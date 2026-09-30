@@ -5,3 +5,5 @@ predictions/
 snapshot-run*.log
 review/
 backups/
+score-*.txt
+score-*.json
