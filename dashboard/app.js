@@ -2,7 +2,7 @@
    avatar, and shows matches, deadlines and profile strength.
    Backend seams: TW.mock.awards / TW.mock.estimate stand in for the search agent's results.
    Application status is saved in the browser only (tw.dash.v1). */
-(function () {
+(async function () {
   'use strict';
   const { questions } = TW;
   const INTAKE = 'tw.intake.v1', DASH = 'tw.dash.v1';
@@ -84,15 +84,47 @@
   const FILTERS = [['all', 'All'], ['saved', 'Saved'], ['applying', 'Applying'], ['applied', 'Applied'], ['dismissed', 'Dismissed']];
   let filter = 'all', sort = 'match';
 
-  function start() {
+  async function start() {
     const state = loadState();
     if (!state) return firstRun();
     const A = effective(state);
     const W = new Set(Object.keys(state.withheld).filter(id => TW.qById[id]));
     const avatar = TW.buildAvatar(A, W, { id: state.id, updated: state.updated, visited: state.visited });
-    const total = TW.mock.estimate(A);
-    const service = TW.mock.serviceBucket(A);
-    const all = TW.mock.awards(A, 99).map(m => ({ ...m, id: m.name, due2: nextDue(m.due) }));
+
+    // Fetch matches from API
+    const userId = window.TW?.userId || localStorage.getItem('tw.user.id');
+    let all = [], total = 0, service = 0;
+
+    if (userId) {
+      try {
+        const response = await fetch(`http://localhost:3000/matches?user_id=${userId}&limit=99`);
+        if (response.ok) {
+          const data = await response.json();
+          all = (data.matches || []).map(m => ({
+            name: m.name,
+            org: m.provider,
+            amt: m.amount?.max || 0,
+            pct: Math.min(100, Math.round((m.score / Math.max(m.amount?.max, 1)) * 100)),
+            due: m.deadline ? new Date(m.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'TBD',
+            id: m.name,
+            due2: m.deadline ? nextDue(new Date(m.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })) : { days: 999 }
+          }));
+          total = all.length;
+          service = 0; // TODO: separate service obligations
+        }
+      } catch (error) {
+        console.warn('Failed to fetch matches:', error);
+        // Fall back to mock if API fails
+        total = TW.mock.estimate(A);
+        service = TW.mock.serviceBucket?.(A) || 0;
+        all = TW.mock.awards(A, 99).map(m => ({ ...m, id: m.name, due2: nextDue(m.due) }));
+      }
+    } else {
+      // No userId: show mock or prompt to take questionnaire
+      total = TW.mock.estimate(A);
+      service = TW.mock.serviceBucket?.(A) || 0;
+      all = TW.mock.awards(A, 99).map(m => ({ ...m, id: m.name, due2: nextDue(m.due) }));
+    }
 
     const city = (A['geo.current'] || '').split(',')[0];
     document.getElementById('who').textContent = isDemo ? 'Sample profile' : (A['edu.institution'] || city || '');
