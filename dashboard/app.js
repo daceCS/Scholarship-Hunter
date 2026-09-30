@@ -65,6 +65,27 @@
   const leftText = n => n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : n + ' days';
 
   /* ───────────── first run ───────────── */
+  function signInCard() {
+    document.getElementById('who').textContent = '';
+    const email = h('input', { class: 'input', type: 'email', autocomplete: 'email', placeholder: 'you@example.com', 'aria-label': 'Email address' });
+    const msg = h('p', { role: 'status' });
+    const send = h('button', { class: 'btn btn-primary', type: 'button' }, 'Email me a sign-in link');
+    send.onclick = async () => {
+      if (!email.value || !email.checkValidity()) { msg.textContent = 'Enter a valid email address.'; return; }
+      send.disabled = true; msg.textContent = 'Sending...';
+      try { await TW.auth.sendLink(email.value.trim()); msg.textContent = 'Check your email for the sign-in link.'; }
+      catch (e) { send.disabled = false; msg.textContent = 'Could not send the link: ' + e.message; }
+    };
+    app.replaceChildren(h('div', { class: 'first' },
+      h('span', { class: 'eyebrow' }, 'Dashboard'),
+      h('h1', {}, 'Sign in to see your matches.'),
+      h('p', {}, 'We email you a link. No password needed.'),
+      email, msg,
+      h('div', { class: 'row' }, send,
+        h('a', { class: 'btn btn-ghost', href: '/questionnaire/' }, 'Build my profile'),
+        h('a', { class: 'btn btn-ghost', href: '?demo' }, 'See a sample'))));
+  }
+
   function firstRun() {
     document.getElementById('who').textContent = '';
     app.replaceChildren(h('div', { class: 'first' },
@@ -72,7 +93,7 @@
       h('h1', {}, 'Your matches will show up here.'),
       h('p', {}, 'Answer the short questionnaire and we build your profile. Then this page lists the awards you could apply for, with deadlines and progress.'),
       h('div', { class: 'row' },
-        h('a', { class: 'btn btn-primary', href: '../questionnaire/index.html' }, 'Build my profile', icon('ph ph-arrow-right')),
+        h('a', { class: 'btn btn-primary', href: '/questionnaire/' }, 'Build my profile', icon('ph ph-arrow-right')),
         h('a', { class: 'btn btn-ghost', href: '?demo' }, 'See a sample'))));
   }
 
@@ -86,18 +107,17 @@
 
   async function start() {
     // Check for userId first (from questionnaire submission via API)
-    const uid = new URLSearchParams(location.search).get('uid');
-    if (uid) { try { localStorage.setItem('tw.user.id', uid); } catch (e) {} history.replaceState(null, '', location.pathname); }
-    const userId = window.TW?.userId || localStorage.getItem('tw.user.id');
+    const session = isDemo ? null : await TW.auth.session();
+    if (!isDemo && !session) return signInCard();
 
-    // Try to fetch from API if we have a userId
+    // Try to fetch from API when signed in
     let all = [], total = 0, service = 0, state = null, A = {}, W = new Set();
     let avatar = null;
 
-    if (userId) {
+    if (session) {
       try {
-        console.log('[dashboard] Fetching matches for user:', userId);
-        const response = await fetch(`http://localhost:3000/matches?user_id=${userId}&limit=99`);
+        await TW.api.flushPending(); // profile saved before the magic link was clicked
+        const response = await TW.auth.fetch('/matches?limit=99');
         console.log('[dashboard] Fetch response:', response.status);
         if (response.ok) {
           const data = await response.json();
@@ -221,7 +241,7 @@
         h('div', { class: 'meter', role: 'img', 'aria-label': strength + ' percent complete', style: '--p:' + strength + '%' }, h('i')),
         h('ul', { class: 'secs' }, SECTIONS.map(([k, label]) => avatar[k]
           ? h('li', { class: 'done' }, icon('ph-fill ph-check-circle'), label)
-          : h('li', { class: 'todo' }, icon('ph ph-circle'), label, h('a', { href: '../questionnaire/index.html' }, 'Add')))),
+          : h('li', { class: 'todo' }, icon('ph ph-circle'), label, h('a', { href: '/questionnaire/' }, 'Add')))),
         missing.length ? h('div', { class: 'note' }, icon('ph-fill ph-lightbulb'), h('span', {}, 'Adding your ' + missing[0][1].toLowerCase() + ' helps us find smaller local awards.')) : null);
 
       return [hero, h('div', { class: 'cols' }, matches, h('div', { class: 'side' }, deadlines, profile))];

@@ -5,24 +5,32 @@
 
 import 'dotenv/config';
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { initSupabase, createProfile, matchProfile, getMatches } from './db.mjs';
 import { filter, evaluateScholarship, score, rank } from './match.mjs';
 
 const app = express();
 app.use(express.json());
 
-// Enable CORS for dashboard on port 8081
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
-
 const supabase = initSupabase();
+
+// Serve frontends from one origin so localStorage + the Supabase session are shared (and no CORS needed)
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+for (const dir of ['landing', 'questionnaire', 'dashboard']) app.use('/' + dir, express.static(path.join(root, dir)));
+
+// Public browser config (the anon key is public by design)
+app.get('/config', (req, res) => res.json({ supabaseUrl: process.env.SUPABASE_URL, supabaseAnonKey: process.env.SUPABASE_ANON_KEY }));
+
+// Verify the Supabase JWT; user id comes from the token, never from the client
+async function requireAuth(req, res, next) {
+  const token = (req.headers.authorization || '').replace(/^Bearer /, '');
+  if (!token) return res.status(401).json({ error: 'sign in required' });
+  const { data, error } = await supabase.auth.getUser(token);
+  if (error || !data?.user) return res.status(401).json({ error: 'invalid session' });
+  req.userId = data.user.id;
+  next();
+}
 
 // POST /match/count - Stateless teaser endpoint
 // Input: { geo, academic, effort, affiliations, ... } (partial profile)
@@ -71,12 +79,12 @@ app.post('/match/count', async (req, res) => {
 });
 
 // POST /profile - Save profile and run matching
-// Input: { auth_user_id, core_json, sensitive_json?, consented_at? }
+// Auth: Bearer token. Input: { core_json, sensitive_json?, consented_at? }
 // Output: { profile_id, version, eligible_count, possible_count, top_matches }
-app.post('/profile', async (req, res) => {
+app.post('/profile', requireAuth, async (req, res) => {
   try {
-    const { auth_user_id, core_json, sensitive_json, consented_at } = req.body;
-    if (!auth_user_id) return res.status(400).json({ error: 'auth_user_id required' });
+    const { core_json, sensitive_json } = req.body;
+    const auth_user_id = req.userId;
     if (!core_json) return res.status(400).json({ error: 'core_json required' });
 
     // Save profile
@@ -112,12 +120,12 @@ app.post('/profile', async (req, res) => {
 });
 
 // GET /matches - Fetch user's matches
-// Query: ?user_id=xxx&limit=100
+// Auth: Bearer token. Query: ?limit=100
 // Output: { matches: [...] } with scholarship details
-app.get('/matches', async (req, res) => {
+app.get('/matches', requireAuth, async (req, res) => {
   try {
-    const { user_id, limit = 100 } = req.query;
-    if (!user_id) return res.status(400).json({ error: 'user_id required' });
+    const { limit = 100 } = req.query;
+    const user_id = req.userId;
 
     // Get user's latest profile
     const { data: profiles, error: profileError } = await supabase

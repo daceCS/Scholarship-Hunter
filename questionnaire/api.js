@@ -1,7 +1,7 @@
 /* Phase 3c API integration: wire questionnaire to match engine */
 window.TW = window.TW || {};
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = '';
 
 // Convert questionnaire answers to profile format
 function answersToProfile(answers) {
@@ -60,43 +60,28 @@ function displayMatch(m) {
 TW.api = {
   async saveProgress(/* state */) { /* browser localStorage only (see app.js) */ },
 
+  // Saves the profile for the signed-in user. Without a session, parks it in localStorage
+  // (shared with the dashboard) and returns needsAuth; the dashboard flushes it after the magic link.
   async submitAvatar(answers) {
-    try {
-      // Generate or retrieve user ID (in real app, from Supabase Auth)
-      const userId = window.TW.userId || localStorage.getItem('tw.user.id') ||
-                     crypto.randomUUID?.() || String(Date.now());
-      localStorage.setItem('tw.user.id', userId);
-
-      // Save profile + run matching
-      const response = await fetch(`${API_BASE}/profile`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          auth_user_id: userId,
-          core_json: answersToProfile(answers),
-          sensitive_json: {},
-        }),
-      });
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const result = await response.json();
-
-      console.info('[intake] avatar submitted', {
-        profile_id: result.profile_id,
-        eligible: result.eligible_count,
-        possible: result.possible_count
-      });
-
-      // Store for dashboard
-      window.TW.userId = userId;
-      window.TW.profileId = result.profile_id;
-      window.TW.matches = result.top_matches?.map(displayMatch) || [];
-
-      return { ok: true, userId, matches: window.TW.matches };
-    } catch (error) {
-      console.error('[intake] avatar submit failed:', error);
-      return { ok: false, error: error.message };
+    const body = { core_json: answersToProfile(answers), sensitive_json: {} };
+    if (!(await TW.auth.session())) {
+      localStorage.setItem('tw.pending', JSON.stringify(body));
+      return { needsAuth: true };
     }
+    return TW.api.postProfile(body);
+  },
+
+  async postProfile(body) {
+    const response = await TW.auth.fetch(`${API_BASE}/profile`, { method: 'POST', body: JSON.stringify(body) });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  },
+
+  async flushPending() {
+    const raw = localStorage.getItem('tw.pending');
+    if (!raw) return;
+    await TW.api.postProfile(JSON.parse(raw));
+    localStorage.removeItem('tw.pending');
   },
 
   // For teaser in results screen
