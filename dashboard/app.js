@@ -106,7 +106,6 @@
   let filter = 'all', sort = 'match';
 
   async function start() {
-    // Check for userId first (from questionnaire submission via API)
     const session = isDemo ? null : await TW.auth.session();
     if (!isDemo && !session) return signInCard();
 
@@ -118,10 +117,8 @@
       try {
         await TW.api.flushPending(); // profile saved before the magic link was clicked
         const response = await TW.auth.fetch('/matches?limit=99');
-        console.log('[dashboard] Fetch response:', response.status);
         if (response.ok) {
           const data = await response.json();
-          console.log('[dashboard] Got matches:', data.matches?.length || 0);
           all = (data.matches || []).map(m => ({
             name: m.name,
             org: m.provider,
@@ -134,7 +131,6 @@
           }));
           total = all.length;
           service = 0; // TODO: separate service obligations
-          console.log('[dashboard] Processed', all.length, 'matches');
 
           // Create a minimal state for consistency
           state = { id: 'api', answers: {}, withheld: {}, updated: Date.now() };
@@ -148,10 +144,8 @@
 
     // Fall back to saved questionnaire state if no API data was fetched
     if (!state && all.length === 0) {
-      console.log('[dashboard] No API data, trying saved state');
       state = loadState();
       if (!state) {
-        console.log('[dashboard] No saved state, showing firstRun');
         return firstRun();
       }
       A = effective(state);
@@ -164,7 +158,6 @@
       all = TW.mock.awards(A, 99).map(m => ({ ...m, id: m.name, due2: nextDue(m.due) }));
     } else if (!state) {
       // API data was fetched successfully
-      console.log('[dashboard] Using API data with', all.length, 'matches');
     }
 
     const city = (A['geo.current'] || '').split(',')[0];

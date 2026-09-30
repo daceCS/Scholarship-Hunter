@@ -46,17 +46,6 @@ async function getEstimate(answers) {
   }
 }
 
-// Convert API match to display format
-function displayMatch(m) {
-  return {
-    name: m.name,
-    org: m.provider,
-    amt: m.amount?.max || 0,
-    pct: Math.min(100, Math.round((m.score / Math.max(m.amount?.max, 1)) * 100)),
-    due: m.deadline ? new Date(m.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'TBD',
-  };
-}
-
 TW.api = {
   async saveProgress(/* state */) { /* browser localStorage only (see app.js) */ },
 

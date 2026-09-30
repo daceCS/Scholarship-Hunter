@@ -56,7 +56,6 @@ Server logs: `✓ Match engine API listening on port 3000`
 **Request:**
 ```json
 {
-  "auth_user_id": "user-uuid-from-auth",
   "core_json": {
     "geo": { "state": "CA", "county": "San Diego" },
     "academic": { "status": "hs_senior", "gpa": 3.5, "cip_codes": ["14"] },
@@ -100,7 +99,8 @@ Server logs: `✓ Match engine API listening on port 3000`
 
 **Request:**
 ```
-GET /matches?user_id=user-uuid&limit=100
+GET /matches?limit=100
+Authorization: Bearer <supabase access token>
 ```
 
 **Response:**
@@ -135,7 +135,7 @@ GET /matches?user_id=user-uuid&limit=100
 
 **Before submit (teaser):**
 ```javascript
-const response = await fetch('http://localhost:3000/match/count', {
+const response = await fetch('/match/count', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(partialProfile)
@@ -144,26 +144,18 @@ const { count, dollars_total, top_3 } = await response.json();
 // Show: "You could match 5 scholarships worth $180,000"
 ```
 
-**After submit (save profile):**
+**After submit (save profile; requires a signed-in session, see `questionnaire/auth.js`):**
 ```javascript
-const response = await fetch('http://localhost:3000/profile', {
+const response = await TW.auth.fetch('/profile', {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    auth_user_id: user.id,
-    core_json: { ... },
-    sensitive_json: { ... }
-  })
+  body: JSON.stringify({ core_json: { ... }, sensitive_json: { ... } })
 });
-const { profile_id, eligible_count, top_matches } = await response.json();
-// Save profile_id in session; show top_matches on dashboard
 ```
+The user id comes from the verified Supabase JWT, never from the request body.
 
 **In dashboard:**
 ```javascript
-const response = await fetch(`http://localhost:3000/matches?user_id=${user.id}`);
-const { matches } = await response.json();
-// Display eligible scholarships with apply buttons
+const { matches } = await (await TW.auth.fetch('/matches?limit=99')).json();
 ```
 
 ---
@@ -180,7 +172,7 @@ All endpoints return 4xx/5xx on error:
 
 **Common errors:**
 - `geo.state required` — missing state
-- `auth_user_id required` — missing user ID
+- `401 sign in required` / `invalid session` — missing or bad Bearer token on /profile and /matches
 - `No profile found` — user has no saved profile
 
 ---
@@ -191,6 +183,7 @@ Requires `.env` with:
 ```
 SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_ROLE_KEY=eyJ...   # server only, never commit
 PORT=3000 (optional, default 3000)
 ```
 
@@ -201,8 +194,8 @@ PORT=3000 (optional, default 3000)
 | Endpoint | Session | Matches | Use |
 |---|---|---|---|
 | POST /match/count | No | In-memory | Teaser |
-| POST /profile | Yes (auth_user_id) | Saved in DB | Initial load |
-| GET /matches | Yes (user_id) | Read from DB | Dashboard |
+| POST /profile | Yes (Bearer JWT) | Saved in DB | Initial load |
+| GET /matches | Yes (Bearer JWT) | Read from DB | Dashboard |
 
 ---
 
