@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { allRules } from '../contract/lib.mjs';
+import { validatePrediction } from '../extract/validate.mjs';
 import { DEFAULT_DIR, readManifest, readText, readJson, quoteInText, normText, parseArgs, isMain } from './lib.mjs';
 
 /* ---------- normalization ---------- */
@@ -57,8 +58,18 @@ const prf = (tp, fp, fn) => {
 
 /* ---------- scoring ---------- */
 
-export function scoreRun({ dir = DEFAULT_DIR, predDir, split = 'all' }) {
-  const rows = readManifest(dir).filter(r => r.status === 200 && (split === 'all' || r.split === split) && fs.existsSync(path.join(dir, r.id, 'gold.json')));
+/* Options: reviewed = only labels a person has reviewed; valid = only labels that pass the validator (schema, vocabulary, quotes);
+   lenient = skip rule comparison on from-scratch labels (their rules are plain-text fuzzy rules, not comparable); details = per-page diffs. */
+export function scoreRun({ dir = DEFAULT_DIR, predDir, split = 'all', reviewed = false, valid = false, lenient = false, details = false }) {
+  const rows = readManifest(dir).filter(r => {
+    if (r.status !== 200 || !(split === 'all' || r.split === split) || !fs.existsSync(path.join(dir, r.id, 'gold.json'))) return false;
+    if (!reviewed && !valid) return true;
+    const g = readJson(path.join(dir, r.id, 'gold.json'));
+    if (reviewed && (g.review_status || 'draft') === 'draft') return false;
+    if (valid && validatePrediction(g, { text: readText(dir, r.id) || '', kind: r.kind }).length) return false;
+    return true;
+  });
+  const diffs = [];
   const notes = [];
   const triage = { tp: 0, fp: 0, fn: 0, tn: 0, type_ok: 0 };
   const field = { name: [0, 0], amount: [0, 0], deadline: [0, 0], apply_url: [0, 0] };
@@ -85,6 +96,11 @@ export function scoreRun({ dir = DEFAULT_DIR, predDir, split = 'all' }) {
     // extraction
     const { pairs, missed, spurious } = pair(gold.scholarships || [], pred.scholarships || []);
     awards.tp += pairs.length; awards.fn += missed.length; awards.fp += spurious.length;
+    if (details) {
+      if (gold.page_type !== pred.page_type) diffs.push({ page: r.id, page_type: 'gold ' + gold.page_type + ' vs pred ' + pred.page_type });
+      for (const m of missed) diffs.push({ page: r.id, missed_award: m.name });
+      for (const x of spurious) diffs.push({ page: r.id, spurious_award: x.name });
+    }
 
     for (const [g, p] of pairs) {
       const ok = {
@@ -95,9 +111,15 @@ export function scoreRun({ dir = DEFAULT_DIR, predDir, split = 'all' }) {
       };
       for (const k of Object.keys(ok)) { field[k][1]++; if (ok[k]) field[k][0]++; }
       const gs = ruleSet(g), ps = ruleSet(p);
+      const skipRules = lenient && gold.from_scratch;
       const tp = [...ps].filter(x => gs.has(x)).length;
-      rules.tp += tp; rules.fp += ps.size - tp; rules.fn += gs.size - tp;
-      records.push({ conf: p.confidence ?? null, correct: Object.values(ok).every(Boolean) && sameSet(gs, ps) });
+      if (!skipRules) { rules.tp += tp; rules.fp += ps.size - tp; rules.fn += gs.size - tp; }
+      records.push({ conf: p.confidence ?? null, correct: Object.values(ok).every(Boolean) && (skipRules || sameSet(gs, ps)) });
+      if (details) {
+        const bad = Object.keys(ok).filter(k => !ok[k]).map(k => k + ': gold ' + JSON.stringify(k === 'amount' ? g.amount : g[k]) + ' vs pred ' + JSON.stringify(k === 'amount' ? p.amount : p[k]));
+        const miss = skipRules ? [] : [...gs].filter(x => !ps.has(x)), extra = skipRules ? [] : [...ps].filter(x => !gs.has(x));
+        if (bad.length || miss.length || extra.length) diffs.push({ page: r.id, name: g.name, field_diffs: bad, rules_missing: miss, rules_extra: extra });
+      }
     }
     for (const p of spurious) records.push({ conf: p.confidence ?? null, correct: false });
 
@@ -121,6 +143,7 @@ export function scoreRun({ dir = DEFAULT_DIR, predDir, split = 'all' }) {
     rules: prf(rules.tp, rules.fp, rules.fn),
     quote_in_page: { rate: quotes.total ? quotes.found / quotes.total : null, total: quotes.total, missing_examples: quotes.missing },
     calibration: calibrate(records),
+    ...(details ? { diffs } : {}),
     notes
   };
 }
@@ -178,8 +201,9 @@ export function report(s) {
 
 if (isMain(import.meta.url)) {
   const args = parseArgs(process.argv.slice(2));
-  if (!args.pred) { console.error('usage: node score.mjs --pred <dir> [--dir pages] [--split dev|test|all] [--json out.json]'); process.exit(2); }
-  const s = scoreRun({ dir: args.dir || DEFAULT_DIR, predDir: args.pred, split: args.split || 'all' });
+  if (!args.pred) { console.error('usage: node score.mjs --pred <dir> [--dir pages] [--split dev|test|all] [--reviewed] [--valid] [--lenient] [--details] [--json out.json]'); process.exit(2); }
+  const s = scoreRun({ dir: args.dir || DEFAULT_DIR, predDir: args.pred, split: args.split || 'all', reviewed: !!args.reviewed, valid: !!args.valid, lenient: !!args.lenient, details: !!args.details });
   console.log(report(s));
+  if (args.details) { console.log('\nPer-page differences:'); for (const d of s.diffs) console.log(' ', JSON.stringify(d)); }
   if (args.json) fs.writeFileSync(args.json, JSON.stringify(s, null, 2));
 }
