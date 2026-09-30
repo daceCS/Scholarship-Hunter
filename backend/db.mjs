@@ -89,6 +89,15 @@ export async function createProfile(supabase, userId, coreJson, sensitiveJson = 
 
 // Evaluate a profile against all scholarships and store matches
 export async function matchProfile(supabase, profileId, profile) {
+  // Get the profile to retrieve user_id
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('user_id')
+    .eq('id', profileId)
+    .single();
+
+  if (profileError) throw profileError;
+
   const { data: scholarships, error: scholarError } = await supabase
     .from('scholarships')
     .select('*');
@@ -98,6 +107,7 @@ export async function matchProfile(supabase, profileId, profile) {
   // Evaluate each scholarship
   const matches = scholarships
     .map(s => ({
+      user_id: profileData.user_id,
       profile_id: profileId,
       scholarship_id: s.id,
       status: evaluateScholarship(profile, s.full_data),
