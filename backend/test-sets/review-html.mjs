@@ -45,9 +45,10 @@ function scholarshipHtml(s) {
 
 if (isMain(import.meta.url)) {
   const args = parseArgs(process.argv.slice(2));
-  const n = Number(args.batch || 1);
-  const plan = JSON.parse(fs.readFileSync(path.join(HERE, 'label-plan.json'), 'utf8'));
-  const batch = plan.batches.find(b => b.n === n);
+  // --ids a,b,c --name NAME builds a page for arbitrary labels (e.g. pages flagged by the two-draft review)
+  const custom = args.ids ? { ids: String(args.ids).split(',').filter(Boolean) } : null;
+  const n = args.name || Number(args.batch || 1);
+  const batch = custom || JSON.parse(fs.readFileSync(path.join(HERE, 'label-plan.json'), 'utf8')).batches.find(x => x.n === n);
   const rows = new Map(readManifest(DEFAULT_DIR).map(r => [r.id, r]));
   const items = batch.ids.map((id, i) => {
     const r = rows.get(id);
@@ -66,6 +67,7 @@ if (isMain(import.meta.url)) {
         ${(g.award_names || []).length ? `<div class="lbl">Awards named on the page (details not on the page)</div><ul>${g.award_names.map(a => `<li>${esc(a)}</li>`).join('')}</ul>` : ''}
         ${(g.vocabulary_gaps || []).length ? `<div class="lbl">Things I could not express</div><ul class="gaps">${g.vocabulary_gaps.map(a => `<li>${esc(a)}</li>`).join('')}</ul>` : ''}
         ${g.notes ? `<div class="lbl">My notes</div><p class="note">${esc(g.notes)}</p>` : ''}
+        ${g.adjudication ? `<div class="lbl">Second opinion: ${g.adjudication.unsure ? 'UNSURE' : 'settled'}</div><ul class="gaps">${(g.adjudication.reasons || []).map(a => `<li>${esc(a)}</li>`).join('')}</ul>` : ''}
         <p class="dim">${hl.hits} of ${new Set(quotes).size} quote(s) highlighted on the right</p>
       </div><div class="page"><pre>${hl.html}</pre></div></div></section>`;
   });
@@ -91,7 +93,7 @@ if (isMain(import.meta.url)) {
     <nav class="toc">${batch.ids.map((_, i) => `<a href="#i${i + 1}">${i + 1}</a>`).join('')}</nav>
     ${items.join('\n')}</main></body></html>`;
   fs.mkdirSync(path.join(HERE, 'review'), { recursive: true });
-  const out = path.join(HERE, 'review', `batch-${String(n).padStart(2, '0')}.html`);
+  const out = path.join(HERE, 'review', typeof n === 'number' ? `batch-${String(n).padStart(2, '0')}.html` : `${n}.html`);
   fs.writeFileSync(out, html);
   console.log('wrote', out);
 }

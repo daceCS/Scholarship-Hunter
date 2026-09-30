@@ -6,7 +6,7 @@
 //   node extract/extract.mjs --split dev --dry-run                  no API calls: list pages and estimate tokens/cost
 //   then: node test-sets/score.mjs --pred predictions/dev1 --split dev
 //
-// Flags: --model (default claude-opus-5-5)  --effort low|medium|high|xhigh|max (default medium)  --concurrency 3
+// Flags: --model (default claude-haiku-4-5; effort is ignored for Haiku)  --effort low|medium|high|xhigh|max (default medium)  --concurrency 3
 //        --today YYYY-MM-DD  --force (re-extract pages that already have output)  --no-fallback
 // Needs ANTHROPIC_API_KEY in backend/.env (never commit it).
 //
@@ -27,13 +27,13 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(here, '../.env') });
 
 // $ per million tokens: input, output, cache write (1.25x input), cache read
-const PRICES = {
+export const PRICES = {
   'claude-opus-5-5': [4, 20, 5, 0.2],
   'claude-sonnet-5-5': [2, 10, 2.5, 0.2],
   'claude-haiku-4-5': [1, 5, 1.25, 0.1],
 };
-const priceFor = model => PRICES[model] || PRICES['claude-opus-5-5'];
-const cost = (model, u) => {
+export const priceFor = model => PRICES[model] || PRICES['claude-haiku-4-5'];
+export const cost = (model, u) => {
   const [i, o, cw, cr] = priceFor(model);
   return ((u.input_tokens || 0) * i + (u.output_tokens || 0) * o + (u.cache_creation_input_tokens || 0) * cw + (u.cache_read_input_tokens || 0) * cr) / 1e6;
 };
@@ -54,10 +54,12 @@ export function parseJson(text) {
   return JSON.parse(t.slice(a, b + 1));
 }
 
+export const setFallback = v => { fallbackOn = v; };
 let fallbackOn = true;
 
-async function callModel(client, { model, effort, system, messages }) {
-  const params = { model, max_tokens: 32000, system, messages, output_config: { effort } };
+export async function callModel(client, { model, effort, system, messages }) {
+  // Haiku 4.5 has no effort setting (the API rejects it), so it is only sent to models that support it.
+  const params = { model, max_tokens: 32000, system, messages, ...(/haiku/.test(model) ? {} : { output_config: { effort } }) };
   const run = async useFallback => {
     const stream = useFallback
       ? client.beta.messages.stream({ ...params, betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' })
@@ -76,7 +78,7 @@ async function callModel(client, { model, effort, system, messages }) {
   }
 }
 
-const textOf = msg => msg.content.filter(b => b.type === 'text').map(b => b.text).join('');
+export const textOf = msg => msg.content.filter(b => b.type === 'text').map(b => b.text).join('');
 
 async function extractPage(client, opts, row) {
   const text = readText(DEFAULT_DIR, row.id) || '';
@@ -101,7 +103,7 @@ async function extractPage(client, opts, row) {
   return { pred, errors, usage, attempts: attempts + 1 };
 }
 
-async function pool(items, n, fn) {
+export async function pool(items, n, fn) {
   let i = 0;
   await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => { while (i < items.length) { const item = items[i++]; await fn(item); } }));
 }
@@ -109,7 +111,7 @@ async function pool(items, n, fn) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const opts = {
-    model: args.model || 'claude-opus-5-5',
+    model: args.model || 'claude-haiku-4-5',
     effort: args.effort || 'medium',
     today: args.today || new Date().toISOString().slice(0, 10),
     system: [{ type: 'text', text: buildSystemPrompt(), cache_control: { type: 'ephemeral' } }],
