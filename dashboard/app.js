@@ -106,7 +106,8 @@
             name: m.name,
             org: m.provider,
             amt: m.amount?.max || 0,
-            pct: Math.min(100, Math.round((m.score / Math.max(m.amount?.max, 1)) * 100)),
+            pct: m.status === 'eligible' ? 100 : 50, // ponytail: coarse; all rules pass vs some unknown. Refine with fraction of rules passed.
+            possible: m.status !== 'eligible',
             due: m.deadline ? new Date(m.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'TBD',
             id: m.name,
             due2: m.deadline ? nextDue(new Date(m.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })) : { days: 999 }
@@ -188,7 +189,7 @@
           h('div', {}, h('h3', {}, m.name), h('div', { class: 'org' }, m.org)),
           h('div', { class: 'amt' }, money(m.amt)),
           h('div', { class: 'meta' },
-            h('span', { class: 'tagp pct' }, icon('ph-fill ph-target'), m.pct + '% match'),
+            h('span', { class: 'tagp pct' }, icon('ph-fill ph-target'), (m.possible ? 'Possible match' : 'Eligible')),
             h('span', { class: 'tagp' + (soon ? ' warn' : '') }, icon('ph ph-calendar-blank'), 'Due ' + m.due + ' · ' + leftText(m.due2.days)),
             st === 'applied' ? h('span', { class: 'tagp ok' }, icon('ph-fill ph-check-circle'), 'Applied') : null),
           h('div', { class: 'acts' },
