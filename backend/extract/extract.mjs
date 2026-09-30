@@ -7,7 +7,10 @@
 //   then: node test-sets/score.mjs --pred predictions/dev1 --split dev
 //
 // Flags: --model (default claude-sonnet-5-5)  --effort low|medium|high|xhigh|max (default medium)  --concurrency 3
-//        --today YYYY-MM-DD  --force (re-extract pages that already have output)  --no-fallback
+//        --today YYYY-MM-DD  --force (re-extract pages that already have output)  --no-fallback  --no-cache
+//        --batch (submit to the Batch API: half price, results within ~24h)  --collect (fetch and validate a submitted batch; same --run)
+// Free savings, on by default: pages whose text hasn't changed since a valid extraction reuse it (predictions/_cache/),
+// pages that can't hold a scholarship are skipped (extract/prefilter.mjs), and repeated menu/footer lines aren't sent.
 // Needs ANTHROPIC_API_KEY in backend/.env (never commit it).
 //
 // Each page: one request with the page text; the reply is validated (schema, vocabulary, quotes really on the page).
@@ -15,6 +18,7 @@
 // pages that still have problems are listed in <run>/_run.json so they can be reviewed.
 
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
@@ -22,6 +26,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { loadVocab, loadScholarshipSchema } from '../contract/lib.mjs';
 import { HERE as TEST_SETS, DEFAULT_DIR, readManifest, readText, parseArgs } from '../test-sets/lib.mjs';
 import { validatePrediction } from './validate.mjs';
+import { slim, skipReason } from './prefilter.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(here, '../.env') });
@@ -80,15 +85,22 @@ export async function callModel(client, { model, effort, system, messages }) {
 
 export const textOf = msg => msg.content.filter(b => b.type === 'text').map(b => b.text).join('');
 
-async function extractPage(client, opts, row) {
+const requestParams = (opts, row, text) => ({
+  model: opts.model, max_tokens: 32000, system: opts.system,
+  messages: [{ role: 'user', content: userMessage(row, slim(text), opts.today) }],
+  ...(/haiku/.test(opts.model) ? {} : { output_config: { effort: opts.effort } }),
+});
+
+// `first` is an already-received reply (from a batch); otherwise the first attempt is a normal call.
+async function extractPage(client, opts, row, first) {
   const text = readText(DEFAULT_DIR, row.id) || '';
-  const messages = [{ role: 'user', content: userMessage(row, text, opts.today) }];
+  const messages = requestParams(opts, row, text).messages;
   const usage = { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 };
   const add = u => { for (const k of Object.keys(usage)) usage[k] += u?.[k] || 0; };
   let pred = null, errors = [], attempts = 0;
 
   for (; attempts < 2; attempts++) {
-    const msg = await callModel(client, { ...opts, messages });
+    const msg = attempts === 0 && first ? first : await callModel(client, { ...opts, messages });
     add(msg.usage);
     if (msg.stop_reason === 'refusal') return { pred, errors: [`refused (${msg.stop_details?.category || 'unknown category'})`], usage, attempts: attempts + 1 };
     if (msg.stop_reason === 'max_tokens') errors = ['reply was cut off at max_tokens'];
@@ -108,6 +120,10 @@ export async function pool(items, n, fn) {
   await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => { while (i < items.length) { const item = items[i++]; await fn(item); } }));
 }
 
+const hashOf = x => crypto.createHash('sha256').update(x).digest('hex');
+// Same page text + model + effort + prompt => same extraction. `today` is left out on purpose (it only shifts cycle_status).
+const cacheKey = (opts, row, text) => hashOf([opts.model, opts.effort, opts.system[0].text, row.url, row.kind, text].join('\u0001'));
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const opts = {
@@ -124,38 +140,94 @@ async function main() {
   if (args.limit) rows = rows.slice(0, Number(args.limit));
   const runName = args.run || `run-${new Date().toISOString().replace(/[:T]/g, '-').slice(0, 16)}`;
   const outDir = path.join(TEST_SETS, 'predictions', runName);
-  const todo = rows.filter(r => args.force || !fs.existsSync(path.join(outDir, `${r.id}.json`)));
+  const cacheDir = path.join(TEST_SETS, 'predictions', '_cache');
+  const logFile = path.join(outDir, '_run.json');
+  const batchFile = path.join(outDir, '_batch.json');
+  const useCache = !args['no-cache'];
+  const pending = rows.filter(r => args.force || !fs.existsSync(path.join(outDir, `${r.id}.json`)));
+
+  // free steps: skip pages that can't hold a scholarship, reuse earlier valid extractions of identical text
+  const skipped = {}, cached = {}, todo = [];
+  for (const r of pending) {
+    const text = readText(DEFAULT_DIR, r.id) || '';
+    const why = skipReason(text);
+    if (why) { skipped[r.id] = why; continue; }
+    const f = path.join(cacheDir, cacheKey(opts, r, text) + '.json');
+    if (useCache && !args.force && fs.existsSync(f)) { cached[r.id] = f; continue; }
+    todo.push(r);
+  }
 
   const sysChars = opts.system[0].text.length;
-  const pageChars = todo.reduce((s, r) => s + (readText(DEFAULT_DIR, r.id) || '').length, 0);
+  const pageChars = todo.reduce((s, r) => s + slim(readText(DEFAULT_DIR, r.id) || '').length, 0);
   const estIn = Math.round((sysChars * todo.length + pageChars) / 4), estOut = todo.length * 2500;
   const [pi, po] = priceFor(opts.model);
-  console.log(`${todo.length} page(s) to extract (${rows.length - todo.length} already done) into predictions/${runName}/ with ${opts.model}, effort ${opts.effort}`);
-  console.log(`rough estimate: ${(estIn / 1e6).toFixed(2)}M input tokens (system prompt is cached after the first request), ~${(estOut / 1e6).toFixed(2)}M output; upper bound ~$${((estIn * pi + estOut * po) / 1e6).toFixed(2)}`);
+  const half = args.batch ? 0.5 : 1;
+  console.log(`${pending.length} page(s) to do (${rows.length - pending.length} already done) into predictions/${runName}/ with ${opts.model}, effort ${opts.effort}`);
+  console.log(`  ${Object.keys(skipped).length} skipped by the free pre-filter, ${Object.keys(cached).length} reused from cache, ${todo.length} need the model${args.batch ? ' (batch: half price)' : ''}`);
+  for (const [id, why] of Object.entries(skipped)) console.log(`  skip ${id}: ${why}`);
+  console.log(`rough estimate: ${(estIn / 1e6).toFixed(2)}M input tokens (system prompt is cached after the first request), ~${(estOut / 1e6).toFixed(2)}M output; upper bound ~$${(half * (estIn * pi + estOut * po) / 1e6).toFixed(2)}`);
   if (args['dry-run']) return;
-  if (!process.env.ANTHROPIC_API_KEY) { console.error('\nANTHROPIC_API_KEY is not set. Add it to backend/.env (create one at console.anthropic.com).'); process.exit(2); }
 
   fs.mkdirSync(outDir, { recursive: true });
-  const client = new Anthropic({ maxRetries: 5 });
+  fs.mkdirSync(cacheDir, { recursive: true });
   const log = { run: runName, model: opts.model, effort: opts.effort, today: opts.today, pages: {} };
-  const logFile = path.join(outDir, '_run.json');
   if (fs.existsSync(logFile)) Object.assign(log.pages, JSON.parse(fs.readFileSync(logFile, 'utf8')).pages || {});
+  const save = () => fs.writeFileSync(logFile, JSON.stringify(log, null, 2) + '\n');
+  for (const [id, why] of Object.entries(skipped)) log.pages[id] = { ok: true, skipped: why, errors: [], usd: 0 };
+  for (const [id, f] of Object.entries(cached)) {
+    fs.copyFileSync(f, path.join(outDir, `${id}.json`));
+    log.pages[id] = { ok: true, cached: true, errors: [], usd: 0 };
+  }
+  save();
+
+  const finish = (row, { pred, errors, usage, attempts }, discount = 1) => {
+    const usd = cost(opts.model, usage) * discount;
+    if (pred) fs.writeFileSync(path.join(outDir, `${row.id}.json`), JSON.stringify(pred, null, 2) + '\n');
+    if (pred && !errors.length && useCache) fs.writeFileSync(path.join(cacheDir, cacheKey(opts, row, readText(DEFAULT_DIR, row.id) || '') + '.json'), JSON.stringify(pred, null, 2) + '\n');
+    log.pages[row.id] = { ok: !!pred && !errors.length, attempts, errors, usage, usd: Number(usd.toFixed(4)) };
+    save();
+    return usd;
+  };
+  const fail = (row, e) => { log.pages[row.id] = { ok: false, errors: [`request failed: ${e.message}`] }; save(); };
+  const client = new Anthropic({ maxRetries: 5 });
   let done = 0, total$ = 0;
 
-  await pool(todo, concurrency, async row => {
-    try {
-      const { pred, errors, usage, attempts } = await extractPage(client, opts, row);
-      const usd = cost(opts.model, usage);
-      total$ += usd;
-      if (pred) fs.writeFileSync(path.join(outDir, `${row.id}.json`), JSON.stringify(pred, null, 2) + '\n');
-      log.pages[row.id] = { ok: !!pred && !errors.length, attempts, errors, usage, usd: Number(usd.toFixed(4)) };
-      console.log(`[${++done}/${todo.length}] ${row.id}: ${pred?.page_type || 'NO OUTPUT'}${errors.length ? ` (${errors.length} problem(s) remain)` : ''} $${usd.toFixed(3)}`);
-    } catch (e) {
-      log.pages[row.id] = { ok: false, errors: [`request failed: ${e.message}`] };
-      console.log(`[${++done}/${todo.length}] ${row.id}: FAILED ${e.message}`);
-    }
-    fs.writeFileSync(logFile, JSON.stringify(log, null, 2) + '\n');
-  });
+  if (args.batch) {                                            // submit; --collect picks the results up later
+    if (!todo.length) { console.log('Nothing to send.'); return; }
+    const map = {};
+    const requests = todo.map((r, i) => { map[`p${i}`] = r.id; return { custom_id: `p${i}`, params: requestParams(opts, r, readText(DEFAULT_DIR, r.id) || '') }; });
+    const batch = await client.messages.batches.create({ requests });
+    fs.writeFileSync(batchFile, JSON.stringify({ id: batch.id, map, submitted: new Date().toISOString() }, null, 2) + '\n');
+    console.log(`\nSubmitted batch ${batch.id} (${requests.length} pages). Check later with the same command but --collect instead of --batch.`);
+    return;
+  }
+
+  if (args.collect) {
+    const b = JSON.parse(fs.readFileSync(batchFile, 'utf8'));
+    const st = await client.messages.batches.retrieve(b.id);
+    if (st.processing_status !== 'ended') { console.log(`Batch ${b.id} is still ${st.processing_status}: ${JSON.stringify(st.request_counts)}`); return; }
+    const byId = new Map(rows.map(r => [r.id, r]));
+    const got = [];
+    for await (const item of await client.messages.batches.results(b.id)) got.push(item);
+    await pool(got, concurrency, async item => {
+      const row = byId.get(b.map[item.custom_id]);
+      if (!row) return;
+      try {
+        if (item.result.type !== 'succeeded') throw new Error(`batch result: ${item.result.type}`);
+        const r = await extractPage(client, opts, row, item.result.message);   // a repair retry, if needed, is a normal (full price) call
+        total$ += finish(row, r, 0.5);
+        console.log(`[${++done}/${got.length}] ${row.id}: ${r.pred?.page_type || 'NO OUTPUT'}${r.errors.length ? ` (${r.errors.length} problem(s) remain)` : ''}`);
+      } catch (e) { fail(row, e); console.log(`[${++done}/${got.length}] ${row.id}: FAILED ${e.message}`); }
+    });
+  } else {
+    await pool(todo, concurrency, async row => {
+      try {
+        const r = await extractPage(client, opts, row);
+        total$ += finish(row, r);
+        console.log(`[${++done}/${todo.length}] ${row.id}: ${r.pred?.page_type || 'NO OUTPUT'}${r.errors.length ? ` (${r.errors.length} problem(s) remain)` : ''} $${cost(opts.model, r.usage).toFixed(3)}`);
+      } catch (e) { fail(row, e); console.log(`[${++done}/${todo.length}] ${row.id}: FAILED ${e.message}`); }
+    });
+  }
 
   const all = Object.values(log.pages);
   console.log(`\nDone. ${all.filter(p => p.ok).length}/${all.length} pages valid, ${all.filter(p => !p.ok).length} with problems (see ${path.relative(process.cwd(), logFile)}). This run cost ~$${total$.toFixed(2)}.`);
