@@ -124,7 +124,8 @@
     function view() {
       const active = all.filter(m => status[m.id] !== 'dismissed');
       const open = active.filter(m => status[m.id] !== 'applied');
-      const soonest = open.slice().sort((a, b) => a.due2.days - b.due2.days)[0];
+      const dated = open.filter(m => m.due2.date); // awards with no listed deadline have no date
+      const soonest = dated.slice().sort((a, b) => a.due2.days - b.due2.days)[0];
       const potential = open.reduce((s, m) => s + m.amt, 0);
       const counts = { all: all.filter(m => status[m.id] !== 'dismissed').length };
       for (const [k] of FILTERS.slice(1)) counts[k] = all.filter(m => status[m.id] === k).length;
@@ -161,7 +162,7 @@
           h('div', { class: 'amt' }, award(m.amt)),
           h('div', { class: 'meta' },
             h('span', { class: 'tagp pct' }, icon('ph-fill ph-target'), (m.possible ? 'Possible match' : 'Eligible')),
-            h('span', { class: 'tagp' + (soon ? ' warn' : '') }, icon('ph ph-calendar-blank'), 'Due ' + m.due + ' · ' + leftText(m.due2.days)),
+            h('span', { class: 'tagp' + (soon ? ' warn' : '') }, icon('ph ph-calendar-blank'), m.due2.date ? 'Due ' + m.due + ' · ' + leftText(m.due2.days) : 'No deadline listed'),
             st === 'applied' ? h('span', { class: 'tagp ok' }, icon('ph-fill ph-check-circle'), 'Applied') : null),
           h('div', { class: 'acts' },
               h('button', { class: 'act', type: 'button', 'aria-pressed': String(st === 'saved'), onclick: () => setStatus(m, 'saved') }, icon(st === 'saved' ? 'ph-fill ph-bookmark-simple' : 'ph ph-bookmark-simple'), 'Save'),
@@ -177,7 +178,7 @@
           : h('div', { class: 'empty' }, filter === 'all' ? 'No matches yet. Add more to your profile to find awards.' : 'Nothing here yet. Use the buttons on a match to move it into this list.')),
         h('p', { class: 'fine' }, icon('ph ph-info'), 'Preview matches. Verified results arrive once the search agent runs.'));
 
-      const upcoming = open.slice().sort((a, b) => a.due2.days - b.due2.days).slice(0, 5);
+      const upcoming = dated.slice().sort((a, b) => a.due2.days - b.due2.days).slice(0, 5);
       const deadlines = h('section', { class: 'card', 'aria-labelledby': 'dh' },
         h('div', { class: 'card-head' }, h('h2', { id: 'dh' }, 'Coming up')),
         upcoming.length ? h('ul', { class: 'dl' }, upcoming.map(m => h('li', {},

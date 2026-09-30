@@ -572,6 +572,8 @@
         h('button', { class: 'btn btn-primary', type: 'button', 'data-next': '', onclick: next }, 'Start', icon('ph ph-arrow-right'))));
   }
 
+  const currentAvatar = () => TW.buildAvatar(A, W, { id: state.id, updated: state.updated, visited: state.visited });
+
   function matchCard(m, top) {
     return h('article', { class: 'match' + (top ? ' top' : '') },
       h('div', {}, h('h3', {}, m.name), h('div', { class: 'org' }, m.org)),
@@ -584,7 +586,7 @@
 
   async function resultsScreen(s) {
     blocks = [];
-    const estimate = await TW.api.getEstimate(A);
+    const estimate = await TW.api.getEstimate(currentAvatar());
     const total = estimate.count;
     const awards = []; // Will be populated after submit
     return h('div', { class: 'screen' },
@@ -636,7 +638,7 @@
     blocks = [];
     const avatar = TW.buildAvatar(A, W, { id: state.id, updated: state.updated, visited: state.visited });
     const json = JSON.stringify(avatar, null, 2);
-    const total = (await TW.api.getEstimate(A)).count;
+    const total = (await TW.api.getEstimate(avatar)).count;
     const vs = visibleScreens();
 
     const profile = h('div', { class: 'sum' }, Object.keys(SECTION_NAME).map(key => {
@@ -784,7 +786,7 @@
   let estimate = 0, estTimer;
   function refreshEstimate() {
     clearTimeout(estTimer);
-    estTimer = setTimeout(async () => { estimate = (await TW.api.getEstimate(A)).count; renderPanel(); }, 400);
+    estTimer = setTimeout(async () => { estimate = (await TW.api.getEstimate(currentAvatar())).count; renderPanel(); }, 400);
   }
 
   function renderPanel() {
