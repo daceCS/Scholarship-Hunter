@@ -147,7 +147,9 @@ export async function getMatches(supabase, profileId, limit = 100) {
         amount,
         deadline,
         apply_url,
-        effort
+        source_url,
+        effort,
+        review_status:full_data->>status
       )
     `)
     .eq('profile_id', profileId)

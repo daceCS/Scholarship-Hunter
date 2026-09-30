@@ -100,7 +100,9 @@ function evaluateGroup(profile, group, phasesCompleted) {
 // Evaluate a scholarship: all groups pass = eligible.
 export function evaluateScholarship(profile, scholarship) {
   const phasesCompleted = profile.phases_completed || [];
-  if (!scholarship.eligibility?.length) return 'eligible';  // No rules = open to all
+  // No rules: open to everyone only if a person verified that. For machine-extracted records it usually means the
+  // requirements were not captured, so the honest answer is 'possible', never 'eligible'.
+  if (!scholarship.eligibility?.length) return scholarship.status === 'live' ? 'eligible' : 'possible';
 
   const results = scholarship.eligibility.map(g => evaluateGroup(profile, g, phasesCompleted));
   if (results.includes('fail')) return 'ineligible';

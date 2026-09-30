@@ -164,5 +164,8 @@ console.log(`Over-promised (expected ineligible/possible, engine says eligible):
 over.forEach(x => console.log('   - ' + x));
 console.log(`Other disagreements (eligible <-> possible): ${other.length}`);
 other.forEach(x => console.log('   - ' + x));
+// A record with no rules is open to everyone only when a person verified it; machine-extracted ones are 'possible'.
+const noRules = evaluateScholarship({}, { eligibility: [], status: 'draft' }) + '/' + evaluateScholarship({}, { eligibility: [], status: 'live' });
+if (noRules !== 'possible/eligible') { console.log(`✗ no-rule records: expected possible/eligible, got ${noRules}`); process.exitCode = 1; }
 if (agree !== cells) process.exitCode = 1;
 else console.log('PASS');

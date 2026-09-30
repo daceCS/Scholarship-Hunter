@@ -56,6 +56,17 @@ try {
   assert.equal(await page.evaluate(() => localStorage.getItem('tw.pending')), null, 'pending profile should be flushed');
   console.log('✓ create account -> profile saved -> dashboard shows matches');
 
+  // Unverified badge + report a problem (needs the feedback table: run backend/feedback.sql once)
+  await page.getByText('Unverified details').first().waitFor({ timeout: 5000 });
+  await page.getByRole('button', { name: 'Report a problem' }).first().click();
+  await page.locator('#rp-kind').selectOption('wrong_deadline');
+  await page.locator('#rp-msg').fill('e2e test report');
+  await page.getByRole('button', { name: 'Send report' }).click();
+  try { await page.getByText('Thanks, we will look into it.').waitFor({ timeout: 8000 }); }
+  catch { const t = await page.locator('.rp-out').innerText(); throw new Error('report was not accepted: ' + t + ' (if this mentions the feedback table, run backend/feedback.sql in the Supabase SQL editor)'); }
+  console.log('✓ matches are marked unverified; a problem report is accepted');
+  await page.keyboard.press('Escape');
+
   // (All unstated-amount awards in the current data are past their deadline, so they are filtered out; no "Amount varies" expected.)
   assert.equal(await page.getByText('$0', { exact: true }).count(), 0, 'no bare $0 awards');
   await page.getByRole('button', { name: 'Sign out' }).click();
@@ -80,6 +91,11 @@ try {
   assert.equal(rows.length, 1);
   console.log('✓ profile stored under the authenticated user id');
   await admin.auth.admin.deleteUser(uid); // cascades nothing in our tables; clean profile rows too
+  const { data: fb } = await admin.from('feedback').select('kind, message, scholarship_name').eq('user_id', uid);
+  assert.equal(fb?.length, 1, 'the report should be stored once');
+  assert.equal(fb[0].kind, 'wrong_deadline');
+  console.log('✓ report stored with the scholarship name');
+  await admin.from('feedback').delete().eq('user_id', uid);
   await admin.from('matches').delete().eq('user_id', uid); await admin.from('profiles').delete().eq('user_id', uid);
   console.log('PASS');
 } catch (e) { console.error('FAIL:', e.message); console.log((await page.innerText('body')).slice(0, 900)); process.exitCode = 1; }

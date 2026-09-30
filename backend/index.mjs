@@ -119,6 +119,37 @@ app.post('/profile', requireAuth, async (req, res) => {
   }
 });
 
+// POST /feedback - a test user reports a problem with a scholarship's details or match
+// Auth: Bearer token. Input: { scholarship_id, kind, message? }. Stored for review (see feedback-report.mjs).
+const FEEDBACK_KINDS = ['wrong_amount', 'wrong_deadline', 'wrong_requirements', 'not_eligible', 'broken_link', 'other'];
+app.post('/feedback', requireAuth, async (req, res) => {
+  try {
+    const { scholarship_id, kind, message = '' } = req.body || {};
+    if (!FEEDBACK_KINDS.includes(kind)) return res.status(400).json({ error: `kind must be one of ${FEEDBACK_KINDS.join(', ')}` });
+    if (typeof message !== 'string' || message.length > 1000) return res.status(400).json({ error: 'message must be text of at most 1000 characters' });
+    if (kind === 'other' && !message.trim()) return res.status(400).json({ error: 'please describe the problem' });
+
+    const { data: sch, error: schErr } = await supabase.from('scholarships').select('id, name, source_url').eq('id', scholarship_id).maybeSingle();
+    if (schErr) throw schErr;
+    if (!sch) return res.status(404).json({ error: 'unknown scholarship' });
+
+    // Simple abuse guard: at most 30 reports per user per hour
+    const since = new Date(Date.now() - 3600 * 1000).toISOString();
+    const { count, error: cntErr } = await supabase.from('feedback').select('id', { count: 'exact', head: true }).eq('user_id', req.userId).gte('created_at', since);
+    if (cntErr) throw cntErr;
+    if (count >= 30) return res.status(429).json({ error: 'too many reports, try again later' });
+
+    const { error } = await supabase.from('feedback').insert({
+      user_id: req.userId, scholarship_id: sch.id, scholarship_name: sch.name, scholarship_source_url: sch.source_url, kind, message: message.trim(),
+    });
+    if (error) throw error;
+    res.status(201).json({ ok: true });
+  } catch (error) {
+    console.error('POST /feedback:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // GET /matches - Fetch user's matches
 // Auth: Bearer token. Query: ?limit=100
 // Output: { matches: [...] } with scholarship details
@@ -145,13 +176,15 @@ app.get('/matches', requireAuth, async (req, res) => {
 
     res.json({
       matches: matches.map(m => ({
-        scholarship_id: m.scholarship_id,
+        scholarship_id: m.scholarships.id,
         name: m.scholarships.name,
         provider: m.scholarships.provider_org,
         amount: m.scholarships.amount,
         deadline: m.scholarships.deadline,
         apply_url: m.scholarships.apply_url,
         effort: m.scholarships.effort,
+        // 'live' = a person checked the details; anything else (draft, review) is machine-extracted and unverified
+        verified: m.scholarships.review_status === 'live',
         status: m.status,
         score: m.score,
       })),
@@ -174,4 +207,5 @@ app.listen(PORT, () => {
   console.log(`  POST /match/count - stateless teaser`);
   console.log(`  POST /profile - save profile + match (auth required)`);
   console.log(`  GET /matches - fetch matches (auth required)`);
+  console.log(`  POST /feedback - report a problem (auth required)`);
 });

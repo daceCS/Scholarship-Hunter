@@ -131,6 +131,18 @@ Authorization: Bearer <supabase access token>
 
 ---
 
+### POST /feedback
+**A test user reports a problem with a scholarship.** Auth: Bearer token.
+
+```json
+{ "scholarship_id": 12, "kind": "wrong_deadline", "message": "optional details, max 1000 chars" }
+```
+`kind` is one of `wrong_amount`, `wrong_deadline`, `wrong_requirements`, `not_eligible`, `broken_link`, `other` (`other` needs a message). Returns `201 { "ok": true }`; 400 for a bad kind or message, 404 for an unknown scholarship, 429 after 30 reports in an hour. Stored in the `feedback` table (create it once with `feedback.sql`). Read reports with `node feedback-report.mjs`.
+
+`GET /matches` now also returns `scholarship_id` and `verified` (`true` only when a person checked the record; machine-extracted records are `false` and the dashboard labels them "Unverified details").
+
+---
+
 ## Integration with questionnaire
 
 **Before submit (teaser):**
