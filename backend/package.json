@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Match engine and database layer",
-  "main": "match.mjs",
+  "main": "index.mjs",
   "scripts": {
+    "start": "node index.mjs",
+    "dev": "node --watch index.mjs",
     "setup": "node setup.mjs",
     "test:match": "node match.test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2",
-    "dotenv": "^18.0.4"
+    "dotenv": "^18.0.4",
+    "express": "^4.22.3"
   }
 }
