@@ -1,0 +1,15 @@
+{
+  "name": "scholarship-hunter-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Match engine and database layer",
+  "main": "match.mjs",
+  "scripts": {
+    "setup": "node setup.mjs",
+    "test:match": "node match.test.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "dotenv": "^18.0.4"
+  }
+}
