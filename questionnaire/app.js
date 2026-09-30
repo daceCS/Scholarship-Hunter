@@ -663,11 +663,19 @@
       const a = h('a', { href: URL.createObjectURL(new Blob([json], { type: 'application/json' })), download: 'tuitionwing-profile.json' });
       a.click(); URL.revokeObjectURL(a.href);
     } }, icon('ph ph-download-simple'), 'Download');
-    const submit = h('button', { class: 'btn btn-primary', type: 'button', 'data-next': '' }, 'Send to the search agent', icon('ph ph-arrow-right'));
+    const submit = h('button', { class: 'btn btn-primary', type: 'button' }, 'Send to the search agent', icon('ph ph-arrow-right'));
     submit.onclick = async () => {
-      submit.disabled = true; submit.textContent = 'Sending';
-      try { await TW.api.submitAvatar(avatar); card.replaceChildren(doneScreen()); focusHeading(); }
-      catch (e) { submit.disabled = false; submit.textContent = 'Try again'; }
+      submit.disabled = true; submit.textContent = 'Sending...';
+      try {
+        await TW.api.submitAvatar(avatar);
+        card.replaceChildren(doneScreen());
+        focusHeading();
+      }
+      catch (e) {
+        console.error('Submit error:', e);
+        submit.disabled = false;
+        submit.textContent = 'Try again';
+      }
     };
 
     return h('div', { class: 'screen' },
