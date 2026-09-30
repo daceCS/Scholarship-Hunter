@@ -24,6 +24,10 @@ try {
   await page.goto(BASE + '/questionnaire/');
   await page.evaluate(() => localStorage.clear()); await page.reload();
   const click = async name => { await page.getByRole('button', { name }).first().click(); await page.waitForTimeout(400); };
+  // Questionnaire answer ids must map to a profile the engine can use (regression: keys used to be wrong)
+  const est = await page.evaluate(() => TW.api.getEstimate({ 'geo.current': 'San Diego, CA', 'edu.status': 'undergrad', 'edu.gpa': '3.6' }));
+  assert.ok(est.count + est.possible_count > 0, 'estimate from real answer ids should be non-zero: ' + JSON.stringify(est));
+  console.log(`✓ estimate from questionnaire answers: ${est.count} eligible, ${est.possible_count} possible`);
   await page.getByRole('button', { name: 'Start', exact: true }).click(); await page.waitForTimeout(600);
   for (let i = 0; i < 40; i++) {
     if (await page.getByRole('button', { name: 'Send to the search agent' }).count()) break;

@@ -1,6 +1,6 @@
 /* Questionnaire engine. Reads TW.screens (schema.js), renders one screen at a time,
    stores answers by question id, and saves after every change.
-   Backend seams: TW.api (api.js) and TW.mock (mock.js). */
+   Backend seams: TW.api (api.js). */
 (function () {
   'use strict';
   const { phases, screens, questions, qById } = TW;
@@ -90,6 +90,7 @@
     afterChange();
   }
   function afterChange() {
+    refreshEstimate();
     save();
     recompute();
     refreshBlocks();
@@ -631,11 +632,11 @@
     return [`${key}: ${v}`];
   }
 
-  function summaryScreen(s) {
+  async function summaryScreen(s) {
     blocks = [];
     const avatar = TW.buildAvatar(A, W, { id: state.id, updated: state.updated, visited: state.visited });
     const json = JSON.stringify(avatar, null, 2);
-    const total = TW.mock.estimate(A), service = TW.mock.serviceBucket(A);
+    const total = (await TW.api.getEstimate(A)).count;
     const vs = visibleScreens();
 
     const profile = h('div', { class: 'sum' }, Object.keys(SECTION_NAME).map(key => {
@@ -683,7 +684,6 @@
       h('h1', { tabindex: '-1' }, 'Your profile is ready.'),
       h('p', { class: 'lede' }, 'Check it over. You can edit any section, and you can come back later to add more.'),
       h('div', { class: 'big-count' }, h('b', {}, total), h('span', {}, 'awards you could apply for')),
-      service ? h('div', { class: 'callout' }, icon('ph-fill ph-medal'), h('span', {}, `${service} more service-commitment awards (SMART, CyberCorps SFS, NHSC and similar) are kept in their own list.`)) : null,
       h('p', { class: 'fine' }, icon('ph ph-info'), 'Preview estimate. Real counts come from the search agent.'),
       h('div', { class: 'tabs', role: 'tablist' }, tabProfile, tabJson),
       profile, pre,
@@ -780,13 +780,20 @@
     })(t0);
   }
 
+  // Live match count for the side panel: debounced call to the real /match/count
+  let estimate = 0, estTimer;
+  function refreshEstimate() {
+    clearTimeout(estTimer);
+    estTimer = setTimeout(async () => { estimate = (await TW.api.getEstimate(A)).count; renderPanel(); }, 400);
+  }
+
   function renderPanel() {
     const tags = tagList();
     const answered = Object.keys(A).filter(id => qById[id].type !== 'flag').length;
     $('answerCount').textContent = `${answered} answer${answered === 1 ? '' : 's'}`;
     const seen = !!state.visited.results;
     $('countWrap').hidden = !seen; $('pill').hidden = !seen; $('panelFine').hidden = !seen;
-    const total = TW.mock.estimate(A);
+    const total = estimate;
     if (seen) {
       if (lastTotal !== null && total > lastTotal) {
         const d = $('delta'); d.textContent = '+' + (total - lastTotal); d.classList.add('on');
@@ -795,9 +802,7 @@
       tweenCount(total);
     }
     lastTotal = seen ? total : null;
-    const service = TW.mock.serviceBucket(A);
-    $('bucket').hidden = !(seen && service);
-    $('bucketCount').textContent = service;
+    $('bucket').hidden = true; // service-obligation bucket isn't served by the API yet
 
     const phase = (currentScreen() || {}).phase;
     $('panelNote').textContent = !seen ? 'Finish the core questions to see your first matches.'

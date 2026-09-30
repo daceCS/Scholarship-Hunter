@@ -1,6 +1,6 @@
 /* Tuitionwing dashboard. Reads the saved questionnaire profile (tw.intake.v1), builds the
    avatar, and shows matches, deadlines and profile strength.
-   Backend seams: TW.mock.awards / TW.mock.estimate stand in for the search agent's results.
+   Matches come from GET /matches (see questionnaire/api.js and backend/index.mjs).
    Application status is saved in the browser only (tw.dash.v1). */
 (async function () {
   'use strict';
@@ -28,27 +28,6 @@
   const icon = cls => h('i', { class: cls, 'aria-hidden': 'true' });
 
   /* ───────────── load profile ───────────── */
-  const DEMO = {
-    'edu.status': 'undergrad', 'edu.major': ['Nursing'], 'edu.institution': 'Palomar College', 'edu.gpa': 3.6,
-    'geo.current': 'Fallbrook, CA', 'geo.zip': '92028', 'id.first_gen': true, 'effort.min_award': 1000,
-    'effort.essay': 'short', 'career.field': 'Nursing'
-  };
-  const isDemo = /[?&]demo\b/.test(location.search);
-
-  function loadState() {
-    if (isDemo) return { id: 'demo', answers: DEMO, withheld: {}, updated: Date.now() };
-    try { const s = JSON.parse(localStorage.getItem(INTAKE)); return s && s.answers && Object.keys(s.answers).length ? s : null; } catch (e) { return null; }
-  }
-  const visibleQ = (q, a) => (!q.screen.when || q.screen.when(a)) && (!q.when || q.when(a));
-  function effective(state) {
-    const out = {};
-    for (const q of questions) {
-      if (!visibleQ(q, out) || state.withheld[q.id]) continue;
-      if (state.answers[q.id] !== undefined) out[q.id] = state.answers[q.id];
-    }
-    return out;
-  }
-
   /* dashboard state: id -> 'saved' | 'applying' | 'applied' | 'dismissed' */
   let status = {};
   try { status = JSON.parse(localStorage.getItem(DASH)) || {}; } catch (e) { /* start empty */ }
@@ -74,8 +53,7 @@
       h('p', {}, 'New here? Build your profile first, or create an account now.'),
       TW.auth.form(() => location.reload()),
       h('div', { class: 'row' },
-        h('a', { class: 'btn btn-ghost', href: '/questionnaire/' }, 'Build my profile'),
-        h('a', { class: 'btn btn-ghost', href: '?demo' }, 'See a sample'))));
+        h('a', { class: 'btn btn-ghost', href: '/questionnaire/' }, 'Build my profile'))));
   }
 
   function firstRun() {
@@ -85,8 +63,7 @@
       h('h1', {}, 'Your matches will show up here.'),
       h('p', {}, 'Answer the short questionnaire and we build your profile. Then this page lists the awards you could apply for, with deadlines and progress.'),
       h('div', { class: 'row' },
-        h('a', { class: 'btn btn-primary', href: '/questionnaire/' }, 'Build my profile', icon('ph ph-arrow-right')),
-        h('a', { class: 'btn btn-ghost', href: '?demo' }, 'See a sample'))));
+        h('a', { class: 'btn btn-primary', href: '/questionnaire/' }, 'Build my profile', icon('ph ph-arrow-right')))));
   }
 
   /* ───────────── render ───────────── */
@@ -98,8 +75,8 @@
   let filter = 'all', sort = 'match';
 
   async function start() {
-    const session = isDemo ? null : await TW.auth.session();
-    if (!isDemo && !session) return signInCard();
+    const session = await TW.auth.session();
+    if (!session) return signInCard();
     if (session) {
       const out = document.getElementById('signout');
       out.hidden = false;
@@ -139,26 +116,10 @@
       }
     }
 
-    // Fall back to saved questionnaire state if no API data was fetched
-    if (!state && all.length === 0) {
-      state = loadState();
-      if (!state) {
-        return firstRun();
-      }
-      A = effective(state);
-      W = new Set(Object.keys(state.withheld).filter(id => TW.qById[id]));
-      avatar = TW.buildAvatar(A, W, { id: state.id, updated: state.updated, visited: state.visited });
-
-      // Use mock data if no API matches
-      total = TW.mock.estimate(A);
-      service = TW.mock.serviceBucket?.(A) || 0;
-      all = TW.mock.awards(A, 99).map(m => ({ ...m, id: m.name, due2: nextDue(m.due) }));
-    } else if (!state) {
-      // API data was fetched successfully
-    }
+    if (!state) return firstRun(); // signed in but no saved profile / matches yet
 
     const city = (A['geo.current'] || '').split(',')[0];
-    document.getElementById('who').textContent = isDemo ? 'Sample profile' : (A['edu.institution'] || city || '');
+    document.getElementById('who').textContent = A['edu.institution'] || city || '';
 
     function view() {
       const active = all.filter(m => status[m.id] !== 'dismissed');
