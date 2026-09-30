@@ -162,7 +162,8 @@ Gate behind an explicit consent screen explaining what the data unlocks and that
 | `id.tribe_name` | Which nation or tribe? | autocomplete | Conditional on above |
 | `id.first_gen` | First in your family to attend college? | bool | |
 | `id.languages` | Languages you speak and proficiency | group | language · level |
-| `id.immigration_context` | Are you an immigrant, refugee, or child of immigrants? | single | Skippable. Do not ask for legal status |
+| `id.citizenship` | What is your U.S. citizenship or residency status? | single | U.S. citizen / U.S. national / Lawful permanent resident / Refugee or asylee / DACA or TPS / Another status. Skippable. Many awards require citizenship or permanent residency; skipped means unknown, never ineligible. Never ask about undocumented status directly |
+| `id.immigration_context` | Are you an immigrant, refugee, or child of immigrants? | single | Skippable |
 | `id.gender` | Gender | single | Many awards are gender-restricted |
 | `id.lgbtq` | Do you identify as LGBTQ+? | bool | Skippable |
 
@@ -214,6 +215,7 @@ Step 1 emits this object. Discrete tags — the search agent generates targeted 
   "avatar_id": "uuid",
   "version": 1,
   "updated_at": "2026-09-06T00:00:00Z",
+  "phases_completed": ["core", "branch"],
   "academic": {
     "status": "undergrad",
     "institution": "San Diego State University",
@@ -249,6 +251,7 @@ Step 1 emits this object. Discrete tags — the search agent generates targeted 
     "heritage": [],
     "tribal": null,
     "first_gen": true,
+    "citizenship": "us_citizen",
     "languages": [{"lang": "es", "level": "fluent"}],
     "gender": null,
     "withheld": ["lgbtq", "immigration_context"]
@@ -265,9 +268,9 @@ Step 1 emits this object. Discrete tags — the search agent generates targeted 
   "effort": {
     "min_award_usd": 500,
     "hours_per_week": "1_3",
-    "max_essay_words": 500,
+    "essay": "short",
     "formats_ok": ["portfolio"],
-    "recs_available": true,
+    "recs": "yes",
     "deadline_floor_days": 14,
     "renewable_ok": true
   },

@@ -26,6 +26,18 @@ window.TW = window.TW || {};
   const num = v => (v === undefined || v === '' ? undefined : Number(v));
   const lines = s => (s || '').split(/[\n,;]+/).map(x => x.trim()).filter(Boolean);
 
+  /* A phase counts as completed once the user has moved past it (visited the next phase's first
+     screen, or the final summary). Fields in a phase that is not completed are unknown, not "no",
+     because empty answers are pruned. Sensitive needs consent: without it every sensitive field is unknown. */
+  function phasesCompleted(A, visited) {
+    const first = id => (TW.screens.find(s => s.phase === id) || {}).id;
+    return TW.phases.map((p, i) => {
+      const next = TW.phases[i + 1];
+      const passed = next ? !!visited[first(next.id)] : !!visited.summary;
+      return passed && (p.id !== 'sensitive' || A['consent.sensitive'] === true) ? p.id : null;
+    }).filter(Boolean);
+  }
+
   TW.buildAvatar = function (A, W, meta) {
     const arr = id => Array.isArray(A[id]) ? A[id] : [];
     const withheld = prefix => [...W].filter(id => id.startsWith(prefix + '.')).map(id => id.slice(prefix.length + 1));
@@ -34,15 +46,19 @@ window.TW = window.TW || {};
       const i = s.lastIndexOf(',');
       return i > 0 ? { city: s.slice(0, i).trim(), state: s.slice(i + 1).trim().toUpperCase() } : { city: s };
     })();
-    const essay = { no: 0, short: 500, any: 'unlimited' }[A['effort.essay']];
-    const recs = { yes: true, maybe: 'maybe', no: false }[A['effort.recs']];
     const floor = { w1: 7, w2: 14, m1: 30 }[A['effort.deadline_floor']];
     const langCode = n => TW.data.langCodes[n] || (n || '').toLowerCase();
+
+    // A sub-field answered "Prefer not to say" is withheld, not unanswered.
+    const militaryRows = arr('affil.military.detail');
+    const militarySkips = ['disability_rating', 'killed_or_wounded']
+      .filter(k => militaryRows.some(r => r[k] === 'skip')).map(k => 'military.' + k);
 
     return prune({
       avatar_id: meta.id,
       version: 1,
       updated_at: new Date(meta.updated).toISOString(),
+      phases_completed: phasesCompleted(A, meta.visited || {}),
       academic: {
         status: A['edu.status'],
         institution: A['edu.institution'],
@@ -73,12 +89,13 @@ window.TW = window.TW || {};
         religious: arr('affil.religious.detail').map(r => ({ tradition: r.tradition, denomination: r.denomination, congregation: r.congregation })),
         member_org: arr('affil.financial.detail').map(r => ({ name: r.institution, type: r.type })),
         professional: arr('affil.professional'),
-        withheld: withheld('affil')
+        withheld: [...withheld('affil'), ...militarySkips]
       },
       identity: {
         heritage: arr('id.heritage'),
         tribal: A['id.tribal'] ? { status: A['id.tribal'], nation: A['id.tribe_name'] } : undefined,
         first_gen: A['id.first_gen'],
+        citizenship: A['id.citizenship'],
         languages: arr('id.languages').map(r => ({ lang: langCode(r.language), level: r.level })),
         immigration_context: A['id.immigration_context'],
         gender: A['id.gender'],
@@ -120,9 +137,9 @@ window.TW = window.TW || {};
       effort: {
         min_award_usd: A['effort.min_award'],
         hours_per_week: A['effort.hours_week'],
-        max_essay_words: essay,
+        essay: A['effort.essay'],
         formats_ok: arr('effort.formats'),
-        recs_available: recs,
+        recs: A['effort.recs'],
         deadline_floor_days: floor,
         renewable_ok: A['effort.renewable']
       },

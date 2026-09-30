@@ -632,7 +632,7 @@
 
   function summaryScreen(s) {
     blocks = [];
-    const avatar = TW.buildAvatar(A, W, { id: state.id, updated: state.updated });
+    const avatar = TW.buildAvatar(A, W, { id: state.id, updated: state.updated, visited: state.visited });
     const json = JSON.stringify(avatar, null, 2);
     const total = TW.mock.estimate(A), service = TW.mock.serviceBucket(A);
     const vs = visibleScreens();
@@ -687,7 +687,9 @@
       h('div', { class: 'done-mark' }, icon('ph-fill ph-check')),
       h('h1', { tabindex: '-1' }, 'Profile submitted.'),
       h('p', { class: 'lede' }, 'The agent is searching now. Verified matches will be sent to your inbox.'),
-      h('div', { class: 'actions' }, h('button', { class: 'btn btn-ghost', type: 'button', onclick: () => go('summary', -1) }, 'Back to my profile')));
+      h('div', { class: 'actions' }, h('button', { class: 'btn btn-ghost', type: 'button', onclick: () => go('summary', -1) }, 'Back to my profile'),
+        h('span', { class: 'grow' }),
+        h('a', { class: 'btn btn-primary', href: '../dashboard/index.html' }, 'Go to my dashboard', icon('ph ph-arrow-right'))));
   }
 
   function focusHeading() {

@@ -1,0 +1,1151 @@
+{
+  "bgcsandieguito-org-0701d0cb": {
+    "url": "https://bgcsandieguito.org/about/educational-scholarship-program/",
+    "status": "review",
+    "major": [
+      {
+        "field": "renewable",
+        "award": "Leonard and Edith Polster Scholarship",
+        "a": false,
+        "b": true
+      },
+      {
+        "field": "levels",
+        "award": "BGC Northwest San Diego Trade, Technical & Vocational Scholarship",
+        "only_a": [],
+        "only_b": [
+          "trade"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "BGC Northwest San Diego Trade, Technical & Vocational Scholarship",
+        "conflicts": [
+          {
+            "a": "academic.status|eq|trade",
+            "b": "fuzzy|academic.majors,academic.status"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      },
+      {
+        "field": "renewable",
+        "award": "The James E. and Patricia Townsend Memorial Fund",
+        "a": false,
+        "b": true
+      }
+    ],
+    "minor": [
+      {
+        "field": "geo_scope",
+        "award": "Leonard and Edith Polster Scholarship",
+        "a": "county",
+        "b": "state"
+      },
+      {
+        "field": "geo_scope",
+        "award": "BGC Northwest San Diego Trade, Technical & Vocational Scholarship",
+        "a": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "The James E. and Patricia Townsend Memorial Fund",
+        "a": "county"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "cdnsm5-ss18-sharpschool-com-43ce0cb6": {
+    "url": "https://cdnsm5-ss18.sharpschool.com/UserFiles/Servers/Server_27732394/File/Academics/scholarships/2024%20DOWNTOWN%20SAN%20DIEGO%20LIONS%20CLUB%20SCHOLARSHIP%20APPLICATION.pdf",
+    "status": "review",
+    "major": [
+      {
+        "field": "need_based",
+        "award": "Downtown San Diego Lions Club Scholarship",
+        "a": "need",
+        "b": "either"
+      },
+      {
+        "field": "rules",
+        "award": "Downtown San Diego Lions Club Scholarship",
+        "conflicts": [
+          {
+            "a": "geo.high_school|in|garfieldhighschool,gomperspreparatoryacademy,hooverhighschool,kearnyhighschool,lincolnhighschool,marktwainhighschool,monarchschool,sandiegohighschool",
+            "b": "geo.high_school|in|garfieldhighschool,gompershighschool,hooverhighschool,kearnyhighschool,lincolnhighschool,monarchhighschool,sandiegohighschool,twainhighschool"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "provider_org",
+        "award": "Downtown San Diego Lions Club Scholarship",
+        "a": "Downtown San Diego Lions Club Welfare Foundation",
+        "b": "Downtown San Diego Lions Club"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "clarkedsfellowship-org-42c9aa90": {
+    "url": "https://clarkedsfellowship.org/",
+    "status": "review",
+    "major": [
+      {
+        "field": "levels",
+        "award": "William D. Clarke, Sr. Diplomatic Security Fellowship",
+        "only_a": [
+          "grad"
+        ],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "provider_org",
+        "award": "William D. Clarke, Sr. Diplomatic Security Fellowship",
+        "a": "U.S. Department of State (administered by The Washington Center)",
+        "b": "The Washington Center (funded by the U.S. Department of State)"
+      }
+    ]
+  },
+  "coca-colascholarsfoundation-org-62fea625": {
+    "url": "https://www.coca-colascholarsfoundation.org/apply/",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "dondiegoscholarship-org-0729677c": {
+    "url": "https://dondiegoscholarship.org/scholarships/",
+    "status": "review",
+    "major": [
+      {
+        "field": "award_only_in_A",
+        "name": "JLA Scholarship"
+      },
+      {
+        "field": "award_only_in_B",
+        "name": "Don Diego Junior Livestock Auction (JLA) Scholarship"
+      },
+      {
+        "field": "award_names",
+        "only_a": [
+          "4-h scholarship",
+          "ffa scholarship",
+          "jla scholarship",
+          "employee scholarship",
+          "exhibitor/participant scholarship",
+          "vocational education scholarship",
+          "cgw family foundation scholarship",
+          "liss family scholarship",
+          "dredge family scholarship",
+          "edwards family scholarship"
+        ],
+        "only_b": [
+          "don diego 4-h scholarship",
+          "don diego ffa scholarship",
+          "don diego junior livestock auction (jla) scholarship",
+          "don diego employee scholarship",
+          "don diego exhibitor/participant scholarship",
+          "don diego vocational education scholarship"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "4-H Scholarship",
+        "conflicts": [
+          {
+            "a": "affiliations.fraternal[].org|eq|grange",
+            "b": "fuzzy|affiliations.fraternal[].org,affiliations.member_org[].name"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "Vocational Education Scholarship",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "activities.work[].employer|in|delmarfairgrounds,delmarthoroughbredclub"
+        ]
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "foldsofhonor-org-65b90ded": {
+    "url": "https://foldsofhonor.org/scholarships/",
+    "status": "review",
+    "major": [
+      {
+        "field": "award_names",
+        "only_a": [
+          "military scholarships",
+          "first responder scholarships",
+          "higher education scholarship",
+          "children's fund scholarship"
+        ],
+        "only_b": [
+          "folds of honor military scholarships",
+          "folds of honor first responder scholarships"
+        ]
+      },
+      {
+        "field": "amount",
+        "award": "Folds of Honor Military Scholarships",
+        "a": [
+          0,
+          5000
+        ],
+        "b": [
+          0,
+          0
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "Folds of Honor Military Scholarships",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "academic.gpa|gte|2"
+        ]
+      },
+      {
+        "field": "amount",
+        "award": "Folds of Honor First Responder Scholarships",
+        "a": [
+          0,
+          5000
+        ],
+        "b": [
+          0,
+          0
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "Folds of Honor First Responder Scholarships",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "academic.gpa|gte|2"
+        ]
+      }
+    ],
+    "minor": [
+      {
+        "field": "apply_url",
+        "award": "Folds of Honor Military Scholarships",
+        "a": "https://foldsofhonor.org/scholarships/military-scholarships/",
+        "b": "https://foldsofhonor.org/scholarships/"
+      },
+      {
+        "field": "provider_org",
+        "award": "Folds of Honor Military Scholarships",
+        "a": "Folds of Honor Foundation",
+        "b": "Folds of Honor"
+      },
+      {
+        "field": "apply_url",
+        "award": "Folds of Honor First Responder Scholarships",
+        "a": "https://foldsofhonor.org/scholarships/first-responder-scholarships/",
+        "b": "https://foldsofhonor.org/scholarships/"
+      },
+      {
+        "field": "provider_org",
+        "award": "Folds of Honor First Responder Scholarships",
+        "a": "Folds of Honor Foundation",
+        "b": "Folds of Honor"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "girlscouts-org-629b7ab5": {
+    "url": "https://www.girlscouts.org/goldawardscholarship",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "GSUSA Gold Award Scholarship",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "fuzzy|academic.grad_date,academic.status"
+        ]
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "girlscouts-org-b4e2dc16": {
+    "url": "https://www.girlscouts.org/en/scholarships.All.All.html",
+    "status": "agree",
+    "major": [],
+    "minor": []
+  },
+  "kofc-org-cb89cd54": {
+    "url": "https://www.kofc.org/resources/scholarships/us-undergraduate-scholarships/",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "Knights of Columbus U.S. Undergraduate Scholarships",
+        "conflicts": [
+          {
+            "a": "affiliations.fraternal[].org|in|columbiansquires,knightsofcolumbus",
+            "b": "affiliations.fraternal[].org|eq|knightsofcolumbus"
+          }
+        ],
+        "only_a": [],
+        "only_b": [
+          "affiliations.fraternal[].org|eq|columbiansquires"
+        ]
+      }
+    ],
+    "minor": [
+      {
+        "field": "provider_org",
+        "award": "Knights of Columbus U.S. Undergraduate Scholarships",
+        "a": "Knights of Columbus Supreme Council",
+        "b": "Knights of Columbus"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "local3ibew-org-3c73104d": {
+    "url": "https://www.local3ibew.org/news/77th-annual-scholarship-awards-program",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "Michael Siegel Memorial Scholarship",
+        "conflicts": [],
+        "only_a": [
+          "fuzzy|academic.status"
+        ],
+        "only_b": [
+          "affiliations.union[].local|eq|3"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "IBEW Founders' Scholarship",
+        "conflicts": [],
+        "only_a": [
+          "fuzzy|academic.cip_codes,career.field"
+        ],
+        "only_b": [
+          "fuzzy|affiliations.union[].name"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "Educational & Cultural Trust Fund Scholarship Awards",
+        "conflicts": [
+          {
+            "a": "academic.status|eq|hssenior",
+            "b": "academic.status|in|hssenior,undergrad"
+          }
+        ],
+        "only_a": [
+          "academic.year|eq|1"
+        ],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "provider_org",
+        "award": "Michael Siegel Memorial Scholarship",
+        "a": "Local Union No. 3 IBEW Educational & Cultural Trust Fund",
+        "b": "Local Union No. 3 IBEW"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Michael Siegel Memorial Scholarship",
+        "a": "national",
+        "b": "state"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Educational & Cultural Trust Fund Scholarship Awards",
+        "a": "national",
+        "b": "state"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "mlkccsd-org-b65fde2b": {
+    "url": "https://www.mlkccsd.org/student-grants/",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "provider_org",
+        "award": "MLKCCSD Educational Grant",
+        "a": "Martin Luther King Jr. Community Choir of San Diego",
+        "b": "Martin Luther King Jr. Community Choir of San Diego (MLKCCSD)"
+      }
+    ]
+  },
+  "niaf-org-877bd389": {
+    "url": "https://www.niaf.org/programs/available-scholarships/",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "Donald Mazzoni Scholarship",
+        "conflicts": [],
+        "only_a": [
+          "fuzzy|identity.heritage"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "Richard Perrone Scholarship",
+        "conflicts": [
+          {
+            "a": "academic.cip_codes|prefix_any|11",
+            "b": "fuzzy|academic.cip_codes,academic.majors"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "The Graziadio Legacy Scholarship",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "academic.cip_codes|prefix_any|52"
+        ]
+      },
+      {
+        "field": "levels",
+        "award": "The Louis A. Caputo, Jr. Legal Scholarship",
+        "only_a": [],
+        "only_b": [
+          "undergrad",
+          "grad"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "The Louis A. Caputo, Jr. Legal Scholarship",
+        "conflicts": [],
+        "only_a": [
+          "fuzzy|academic.concentration,academic.majors,career.field"
+        ],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "apply_url",
+        "award": "A. Lucchetti Martino Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Agnes E. Vaghi Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Caroline Guarini Memorial Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Donald Mazzoni Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Emanuele Gianturco Memorial Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Ernest L. Pellegri Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Filomena C. Peloro Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Frank D. Stella Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Furci Family Scholarship Fund",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "LaMantia Family Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Joanne C. D'Amico Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Joseph and Margaret Rhodes Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "Massachusetts Italian American Charitable Society Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Massachusetts Italian American Charitable Society Scholarship",
+        "a": "state",
+        "b": "national"
+      },
+      {
+        "field": "apply_url",
+        "award": "Maurizio A. Gianturco Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "NIAF Frederick A. DeLuca Foundation Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "NIAF Gabelli Foundation Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "NIAF Gabelli Foundation Scholarship",
+        "a": "institution",
+        "b": "national"
+      },
+      {
+        "field": "apply_url",
+        "award": "NIAF Jim Cantalupo Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "NIAF Maaco Enterprises, Inc. Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "NIAF Maaco Enterprises, Inc. Scholarship",
+        "a": "state",
+        "b": "national"
+      },
+      {
+        "field": "apply_url",
+        "award": "NIAF Norman R. Peterson Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "NIAF Norman R. Peterson Scholarship",
+        "a": "institution",
+        "b": "national"
+      },
+      {
+        "field": "apply_url",
+        "award": "Richard Perrone Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Richard Perrone Scholarship",
+        "a": "state",
+        "b": "national"
+      },
+      {
+        "field": "apply_url",
+        "award": "Salvatore \"Sal\" Catanese Clark County Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Salvatore \"Sal\" Catanese Clark County Scholarship",
+        "a": "county",
+        "b": "national"
+      },
+      {
+        "field": "apply_url",
+        "award": "Salvatore \"Sal\" Catanese National Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "The Francesco and Mary Giambelli Foundation Study Abroad Scholarship at John Cabot University",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "The Francesco and Mary Giambelli Foundation Study Abroad Scholarship at John Cabot University",
+        "a": "institution",
+        "b": "national"
+      },
+      {
+        "field": "apply_url",
+        "award": "The Graziadio Legacy Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "The Graziadio Legacy Scholarship",
+        "a": "institution",
+        "b": "national"
+      },
+      {
+        "field": "apply_url",
+        "award": "The Louis A. Caputo, Jr. Legal Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "apply_url",
+        "award": "The Marnell Foundation Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "The Marnell Foundation Scholarship",
+        "a": "state",
+        "b": "national"
+      },
+      {
+        "field": "apply_url",
+        "award": "The Martini Foundation/National Italian American Foundation Villanova University Scholarship",
+        "a": "https://www.niaf.org/programs/scholarships/",
+        "b": "https://www.niaf.org/programs/available-scholarships/"
+      },
+      {
+        "field": "geo_scope",
+        "award": "The Martini Foundation/National Italian American Foundation Villanova University Scholarship",
+        "a": "institution",
+        "b": "national"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "sacregcf-org-fcb64336": {
+    "url": "https://www.sacregcf.org/students/",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "Bryan Potts Scholarship",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "fuzzy|academic.majors,academic.status"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "David Breaux Memorial Scholarship",
+        "conflicts": [
+          {
+            "a": "academic.status|eq|hssenior",
+            "b": "academic.status|in|hssenior,undergrad"
+          },
+          {
+            "a": "academic.year|eq|1",
+            "b": "fuzzy|academic.status,academic.year"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "Eugene and Thora Chin Scholarship Fund",
+        "conflicts": [
+          {
+            "a": "fuzzy|identity.heritage",
+            "b": "identity.heritage|contains_any|asian,pacificislander"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      },
+      {
+        "field": "levels",
+        "award": "Mary Ellen Dolcini Scholarship",
+        "only_a": [],
+        "only_b": [
+          "hs_senior"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "Paulsen Family Scholarship Fund",
+        "conflicts": [],
+        "only_a": [
+          "academic.status|in|hssenior,undergrad"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "Ramona Burnham Scholarship Foundation",
+        "conflicts": [
+          {
+            "a": "identity.heritage|contains_any|cuban,hispanicorlatino,mexican,puertorican",
+            "b": "identity.heritage|contains_any|hispanic,latino"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "Roy and Cynthia Kroener Family Scholarship",
+        "conflicts": [
+          {
+            "a": "geo.city|eq|davisca",
+            "b": "geo.city|eq|davis"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "Sarah A. Bonnifield Vietnam Veterans Scholarship Fund",
+        "conflicts": [],
+        "only_a": [
+          "affiliations.military[].who|in|grandparent,parent,self,spouse"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "Stolba/Sukkary Family Scholarship",
+        "conflicts": [
+          {
+            "a": "academic.status|eq|hssenior",
+            "b": "academic.status|in|hssenior,undergrad"
+          }
+        ],
+        "only_a": [
+          "academic.year|eq|1"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "SVVMA Registered Veterinary Technician (RVT) Scholarship",
+        "conflicts": [
+          {
+            "a": "fuzzy|academic.institution,geo.hs_county",
+            "b": "geo.hs_county|in|eldoradocountyca,placercountyca,sacramentocountyca,yolocountyca"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "The AVID-College Horizons Scholarship",
+        "conflicts": [],
+        "only_a": [
+          "fuzzy|academic.institution"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "The Graydon and Myrth Fox Scholarship",
+        "conflicts": [],
+        "only_a": [
+          "affiliations.military[].who|in|grandparent,parent,self,spouse"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "renewable",
+        "award": "The Kathleen Barsotti Scholarship for Sustainable Agriculture",
+        "a": false,
+        "b": true
+      },
+      {
+        "field": "rules",
+        "award": "The Kristi Karacozoff Memorial Scholarship",
+        "conflicts": [
+          {
+            "a": "circumstances.disability|contains_any|chronic",
+            "b": "fuzzy|circumstances.disability"
+          }
+        ],
+        "only_a": [
+          "academic.status|in|hssenior,undergrad"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "levels",
+        "award": "The Max and Nadine Dimick Scholarship",
+        "only_a": [
+          "hs_senior",
+          "undergrad"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "The Max and Nadine Dimick Scholarship",
+        "conflicts": [],
+        "only_a": [
+          "academic.status|in|hssenior,undergrad"
+        ],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "geo_scope",
+        "award": "Bryan Potts Scholarship",
+        "a": "school_district",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Carroylin and Robert Threlkel Scholarship Fund",
+        "a": "national",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Creative Arts and Science Scholarship",
+        "a": "school_district",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Dillard-Jackson Family Scholarship Fund",
+        "a": "school_district",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Erin Aaberg Givans Memorial Scholarship",
+        "a": "state",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Julia R. Millon Memorial Scholarship",
+        "a": "school_district",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Lionakis Foundation Scholarship Program",
+        "a": "national",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Li Family Charitable Foundation Scholarship",
+        "a": "national",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Mary Ellen Dolcini Scholarship",
+        "a": "school_district",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "NorYo Opportunity Scholarship",
+        "a": "city",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Richard Wiesner Engineering Scholarship",
+        "a": "institution",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Ramona Burnham Scholarship Foundation",
+        "a": "school_district",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Richard & Lucille Harrison Scholarship",
+        "a": "school_district",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Roy and Cynthia Kroener Family Scholarship",
+        "a": "city",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Sacramento Police Foundation Scholarship",
+        "a": "state",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Sarah A. Bonnifield Vietnam Veterans Scholarship Fund",
+        "a": "national",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Saylor Family Scholarship",
+        "a": "school_district",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "The Sacramento Valley Veterinary Medical Association (SVVMA) Charitable Giving Committee Student Scholarship – UC Davis",
+        "a": "institution",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "The Graydon and Myrth Fox Scholarship",
+        "a": "national",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "The Mark McCollum \"Ride On\" Scholarship",
+        "a": "institution",
+        "b": "county"
+      },
+      {
+        "field": "geo_scope",
+        "award": "The Pacific Coast Building Products Scholarship",
+        "a": "national",
+        "b": "county"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "salutetoeducation-com-f46c7573": {
+    "url": "https://www.salutetoeducation.com/",
+    "status": "agree",
+    "major": [],
+    "minor": []
+  },
+  "santacruzrotary-com-d89c43e9": {
+    "url": "https://www.santacruzrotary.com/academic-scholarship-program.html",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "sbfoundation-org-7691bcc9": {
+    "url": "https://sbfoundation.org/",
+    "status": "agree",
+    "major": [],
+    "minor": []
+  },
+  "sdsu-academicworks-com-41c29bb9": {
+    "url": "https://sdsu.academicworks.com/opportunities/17312",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "sfsu-academicworks-com-411f7f62": {
+    "url": "https://sfsu.academicworks.com/opportunities/4904",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "Community Foundation of Sonoma County Scholarships",
+        "conflicts": [],
+        "only_a": [
+          "fuzzy|academic.enrollment,academic.status"
+        ],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "sfsu-academicworks-com-6c92e48f": {
+    "url": "https://sfsu.academicworks.com/opportunities/5729",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "Scholarship Foundation of Santa Barbara",
+        "conflicts": [
+          {
+            "a": "identity.citizenship|in|permanentresident,uscitizen",
+            "b": "identity.citizenship|in|permanentresident,uscitizen,usnational"
+          },
+          {
+            "a": "fuzzy|academic.enrollment",
+            "b": "academic.enrollment|eq|fulltime"
+          }
+        ],
+        "only_a": [
+          "academic.status|in|grad,hssenior,undergrad"
+        ],
+        "only_b": [
+          "fuzzy|geo.high_school,geo.hs_county"
+        ]
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "socialwork-sdsu-edu-4b2003a5": {
+    "url": "https://socialwork.sdsu.edu/stipend/msw",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "provider_org",
+        "award": "California Title IV-E MSW Child Welfare Stipend",
+        "a": "San Diego State University School of Social Work (Cal IV-E program)",
+        "b": "San Diego State University School of Social Work (Cal IV-E)"
+      }
+    ]
+  },
+  "straussfoundation-org-39dcefb3": {
+    "url": "https://www.straussfoundation.org/apply-1",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "geo_scope",
+        "award": "Donald A. Strauss Public Service Scholarship",
+        "b": "national"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "wsac-wa-gov-73e1dafd": {
+    "url": "https://wsac.wa.gov/american-indian-endowed-scholarship",
+    "status": "review",
+    "major": [
+      {
+        "field": "renewable",
+        "award": "American Indian Endowed Scholarship",
+        "a": true,
+        "b": false
+      },
+      {
+        "field": "levels",
+        "award": "American Indian Endowed Scholarship",
+        "only_a": [],
+        "only_b": [
+          "hs_senior"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "American Indian Endowed Scholarship",
+        "conflicts": [
+          {
+            "a": "academic.status|in|grad,undergrad",
+            "b": "academic.status|in|grad,hssenior,undergrad"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  }
+}

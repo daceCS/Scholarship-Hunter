@@ -1,0 +1,388 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scholarshiphunter.local/contract/scholarship.schema.json",
+  "title": "Scholarship",
+  "description": "One published award. This is the shape extraction (Claude Code by hand, later the pipeline) must produce, and what the importer loads into `scholarships` + `scholarship_rules` + `field_provenance`. Eligibility is a list of groups: EVERY group must pass; within a group ANY one rule may pass. Rule fields must exist in vocabulary.json (checked by check.mjs, not expressible in JSON Schema).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "provider_org",
+    "apply_url",
+    "source_url",
+    "amount",
+    "deadline",
+    "cycle_status",
+    "eligibility",
+    "verified_at",
+    "confidence"
+  ],
+  "properties": {
+    "$comment": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3
+    },
+    "provider_org": {
+      "type": "string",
+      "minLength": 2
+    },
+    "provider_type": {
+      "enum": [
+        "community_foundation",
+        "bar_association",
+        "employer",
+        "union",
+        "fraternal",
+        "university",
+        "government",
+        "professional_society",
+        "private_foundation",
+        "nonprofit",
+        "other"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "apply_url": {
+      "type": "string",
+      "pattern": "^https?://"
+    },
+    "source_url": {
+      "type": "string",
+      "pattern": "^https?://",
+      "description": "The page the facts were read from."
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "min",
+        "max"
+      ],
+      "properties": {
+        "min": {
+          "type": "number",
+          "minimum": 0
+        },
+        "max": {
+          "type": "number",
+          "minimum": 0
+        },
+        "renewable": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "deadline": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Next deadline, ISO date. Null when cycle_status is unknown or rolling."
+    },
+    "deadline_kind": {
+      "enum": [
+        "fixed",
+        "rolling",
+        "annual_estimate"
+      ],
+      "default": "fixed"
+    },
+    "cycle_status": {
+      "enum": [
+        "open",
+        "closed",
+        "upcoming",
+        "unknown"
+      ]
+    },
+    "geo_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Coarse scope used by the database filter before rules run. Rules still carry the precise geography.",
+      "required": [
+        "level"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "national",
+            "state",
+            "county",
+            "city",
+            "school_district",
+            "institution"
+          ]
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          }
+        }
+      }
+    },
+    "levels": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "hs_senior",
+          "hs_underclass",
+          "undergrad",
+          "grad",
+          "returning",
+          "trade"
+        ]
+      },
+      "description": "Which academic.status values the award serves. Empty or missing means any."
+    },
+    "effort": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What applying costs. Compared against the user's effort.* preferences by the database filter.",
+      "properties": {
+        "essay_words": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "0 = no essay, null = essay of unspecified length"
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "video",
+              "portfolio",
+              "interview",
+              "project",
+              "test"
+            ]
+          }
+        },
+        "recs_required": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "need_based": {
+      "enum": [
+        "need",
+        "merit",
+        "either"
+      ],
+      "description": "'need' rules apply only when the user gave financial answers."
+    },
+    "service_obligation": {
+      "type": "boolean",
+      "description": "True routes the award to the separate service bucket."
+    },
+    "est_pool_size": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "eligibility": {
+      "type": "array",
+      "description": "AND of groups. Empty array means open to everyone (rare; double-check).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "any_of"
+        ],
+        "properties": {
+          "any_of": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/rule"
+            }
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "description": "Where non-rule facts came from. Rule provenance lives on each rule's source_quote.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field",
+          "source_quote"
+        ],
+        "properties": {
+          "field": {
+            "enum": [
+              "name",
+              "amount",
+              "deadline",
+              "apply_url",
+              "geo_scope",
+              "levels",
+              "effort",
+              "need_based",
+              "service_obligation"
+            ]
+          },
+          "source_quote": {
+            "type": "string",
+            "minLength": 3
+          }
+        }
+      }
+    },
+    "verified_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "review",
+        "live",
+        "retired"
+      ],
+      "default": "draft"
+    },
+    "origin": {
+      "enum": [
+        "seed_manual",
+        "seed_assisted",
+        "crawler",
+        "user_report"
+      ],
+      "default": "seed_assisted"
+    }
+  },
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "source_quote"
+      ],
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "A path from vocabulary.json with role=eligibility, e.g. geo.county or affiliations.union[].name"
+        },
+        "op": {
+          "enum": [
+            "eq",
+            "in",
+            "not_in",
+            "gte",
+            "lte",
+            "between",
+            "contains_any",
+            "contains_all",
+            "prefix_any",
+            "present",
+            "is_true",
+            "is_false"
+          ]
+        },
+        "value": {},
+        "kind": {
+          "enum": [
+            "hard",
+            "fuzzy"
+          ],
+          "description": "hard = decided by code. fuzzy = sent to Jev with only relevant_fields."
+        },
+        "description": {
+          "type": "string",
+          "description": "Fuzzy rules only: the criterion in the award's own words, as the question Jev will be asked."
+        },
+        "relevant_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Fuzzy rules only: the profile paths Jev may see."
+        },
+        "source_quote": {
+          "type": "string",
+          "minLength": 3,
+          "description": "Exact text from the source page this rule was read from."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "fuzzy"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "description",
+              "relevant_fields"
+            ],
+            "properties": {
+              "relevant_fields": {
+                "minItems": 1
+              }
+            }
+          },
+          "else": {
+            "required": [
+              "field",
+              "op"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "op": {
+                      "enum": [
+                        "present",
+                        "is_true",
+                        "is_false"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "not": {
+                    "required": [
+                      "value"
+                    ]
+                  }
+                },
+                "else": {
+                  "required": [
+                    "value"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

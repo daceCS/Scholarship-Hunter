@@ -1,0 +1,22 @@
+{
+  "name": "scholarship-hunter-test-sets",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "node selftest.mjs",
+    "snapshot": "node snapshot.mjs",
+    "check-labels": "node check-labels.mjs",
+    "score": "node score.mjs",
+    "new-label": "node new-label.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "cheerio": "^1.2.0",
+    "pdf-parse": "^2.4.5"
+  },
+  "private": true
+}

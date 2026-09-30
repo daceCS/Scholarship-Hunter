@@ -324,9 +324,13 @@ window.TW = window.TW || {};
             { key: 'language', label: 'Language', type: 'autocomplete', source: 'languages', placeholder: 'e.g. Spanish' },
             { key: 'level', label: 'Level', type: 'single', ui: 'select', options: O(['basic', 'Basic'], ['conversational', 'Conversational'], ['fluent', 'Fluent'], ['native', 'Native']) }
           ] },
+        { id: 'id.citizenship', type: 'single', yield: 'low',
+          prompt: 'What is your U.S. citizenship or residency status?',
+          hint: 'Many awards require U.S. citizenship or permanent residency, and some are open to more. If you skip this, we show those awards as possible matches instead of ruling them out.',
+          options: O(['us_citizen', 'U.S. citizen', 'By birth or naturalization'], ['us_national', 'U.S. national', 'For example, born in American Samoa'], ['permanent_resident', 'Lawful permanent resident', 'Green card holder'], ['refugee_asylee', 'Refugee or asylee'], ['daca_tps', 'DACA or TPS'], ['other', 'Another status', 'A visa, or any status not listed']) },
         { id: 'id.immigration_context', type: 'single', ui: 'cards', yield: 'med',
           prompt: 'Are you an immigrant, refugee, or child of immigrants?',
-          hint: 'We never ask about legal status.',
+          hint: 'Optional. You can skip any question here.',
           options: O(['immigrant', 'I am an immigrant'], ['refugee', 'I am a refugee'], ['child_of_immigrants', 'My parent or parents immigrated'], ['none', 'None of these']) }
       ] },
 

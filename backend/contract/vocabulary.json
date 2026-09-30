@@ -1,0 +1,991 @@
+{
+  "$comment": "The tag vocabulary. Single source of truth for profile fields and scholarship rule fields. Paths mirror the avatar emitted by questionnaire/avatar.js. `[]` marks a repeatable group; a rule on `a[].b` passes if ANY element matches. role=eligibility fields can appear in rules; role=preference fields (effort, exclusions) are handled by the match engine's database filter. source=derived fields are computed server-side and never asked. withheld_key is the id suffix the frontend writes into the section's `withheld` array when the user picks 'prefer not to answer'.",
+  "version": 1,
+  "ops": {
+    "eq": "field equals value",
+    "in": "field is one of value[]",
+    "not_in": "field is none of value[]",
+    "gte": "number >= value",
+    "lte": "number <= value",
+    "between": "value = [min, max] inclusive",
+    "contains_any": "list field shares at least one item with value[]",
+    "contains_all": "list field includes every item of value[]",
+    "prefix_any": "some list item starts with any prefix in value[] (CIP codes)",
+    "present": "field has any value (value omitted)",
+    "is_true": "bool field is true (value omitted)",
+    "is_false": "bool field is false (value omitted)"
+  },
+  "ops_by_type": {
+    "enum": [
+      "eq",
+      "in",
+      "not_in",
+      "present"
+    ],
+    "enum_list": [
+      "contains_any",
+      "contains_all",
+      "present"
+    ],
+    "string": [
+      "eq",
+      "in",
+      "not_in",
+      "present"
+    ],
+    "string_list": [
+      "contains_any",
+      "contains_all",
+      "prefix_any",
+      "present"
+    ],
+    "number": [
+      "gte",
+      "lte",
+      "between",
+      "eq",
+      "present"
+    ],
+    "bool": [
+      "is_true",
+      "is_false",
+      "present"
+    ]
+  },
+  "fields": [
+    {
+      "path": "academic.status",
+      "type": "enum",
+      "values": [
+        "hs_senior",
+        "hs_underclass",
+        "undergrad",
+        "grad",
+        "returning",
+        "trade"
+      ],
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "academic.institution",
+      "type": "string",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "academic.institution_ipeds",
+      "type": "string",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "derived",
+      "derived_from": [
+        "academic.institution"
+      ]
+    },
+    {
+      "path": "academic.year",
+      "type": "number",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "academic.majors",
+      "type": "string_list",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked",
+      "note": "Free text. Prefer academic.cip_codes in rules."
+    },
+    {
+      "path": "academic.cip_codes",
+      "type": "string_list",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "derived",
+      "derived_from": [
+        "academic.majors"
+      ],
+      "note": "CIP 2020 codes, e.g. 51.3801. Match families with prefix_any (51.38)."
+    },
+    {
+      "path": "academic.concentration",
+      "type": "string",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "academic.gpa",
+      "type": "number",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked",
+      "min": 0,
+      "max": 5
+    },
+    {
+      "path": "academic.gpa_scale",
+      "type": "enum",
+      "values": [
+        "unweighted",
+        "weighted"
+      ],
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "academic.grad_date",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}$",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "academic.enrollment",
+      "type": "enum",
+      "values": [
+        "full_time",
+        "part_time",
+        "transfer"
+      ],
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "geo.city",
+      "type": "string",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "geo.state",
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "geo.zip",
+      "type": "string",
+      "pattern": "^\\d{5}$",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "geo.county",
+      "type": "string",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "derived",
+      "derived_from": [
+        "geo.zip"
+      ],
+      "note": "Canonical form: 'San Diego County, CA'."
+    },
+    {
+      "path": "geo.congressional_district",
+      "type": "string",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "derived",
+      "derived_from": [
+        "geo.zip"
+      ],
+      "note": "Form: CA-48."
+    },
+    {
+      "path": "geo.school_district",
+      "type": "string",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "derived",
+      "derived_from": [
+        "geo.high_school"
+      ]
+    },
+    {
+      "path": "geo.high_school",
+      "type": "string",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "geo.hs_county",
+      "type": "string",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked",
+      "note": "Only asked when it differs from the current county; matcher should fall back to geo.county."
+    },
+    {
+      "path": "geo.residency",
+      "type": "enum",
+      "values": [
+        "in_state",
+        "out_of_state",
+        "undecided"
+      ],
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.employer[].name",
+      "type": "string",
+      "canonical": "employers",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.employer[].relationship",
+      "type": "enum",
+      "values": [
+        "parent",
+        "guardian",
+        "grandparent",
+        "sibling",
+        "self"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.employer[].status",
+      "type": "enum",
+      "values": [
+        "current",
+        "former"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.union[].name",
+      "type": "string",
+      "canonical": "unions",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.union[].local",
+      "type": "string",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.military[].who",
+      "type": "enum",
+      "values": [
+        "self",
+        "parent",
+        "grandparent",
+        "spouse"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.military[].branch",
+      "type": "enum",
+      "values": [
+        "army",
+        "navy",
+        "air_force",
+        "marines",
+        "coast_guard",
+        "space_force"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.military[].status",
+      "type": "enum",
+      "values": [
+        "active",
+        "reserve",
+        "guard",
+        "veteran",
+        "retired"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.military[].era",
+      "type": "enum_list",
+      "values": [
+        "vietnam",
+        "gulf",
+        "oef_oif",
+        "current",
+        "other"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.military[].disability_rating",
+      "type": "bool",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "military.disability_rating"
+    },
+    {
+      "path": "affiliations.military[].killed_or_wounded",
+      "type": "bool",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "military.killed_or_wounded"
+    },
+    {
+      "path": "affiliations.fraternal[].org",
+      "type": "string",
+      "canonical": "fraternal",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.fraternal[].chapter",
+      "type": "string",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.fraternal[].member",
+      "type": "enum",
+      "values": [
+        "self",
+        "parent",
+        "grandparent"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.religious[].tradition",
+      "type": "string",
+      "canonical": "traditions",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "religious"
+    },
+    {
+      "path": "affiliations.religious[].denomination",
+      "type": "string",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "religious"
+    },
+    {
+      "path": "affiliations.religious[].congregation",
+      "type": "string",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "religious"
+    },
+    {
+      "path": "affiliations.member_org[].name",
+      "type": "string",
+      "canonical": "memberOrgs",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.member_org[].type",
+      "type": "enum",
+      "values": [
+        "credit_union",
+        "electric_coop",
+        "farm_bureau",
+        "insurer",
+        "other"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "affiliations.professional",
+      "type": "string_list",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked",
+      "suggested": [
+        "nhs",
+        "ptk",
+        "honors_program",
+        "student_gov",
+        "greek",
+        "rotc",
+        "deca",
+        "fbla",
+        "hosa",
+        "nsbe",
+        "shpe",
+        "swe"
+      ]
+    },
+    {
+      "path": "identity.heritage",
+      "type": "string_list",
+      "canonical": "heritage",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "heritage"
+    },
+    {
+      "path": "identity.tribal.status",
+      "type": "enum",
+      "values": [
+        "enrolled",
+        "eligible",
+        "descendant",
+        "no"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "tribal"
+    },
+    {
+      "path": "identity.tribal.nation",
+      "type": "string",
+      "canonical": "tribes",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "tribe_name"
+    },
+    {
+      "path": "identity.first_gen",
+      "type": "bool",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "first_gen"
+    },
+    {
+      "path": "identity.citizenship",
+      "type": "enum",
+      "values": [
+        "us_citizen",
+        "us_national",
+        "permanent_resident",
+        "refugee_asylee",
+        "daca_tps",
+        "other"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "citizenship",
+      "note": "Asked in the sensitive phase and skippable. Skipped means unknown (possible match), never ineligible. \"other\" covers visas and anything not listed; it cannot satisfy rules that name refugee, asylee, parolee or Cuban-Haitian entrant categories individually."
+    },
+    {
+      "path": "identity.languages[].lang",
+      "type": "string",
+      "note": "ISO 639 code, e.g. es",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "languages"
+    },
+    {
+      "path": "identity.languages[].level",
+      "type": "enum",
+      "values": [
+        "basic",
+        "conversational",
+        "fluent",
+        "native"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "languages"
+    },
+    {
+      "path": "identity.immigration_context",
+      "type": "enum",
+      "values": [
+        "immigrant",
+        "refugee",
+        "child_of_immigrants",
+        "none"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "immigration_context"
+    },
+    {
+      "path": "identity.gender",
+      "type": "enum",
+      "values": [
+        "woman",
+        "man",
+        "nonbinary",
+        "other"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "gender"
+    },
+    {
+      "path": "identity.lgbtq",
+      "type": "bool",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "lgbtq"
+    },
+    {
+      "path": "circumstances.disability",
+      "type": "enum_list",
+      "open": true,
+      "values": [
+        "mobility",
+        "learning",
+        "mental_health",
+        "sensory",
+        "chronic",
+        "neurodivergent"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "disability"
+    },
+    {
+      "path": "circumstances.family_illness",
+      "type": "string",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "family_illness"
+    },
+    {
+      "path": "circumstances.foster",
+      "type": "enum",
+      "values": [
+        "foster",
+        "adopted",
+        "relative",
+        "none"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "foster"
+    },
+    {
+      "path": "circumstances.caregiver",
+      "type": "bool",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "caregiver"
+    },
+    {
+      "path": "circumstances.dependents",
+      "type": "enum",
+      "values": [
+        "none",
+        "dependents",
+        "single_parent"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "dependents"
+    },
+    {
+      "path": "circumstances.housing_instability",
+      "type": "bool",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "housing"
+    },
+    {
+      "path": "circumstances.parent_status",
+      "type": "enum_list",
+      "values": [
+        "deceased",
+        "disabled",
+        "incarcerated",
+        "separated"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "parent_status"
+    },
+    {
+      "path": "financial.fafsa_filed",
+      "type": "bool",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "fafsa"
+    },
+    {
+      "path": "financial.sai",
+      "type": "number",
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "sai",
+      "min": -1500,
+      "max": 999999
+    },
+    {
+      "path": "financial.dependency",
+      "type": "enum",
+      "values": [
+        "dependent",
+        "independent"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "dependency"
+    },
+    {
+      "path": "financial.income_band",
+      "type": "enum",
+      "values": [
+        "lt30",
+        "30_48",
+        "48_75",
+        "75_110",
+        "110_150",
+        "150plus"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "income_band"
+    },
+    {
+      "path": "financial.current_aid",
+      "type": "enum_list",
+      "values": [
+        "pell",
+        "state_grant",
+        "institutional",
+        "private",
+        "none"
+      ],
+      "phase": "sensitive",
+      "role": "eligibility",
+      "source": "asked",
+      "sensitive": true,
+      "withheld_key": "current_aid"
+    },
+    {
+      "path": "activities.extracurricular",
+      "type": "enum_list",
+      "open": true,
+      "values": [
+        "sports",
+        "music",
+        "theater",
+        "visual_arts",
+        "volunteering",
+        "student_media",
+        "youth_group",
+        "community_service"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "activities.competitions",
+      "type": "enum_list",
+      "open": true,
+      "values": [
+        "debate",
+        "robotics",
+        "ffa",
+        "4h",
+        "marching_band",
+        "esports",
+        "science_fair",
+        "model_un",
+        "decathlon"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "activities.unusual_skills",
+      "type": "string_list",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "activities.built",
+      "type": "string_list",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "activities.work[].employer",
+      "type": "string",
+      "canonical": "employers",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "activities.work[].industry",
+      "type": "string",
+      "canonical": "industries",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "activities.work[].role",
+      "type": "string",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "activities.work[].dates",
+      "type": "string",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "activities.leadership",
+      "type": "string_list",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "career.field",
+      "type": "string",
+      "canonical": "careers",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "career.sectors",
+      "type": "enum_list",
+      "values": [
+        "federal",
+        "defense",
+        "state_local",
+        "nonprofit",
+        "private",
+        "academia"
+      ],
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "career.target_employers",
+      "type": "string_list",
+      "phase": "branch",
+      "role": "eligibility",
+      "source": "asked"
+    },
+    {
+      "path": "career.service_obligation",
+      "type": "enum",
+      "values": [
+        "yes",
+        "depends",
+        "no"
+      ],
+      "phase": "branch",
+      "role": "preference",
+      "source": "asked",
+      "note": "Preference, not eligibility: routes service-obligation awards into their own bucket."
+    },
+    {
+      "path": "effort.min_award_usd",
+      "type": "number",
+      "phase": "core",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "effort.hours_per_week",
+      "type": "enum",
+      "values": [
+        "lt1",
+        "1_3",
+        "3_6",
+        "6plus"
+      ],
+      "phase": "core",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "effort.essay",
+      "type": "enum",
+      "phase": "core",
+      "role": "preference",
+      "source": "asked",
+      "note": "no = no essays, short = 500 words or fewer, any = any length. Compared with scholarship effort.essay_words by the database filter.",
+      "values": [
+        "no",
+        "short",
+        "any"
+      ]
+    },
+    {
+      "path": "effort.formats_ok",
+      "type": "enum_list",
+      "values": [
+        "video",
+        "portfolio",
+        "interview",
+        "project",
+        "test"
+      ],
+      "phase": "core",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "effort.recs",
+      "type": "enum",
+      "values": [
+        "yes",
+        "maybe",
+        "no"
+      ],
+      "phase": "core",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "effort.deadline_floor_days",
+      "type": "number",
+      "phase": "core",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "effort.renewable_ok",
+      "type": "bool",
+      "phase": "core",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "exclusions.applied",
+      "type": "string_list",
+      "phase": "history",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "exclusions.won",
+      "type": "string_list",
+      "phase": "history",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "exclusions.rejected",
+      "type": "string_list",
+      "phase": "history",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "exclusions.blocked_providers",
+      "type": "string_list",
+      "phase": "history",
+      "role": "preference",
+      "source": "asked"
+    },
+    {
+      "path": "phases_completed",
+      "type": "enum_list",
+      "values": [
+        "core",
+        "branch",
+        "sensitive",
+        "history"
+      ],
+      "phase": "core",
+      "role": "meta",
+      "source": "asked",
+      "note": "Phases the user moved past (sensitive only with consent). A field whose phase is not listed is UNKNOWN, not \"no\", because empty answers are pruned."
+    }
+  ]
+}

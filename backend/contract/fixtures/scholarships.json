@@ -1,0 +1,79 @@
+[
+  {
+    "$comment": "ILLUSTRATIVE fixture for testing the contract. Not a real award; do not import.",
+    "name": "Example County Nursing Futures Award",
+    "provider_org": "Example Community Foundation",
+    "provider_type": "community_foundation",
+    "apply_url": "https://example.org/apply",
+    "source_url": "https://example.org/scholarships/nursing",
+    "amount": { "min": 2500, "max": 5000, "renewable": true },
+    "deadline": "2026-11-14",
+    "cycle_status": "open",
+    "geo_scope": { "level": "county", "states": ["CA"] },
+    "levels": ["hs_senior", "undergrad"],
+    "effort": { "essay_words": 500, "formats": [], "recs_required": 2 },
+    "need_based": "either",
+    "service_obligation": false,
+    "eligibility": [
+      { "any_of": [{ "field": "geo.county", "op": "in", "value": ["San Diego County, CA"], "kind": "hard", "source_quote": "open to residents of San Diego County" }] },
+      { "any_of": [{ "field": "academic.cip_codes", "op": "prefix_any", "value": ["51.38"], "kind": "hard", "source_quote": "pursuing a career in nursing" }] },
+      { "any_of": [{
+        "kind": "fuzzy",
+        "description": "Does the student show demonstrated community leadership?",
+        "relevant_fields": ["activities.leadership", "activities.extracurricular"],
+        "source_quote": "demonstrated community leadership"
+      }] }
+    ],
+    "provenance": [
+      { "field": "amount", "source_quote": "Awards range from $2,500 to $5,000" },
+      { "field": "deadline", "source_quote": "Applications due November 14" }
+    ],
+    "verified_at": "2026-09-28",
+    "confidence": 0.9
+  },
+  {
+    "$comment": "ILLUSTRATIVE fixture. OR-group: parent OR grandparent union member.",
+    "name": "Example Local Union Members' Children Scholarship",
+    "provider_org": "Example IBEW Local",
+    "provider_type": "union",
+    "apply_url": "https://example.org/union/apply",
+    "source_url": "https://example.org/union/scholarship",
+    "amount": { "min": 1500, "max": 1500 },
+    "deadline": "2027-02-10",
+    "cycle_status": "upcoming",
+    "geo_scope": { "level": "national" },
+    "need_based": "merit",
+    "service_obligation": false,
+    "eligibility": [
+      { "any_of": [{ "field": "affiliations.union[].name", "op": "in", "value": ["IBEW"], "kind": "hard", "source_quote": "children of IBEW members" }] },
+      { "any_of": [{ "field": "academic.gpa", "op": "gte", "value": 3.0, "kind": "hard", "source_quote": "minimum 3.0 GPA" }] },
+      { "any_of": [
+        { "field": "academic.status", "op": "eq", "value": "hs_senior", "kind": "hard", "source_quote": "high school seniors" },
+        { "field": "academic.status", "op": "eq", "value": "undergrad", "kind": "hard", "source_quote": "or current undergraduates" }
+      ] }
+    ],
+    "verified_at": "2026-09-28",
+    "confidence": 0.85
+  },
+  {
+    "$comment": "ILLUSTRATIVE fixture. Service-obligation bucket.",
+    "name": "Example Cyber Service Scholarship",
+    "provider_org": "Example Federal Program",
+    "provider_type": "government",
+    "apply_url": "https://example.gov/apply",
+    "source_url": "https://example.gov/program",
+    "amount": { "min": 20000, "max": 40000, "renewable": true },
+    "deadline": "2026-12-01",
+    "cycle_status": "open",
+    "geo_scope": { "level": "national" },
+    "levels": ["undergrad", "grad"],
+    "need_based": "merit",
+    "service_obligation": true,
+    "eligibility": [
+      { "any_of": [{ "field": "academic.cip_codes", "op": "prefix_any", "value": ["11.10", "11.07"], "kind": "hard", "source_quote": "cybersecurity or computer science" }] },
+      { "any_of": [{ "field": "academic.gpa", "op": "gte", "value": 3.0, "kind": "hard", "source_quote": "3.0 GPA or higher" }] }
+    ],
+    "verified_at": "2026-09-28",
+    "confidence": 0.8
+  }
+]

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gold label for one snapshotted page",
+  "description": "Also the shape an extractor must output for a page (plus optional per-scholarship confidence, already in the scholarship schema). Each entry of `scholarships` is validated separately against backend/contract/scholarship.schema.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "page_type",
+    "is_scholarship_page",
+    "scholarships"
+  ],
+  "properties": {
+    "page_type": {
+      "enum": [
+        "single",
+        "listing",
+        "not_scholarship",
+        "pdf_form"
+      ]
+    },
+    "is_scholarship_page": {
+      "type": "boolean"
+    },
+    "scholarships": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "follow_links": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^https?://"
+      }
+    },
+    "labeler": {
+      "type": "string"
+    },
+    "labeled_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "review_status": {
+      "enum": [
+        "draft",
+        "agreed",
+        "adjudicated",
+        "reviewed",
+        "second_look"
+      ],
+      "description": "draft = one model draft; agreed = two independent drafts matched; adjudicated = a third model settled a disagreement between two drafts; reviewed = a person checked it; second_look = checked twice."
+    },
+    "from_scratch": {
+      "type": "boolean",
+      "description": "Labeled by a human without seeing a model draft (the anchoring-check subset)."
+    },
+    "vocabulary_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Rules on the page the vocabulary cannot express, in plain words."
+    },
+    "notes": {
+      "type": "string"
+    },
+    "award_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Listing pages: names of the individual awards the page mentions when their details are not on the page (so they cannot be full scholarship records). Scored later as award recall."
+    },
+    "drafted_by": {
+      "type": "string",
+      "description": "Who wrote the draft this label started from, e.g. claude. Absent for from-scratch labels."
+    },
+    "adjudication": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "unsure": {
+          "type": "boolean"
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Set on adjudicated labels: whether the adjudicator flagged doubt, and why."
+    }
+  }
+}

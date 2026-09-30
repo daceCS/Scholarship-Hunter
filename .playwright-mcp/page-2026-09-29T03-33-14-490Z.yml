@@ -1,0 +1,300 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Tuitionwing home" [ref=e4] [cursor=pointer]:
+        - /url: ../landing/index.html
+        - generic [ref=e5]: 
+        - generic [ref=e7]: Tuitionwing
+      - generic [ref=e8]: Sample profile
+      - link " Edit profile" [ref=e9] [cursor=pointer]:
+        - /url: ../questionnaire/index.html
+        - generic [ref=e10]: 
+        - text: Edit profile
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]: Dashboard
+        - heading [level=1] [ref=e15]:
+          - text: You could apply for
+          - emphasis [ref=e16]: "45"
+          - text: awards.
+        - paragraph [ref=e17]: Here are the strongest matches for your profile right now.
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]: $12,000
+          - text: Open in top matches
+        - generic [ref=e21]:
+          - generic [ref=e22]: "6"
+          - text: Not yet applied
+        - generic [ref=e23]:
+          - generic [ref=e24]: Nov 14
+          - text: Next deadline
+    - generic [ref=e25]:
+      - region [ref=e26]:
+        - generic [ref=e27]:
+          - heading "Your matches" [level=2] [ref=e28]
+          - combobox "Sort matches" [ref=e29]:
+            - option "Best match" [selected]
+            - option "Highest award"
+            - option "Soonest deadline"
+        - group "Filter matches" [ref=e30]:
+          - button "All 6" [pressed] [ref=e31] [cursor=pointer]:
+            - text: All
+            - generic [ref=e32]: "6"
+          - button "Saved 0" [ref=e33] [cursor=pointer]:
+            - text: Saved
+            - generic [ref=e34]: "0"
+          - button "Applying 0" [ref=e35] [cursor=pointer]:
+            - text: Applying
+            - generic [ref=e36]: "0"
+          - button "Applied 0" [ref=e37] [cursor=pointer]:
+            - text: Applied
+            - generic [ref=e38]: "0"
+          - button "Dismissed 0" [ref=e39] [cursor=pointer]:
+            - text: Dismissed
+            - generic [ref=e40]: "0"
+        - generic [ref=e41]:
+          - article [ref=e42]:
+            - generic [ref=e43]:
+              - heading "Tri-County Nursing Futures Award" [level=3] [ref=e44]
+              - generic [ref=e45]: Community Foundation
+            - generic [ref=e46]: $5,000
+            - generic [ref=e47]:
+              - generic [ref=e48]:
+                - generic [aria-hidden] [ref=e49]: 
+                - text: 98% match
+              - generic [ref=e50]:
+                - generic [aria-hidden] [ref=e51]: 
+                - text: Due Nov 14 · 47 days
+              - generic [ref=e52]:
+                - button "Save" [ref=e53] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e54]: 
+                  - text: Save
+                - button "Applying" [ref=e55] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e56]: 
+                  - text: Applying
+                - button "Applied" [ref=e57] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e58]: 
+                  - text: Applied
+                - button "Hide" [ref=e59] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e60]: 
+                  - text: Hide
+          - article [ref=e61]:
+            - generic [ref=e62]:
+              - heading "County Merit Award" [level=3] [ref=e63]
+              - generic [ref=e64]: County Bar Auxiliary
+            - generic [ref=e65]: $1,000
+            - generic [ref=e66]:
+              - generic [ref=e67]:
+                - generic [aria-hidden] [ref=e68]: 
+                - text: 88% match
+              - generic [ref=e69]:
+                - generic [aria-hidden] [ref=e70]: 
+                - text: Due Jan 30 · 124 days
+              - generic [ref=e71]:
+                - button "Save" [ref=e72] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e73]: 
+                  - text: Save
+                - button "Applying" [ref=e74] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e75]: 
+                  - text: Applying
+                - button "Applied" [ref=e76] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e77]: 
+                  - text: Applied
+                - button "Hide" [ref=e78] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e79]: 
+                  - text: Hide
+          - article [ref=e80]:
+            - generic [ref=e81]:
+              - heading "Local Community Foundation Grant" [level=3] [ref=e82]
+              - generic [ref=e83]: Community Foundation
+            - generic [ref=e84]: $1,000
+            - generic [ref=e85]:
+              - generic [ref=e86]:
+                - generic [aria-hidden] [ref=e87]: 
+                - text: 85% match
+              - generic [ref=e88]:
+                - generic [aria-hidden] [ref=e89]: 
+                - text: Due Jan 9 · 103 days
+              - generic [ref=e90]:
+                - button "Save" [ref=e91] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e92]: 
+                  - text: Save
+                - button "Applying" [ref=e93] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e94]: 
+                  - text: Applying
+                - button "Applied" [ref=e95] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e96]: 
+                  - text: Applied
+                - button "Hide" [ref=e97] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e98]: 
+                  - text: Hide
+          - article [ref=e99]:
+            - generic [ref=e100]:
+              - heading "Community Leaders Scholarship" [level=3] [ref=e101]
+              - generic [ref=e102]: Civic Service Foundation
+            - generic [ref=e103]: $1,500
+            - generic [ref=e104]:
+              - generic [ref=e105]:
+                - generic [aria-hidden] [ref=e106]: 
+                - text: 82% match
+              - generic [ref=e107]:
+                - generic [aria-hidden] [ref=e108]: 
+                - text: Due Feb 15 · 140 days
+              - generic [ref=e109]:
+                - button "Save" [ref=e110] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e111]: 
+                  - text: Save
+                - button "Applying" [ref=e112] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e113]: 
+                  - text: Applying
+                - button "Applied" [ref=e114] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e115]: 
+                  - text: Applied
+                - button "Hide" [ref=e116] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e117]: 
+                  - text: Hide
+          - article [ref=e118]:
+            - generic [ref=e119]:
+              - 'heading "Essay Contest: Your Voice Matters" [level=3] [ref=e120]'
+              - generic [ref=e121]: Civic Youth Alliance
+            - generic [ref=e122]: $1,000
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - generic [aria-hidden] [ref=e125]: 
+                - text: 81% match
+              - generic [ref=e126]:
+                - generic [aria-hidden] [ref=e127]: 
+                - text: Due Dec 20 · 83 days
+              - generic [ref=e128]:
+                - button "Save" [ref=e129] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e130]: 
+                  - text: Save
+                - button "Applying" [ref=e131] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e132]: 
+                  - text: Applying
+                - button "Applied" [ref=e133] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e134]: 
+                  - text: Applied
+                - button "Hide" [ref=e135] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e136]: 
+                  - text: Hide
+          - article [ref=e137]:
+            - generic [ref=e138]:
+              - heading "First-Generation Scholars Grant" [level=3] [ref=e139]
+              - generic [ref=e140]: State Higher Education Office
+            - generic [ref=e141]: $2,500
+            - generic [ref=e142]:
+              - generic [ref=e143]:
+                - generic [aria-hidden] [ref=e144]: 
+                - text: 77% match
+              - generic [ref=e145]:
+                - generic [aria-hidden] [ref=e146]: 
+                - text: Due Dec 1 · 64 days
+              - generic [ref=e147]:
+                - button "Save" [ref=e148] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e149]: 
+                  - text: Save
+                - button "Applying" [ref=e150] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e151]: 
+                  - text: Applying
+                - button "Applied" [ref=e152] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e153]: 
+                  - text: Applied
+                - button "Hide" [ref=e154] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=e155]: 
+                  - text: Hide
+        - paragraph [ref=e156]:
+          - generic [aria-hidden] [ref=e157]: 
+          - text: Preview matches. Verified results arrive once the search agent runs.
+      - generic [ref=e158]:
+        - region [ref=e159]:
+          - heading "Coming up" [level=2] [ref=e161]
+          - list [ref=e162]:
+            - listitem [ref=e163]:
+              - generic [ref=e164]:
+                - generic [ref=e165]: Nov
+                - text: "14"
+              - generic [ref=e166]:
+                - generic [ref=e167]: Tri-County Nursing Futures Award
+                - generic [ref=e168]: $5,000
+              - generic [ref=e169]: 47 days
+            - listitem [ref=e170]:
+              - generic [ref=e171]:
+                - generic [ref=e172]: Dec
+                - text: "1"
+              - generic [ref=e173]:
+                - generic [ref=e174]: First-Generation Scholars Grant
+                - generic [ref=e175]: $2,500
+              - generic [ref=e176]: 64 days
+            - listitem [ref=e177]:
+              - generic [ref=e178]:
+                - generic [ref=e179]: Dec
+                - text: "20"
+              - generic [ref=e180]:
+                - generic [ref=e181]: "Essay Contest: Your Voice Matters"
+                - generic [ref=e182]: $1,000
+              - generic [ref=e183]: 83 days
+            - listitem [ref=e184]:
+              - generic [ref=e185]:
+                - generic [ref=e186]: Jan
+                - text: "9"
+              - generic [ref=e187]:
+                - generic [ref=e188]: Local Community Foundation Grant
+                - generic [ref=e189]: $1,000
+              - generic [ref=e190]: 103 days
+            - listitem [ref=e191]:
+              - generic [ref=e192]:
+                - generic [ref=e193]: Jan
+                - text: "30"
+              - generic [ref=e194]:
+                - generic [ref=e195]: County Merit Award
+                - generic [ref=e196]: $1,000
+              - generic [ref=e197]: 124 days
+        - region [ref=e198]:
+          - heading "Profile strength" [level=2] [ref=e200]
+          - generic [ref=e201]: 33%
+          - img "33 percent complete" [ref=e202]
+          - list [ref=e204]:
+            - listitem [ref=e205]:
+              - generic [aria-hidden] [ref=e206]: 
+              - text: Academic
+            - listitem [ref=e207]:
+              - generic [aria-hidden] [ref=e208]: 
+              - text: Location
+            - listitem [ref=e209]:
+              - generic [aria-hidden] [ref=e210]: 
+              - text: Affiliations
+              - link "Add" [ref=e211] [cursor=pointer]:
+                - /url: ../questionnaire/index.html
+            - listitem [ref=e212]:
+              - generic [aria-hidden] [ref=e213]: 
+              - text: Activities
+              - link "Add" [ref=e214] [cursor=pointer]:
+                - /url: ../questionnaire/index.html
+            - listitem [ref=e215]:
+              - generic [aria-hidden] [ref=e216]: 
+              - text: Career
+            - listitem [ref=e217]:
+              - generic [aria-hidden] [ref=e218]: 
+              - text: Identity
+              - link "Add" [ref=e219] [cursor=pointer]:
+                - /url: ../questionnaire/index.html
+            - listitem [ref=e220]:
+              - generic [aria-hidden] [ref=e221]: 
+              - text: Circumstances
+              - link "Add" [ref=e222] [cursor=pointer]:
+                - /url: ../questionnaire/index.html
+            - listitem [ref=e223]:
+              - generic [aria-hidden] [ref=e224]: 
+              - text: Financial
+              - link "Add" [ref=e225] [cursor=pointer]:
+                - /url: ../questionnaire/index.html
+            - listitem [ref=e226]:
+              - generic [aria-hidden] [ref=e227]: 
+              - text: Already tried
+              - link "Add" [ref=e228] [cursor=pointer]:
+                - /url: ../questionnaire/index.html
+          - generic [ref=e229]:
+            - generic [aria-hidden] [ref=e230]: 
+            - generic [ref=e231]: Adding affiliations details helps us find smaller local awards.

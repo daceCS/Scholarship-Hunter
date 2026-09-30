@@ -1,0 +1,511 @@
+{
+  "amazonfutureengineer-com-e61949aa": {
+    "url": "https://www.amazonfutureengineer.com/scholarships",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "provider_org",
+        "award": "Amazon Future Engineer Scholarship",
+        "a": "Amazon Future Engineer (Amazon)",
+        "b": "Amazon Future Engineer"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "calaged-org-0d4fe151": {
+    "url": "https://calaged.org/news/90000-awarded-state-ffa-scholarships",
+    "status": "agree",
+    "major": [],
+    "minor": []
+  },
+  "causesandiego-org-f310d53f": {
+    "url": "https://www.causesandiego.org/scholarship/",
+    "status": "review",
+    "major": [
+      {
+        "field": "amount",
+        "award": "Cause San Diego Social Impact Scholarship",
+        "a": [
+          0,
+          0
+        ],
+        "b": [
+          0,
+          15000
+        ]
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "csascholars-org-65d8b844": {
+    "url": "https://www.csascholars.org/tice1/index.php/",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "provider_org",
+        "award": "Raymond A. Tice Scholarship",
+        "a": "Raymond A. Tice Scholarship (administered by the Center for Scholarship Administration, Inc.)",
+        "b": "Raymond A. Tice Scholarship (administered by the Center for Scholarship Administration)"
+      }
+    ]
+  },
+  "hbaie-com-4a67938d": {
+    "url": "https://www.hbaie.com/Scholarship",
+    "status": "review",
+    "major": [
+      {
+        "field": "award_only_in_B",
+        "name": "Hispanic Bar Association of the Inland Empire Scholarship"
+      },
+      {
+        "field": "award_names",
+        "only_a": [
+          "hbaie scholarship"
+        ],
+        "only_b": []
+      }
+    ],
+    "minor": []
+  },
+  "houston-swe-org-20064986": {
+    "url": "https://houston.swe.org/student-scholarships/",
+    "status": "review",
+    "major": [
+      {
+        "field": "award_names",
+        "only_a": [
+          "swe-ha freshman scholarship",
+          "swe-ha upper-class scholarship",
+          "middle & high school student awards"
+        ],
+        "only_b": [
+          "swe houston area freshman scholarship",
+          "swe houston area upper-class scholarship"
+        ]
+      },
+      {
+        "field": "recs_required",
+        "award": "SWE-HA Upper-class Scholarship",
+        "a": 1,
+        "b": 0
+      },
+      {
+        "field": "rules",
+        "award": "SWE-HA Upper-class Scholarship",
+        "conflicts": [
+          {
+            "a": "academic.cip_codes|prefix_any|14,15",
+            "b": "academic.cip_codes|prefix_any|14"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      },
+      {
+        "field": "recs_required",
+        "award": "SWE-HA Freshman Scholarship",
+        "a": 1,
+        "b": 0
+      },
+      {
+        "field": "rules",
+        "award": "SWE-HA Freshman Scholarship",
+        "conflicts": [
+          {
+            "a": "academic.cip_codes|prefix_any|14,15",
+            "b": "academic.cip_codes|prefix_any|14"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "ibew-org-eb0adb46": {
+    "url": "https://ibew.org/ibew-members-children-awarded-union-plus-scholarships/",
+    "status": "agree",
+    "major": [],
+    "minor": []
+  },
+  "kc4678-com-f75fe5ca": {
+    "url": "https://www.kc4678.com/Council%204678%20Scholarship%202025%20Application.pdf",
+    "status": "review",
+    "major": [
+      {
+        "field": "essay_words",
+        "award": "Knights of Columbus Council 4678 Scholarship",
+        "a": 0
+      },
+      {
+        "field": "formats",
+        "award": "Knights of Columbus Council 4678 Scholarship",
+        "only_a": [
+          "test"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "Knights of Columbus Council 4678 Scholarship",
+        "conflicts": [
+          {
+            "a": "affiliations.fraternal[].member|eq|grandparent",
+            "b": "fuzzy|affiliations.fraternal[].member,geo.city,geo.high_school,geo.school_district"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "nesa-org-8810446d": {
+    "url": "https://nesa.org/nesa-news/spread-the-word/",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "NESA Scholarships",
+        "conflicts": [
+          {
+            "a": "affiliations.member_org[].name|eq|nationaleaglescoutassociation",
+            "b": "fuzzy|affiliations.member_org[].name,affiliations.professional"
+          }
+        ],
+        "only_a": [],
+        "only_b": []
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "niaf-org-e4364908": {
+    "url": "https://www.niaf.org/niaf_event/scholarships-and-grants-available-through-the-national-italian-american-foundation/",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "apply_url",
+        "award": "NIAF Scholarship Program",
+        "a": "https://www.niaf.org/scholarships",
+        "b": "https://www.niaf.org/niaf_event/scholarships-and-grants-available-through-the-national-italian-american-foundation/"
+      }
+    ]
+  },
+  "nnycf-org-31b70a40": {
+    "url": "https://nnycf.org/scholarships/scholarships-available/",
+    "status": "agree",
+    "major": [],
+    "minor": []
+  },
+  "rotarysacramento-com-df92bc7e": {
+    "url": "https://rotarysacramento.com/our-foundations/scholarships/",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "Derek Ian Arnold Annual Scholarship",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "fuzzy|affiliations.fraternal[].member,affiliations.fraternal[].org"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "Robinson Crowell & Rotary Club of Sacramento Foundation Annual Scholarships",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "fuzzy|affiliations.fraternal[].member,affiliations.fraternal[].org"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "Harold and Lilla Strauch Annual Scholarship",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "fuzzy|affiliations.fraternal[].member,affiliations.fraternal[].org"
+        ]
+      },
+      {
+        "field": "levels",
+        "award": "Philip and Joan Knox Scholarship",
+        "only_a": [],
+        "only_b": [
+          "hs_underclass",
+          "hs_senior"
+        ]
+      },
+      {
+        "field": "need_based",
+        "award": "Susan and Jon R. Snyder Annual Scholarship Fund",
+        "a": "need"
+      },
+      {
+        "field": "levels",
+        "award": "Susan and Jon R. Snyder Annual Scholarship Fund",
+        "only_a": [],
+        "only_b": [
+          "hs_underclass",
+          "hs_senior"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "Susan and Jon R. Snyder Annual Scholarship Fund",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "fuzzy|academic.status,geo.high_school"
+        ]
+      },
+      {
+        "field": "rules",
+        "award": "Jim and Mary Jo Streng Scholarship",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "fuzzy|affiliations.fraternal[].member,affiliations.fraternal[].org"
+        ]
+      }
+    ],
+    "minor": [
+      {
+        "field": "geo_scope",
+        "award": "Derek Ian Arnold Annual Scholarship",
+        "a": "city",
+        "b": "school_district"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Robinson Crowell & Rotary Club of Sacramento Foundation Annual Scholarships",
+        "a": "city",
+        "b": "school_district"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Harold and Lilla Strauch Annual Scholarship",
+        "a": "city",
+        "b": "school_district"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Philip and Joan Knox Scholarship",
+        "a": "city",
+        "b": "school_district"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Susan and Jon R. Snyder Annual Scholarship Fund",
+        "a": "city",
+        "b": "school_district"
+      },
+      {
+        "field": "geo_scope",
+        "award": "Jim and Mary Jo Streng Scholarship",
+        "a": "city",
+        "b": "school_district"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "rsffoundation-org-38bbf01a": {
+    "url": "https://rsffoundation.org/rsf-foundation-grants-200000-for-advancing-education/",
+    "status": "agree",
+    "major": [],
+    "minor": []
+  },
+  "sandiegoengineers-org-92e31617": {
+    "url": "https://www.sandiegoengineers.org/stem/scholarships",
+    "status": "review",
+    "major": [
+      {
+        "field": "award_names",
+        "only_a": [
+          "aiaa san diego reuben h. fleet scholarship",
+          "asce san diego student scholarship",
+          "aiaa high school student scholarships",
+          "asce scholarships",
+          "ashrae high school senior scholarships",
+          "asm foundation scholarships",
+          "nsbe scholarships",
+          "nspe scholarships",
+          "swe scholarships",
+          "wicys scholarships"
+        ],
+        "only_b": [
+          "aiaa san diego scholarship",
+          "asce san diego scholarship",
+          "aiaa national scholarship",
+          "asce national scholarship",
+          "ashrae high school senior scholarship",
+          "asm foundation scholarship",
+          "nsbe scholarship",
+          "nspe scholarship",
+          "swe national scholarship",
+          "wicys scholarship"
+        ]
+      }
+    ],
+    "minor": []
+  },
+  "sandiegounified-org-fb43a45b": {
+    "url": "https://www.sandiegounified.org/about/newscenter/archived_news/north_island_credit_union_offering_scholarships",
+    "status": "agree",
+    "major": [],
+    "minor": []
+  },
+  "sdcoe-net-a6cef9e5": {
+    "url": "https://www.sdcoe.net/about-sdcoe/news/post/~board/news/post/north-island-credit-union-foundation-offering-scholarships-to-san-diego-county-students",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "sdcoe-net-b4400a16": {
+    "url": "https://www.sdcoe.net/about-sdcoe/news/post/~board/news/post/scholarship-and-award-opportunities-for-san-diego-county-students",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "geo_scope",
+        "award": "Institute of Transportation Engineers San Diego Chapter Scholarship",
+        "a": "county"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "sdsu-academicworks-com-5c3b2d3c": {
+    "url": "https://sdsu.academicworks.com/opportunities/13777",
+    "status": "agree",
+    "major": [],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "sdsu-academicworks-com-ea1755d7": {
+    "url": "https://sdsu.academicworks.com/opportunities/9188",
+    "status": "review",
+    "major": [
+      {
+        "field": "rules",
+        "award": "Alumni Endowed Scholarship for Nursing",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "fuzzy|financial.fafsa_filed,identity.citizenship"
+        ]
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "swe-org-baf2ee01": {
+    "url": "https://swe.org/wp-content/uploads/2023/12/23-SWE-017-Scholarship-Flyer-010924-CPR4.pdf",
+    "status": "review",
+    "major": [
+      {
+        "field": "renewable",
+        "award": "SWE Scholarships",
+        "a": true,
+        "b": false
+      }
+    ],
+    "minor": [
+      {
+        "field": "apply_url",
+        "award": "SWE Scholarships",
+        "a": "https://swe.org/scholarships",
+        "b": "https://swe.org/wp-content/uploads/2023/12/23-SWE-017-Scholarship-Flyer-010924-CPR4.pdf"
+      },
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "teamsters542-org-52a55796": {
+    "url": "https://www.teamsters542.org/scholarships/",
+    "status": "review",
+    "major": [
+      {
+        "field": "need_based",
+        "award": "Teamsters Scholarship Fund",
+        "a": "either"
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  },
+  "ucsd-academicworks-com-2ce0d59d": {
+    "url": "https://ucsd.academicworks.com/opportunities/5870",
+    "status": "agree",
+    "major": [],
+    "minor": []
+  },
+  "webutil-csac-ca-gov-58e170f9": {
+    "url": "https://webutil.csac.ca.gov/epubs/assets/documents/MCS_Brochure_English_V1.pdf",
+    "status": "review",
+    "major": [
+      {
+        "field": "levels",
+        "award": "Middle Class Scholarship",
+        "only_a": [
+          "grad"
+        ],
+        "only_b": []
+      },
+      {
+        "field": "rules",
+        "award": "Middle Class Scholarship",
+        "conflicts": [],
+        "only_a": [],
+        "only_b": [
+          "financial.fafsa_filed|is_true|",
+          "fuzzy|financial.fafsa_filed,identity.citizenship"
+        ]
+      }
+    ],
+    "minor": [
+      {
+        "field": "vocabulary_gaps"
+      }
+    ]
+  }
+}

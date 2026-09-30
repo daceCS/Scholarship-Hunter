@@ -1,0 +1,43 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Tuitionwing home" [ref=e4] [cursor=pointer]:
+        - /url: ../landing/index.html
+        - generic [ref=e5]: 
+        - generic [ref=e7]: Tuitionwing
+      - list "Progress" [ref=e8]:
+        - listitem [ref=e9]:
+          - button "Core" [ref=e10] [cursor=pointer]
+        - listitem [ref=e13]:
+          - button "Branch" [disabled] [ref=e14]
+        - listitem [ref=e17]:
+          - button "Sensitive" [disabled] [ref=e18]
+        - listitem [ref=e21]:
+          - button "History" [disabled] [ref=e22]
+      - generic [ref=e25]:
+        - text: 
+        - button "Start over" [ref=e26] [cursor=pointer]
+  - main [ref=e27]:
+    - generic [ref=e30]:
+      - generic [ref=e31]: About 3 minutes
+      - heading "Let's build your scholarship profile." [active] [level=1] [ref=e32]
+      - paragraph [ref=e33]: Answer a few questions and our agent will look for awards you actually qualify for. The more you share, the sharper the matches.
+      - list [ref=e34]:
+        - listitem [ref=e35]:
+          - generic [aria-hidden] [ref=e36]: 
+          - generic [ref=e37]: Quick start. The core questions take about 3 minutes, and you see your first results right after.
+        - listitem [ref=e38]:
+          - generic [aria-hidden] [ref=e39]: 
+          - generic [ref=e40]: Skip anything personal. Skipping is never treated as a no.
+        - listitem [ref=e41]:
+          - generic [aria-hidden] [ref=e42]: 
+          - generic [ref=e43]: Saved as you go. Close the tab and pick up later.
+      - button "Start" [ref=e45] [cursor=pointer]:
+        - text: Start
+        - generic [aria-hidden] [ref=e46]: 
+    - complementary "Your profile so far" [ref=e47]:
+      - generic [ref=e48]:
+        - generic [ref=e49]: Your profile
+        - generic [ref=e51]: 0 answers
+      - text: 
+      - paragraph [ref=e52]: Finish the core questions to see your first matches.
