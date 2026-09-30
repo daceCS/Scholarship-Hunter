@@ -3,7 +3,7 @@
 // For every page with status "review" in predictions/compare-<compare>.json it sends the page text, both drafts (labelled
 // "draft 1"/"draft 2", order alternated so neither model is favoured) and the list of differences. The reply is the complete
 // final label plus adjudication: { unsure, reasons }. Validated like any extraction (schema, vocabulary, quotes on the page).
-// Flags: --model (default claude-haiku-4-5)  --effort (default medium; ignored for Haiku)  --concurrency 3  --ids a,b  --force
+// Flags: --model (default claude-sonnet-5-5)  --effort (default medium; not sent to Haiku, which has no effort setting)  --concurrency 3  --ids a,b  --force
 // It never reads gold labels, so the result is independent of any human label.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -36,7 +36,7 @@ fs.mkdirSync(outDir, { recursive: true });
 const todo = Object.entries(cmp).filter(([id, v]) => v.status === 'review' && (!wanted || wanted.has(id)) && (args.force || !fs.existsSync(path.join(outDir, id + '.json')))).map(([id]) => id);
 
 const opts = {
-  model: args.model || 'claude-haiku-4-5',
+  model: args.model || 'claude-sonnet-5-5',
   effort: args.effort || 'medium',
   today: args.today || new Date().toISOString().slice(0, 10),
   system: [{ type: 'text', text: buildSystemPrompt() + ADDENDUM, cache_control: { type: 'ephemeral' } }],

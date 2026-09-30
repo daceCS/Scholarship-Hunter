@@ -6,7 +6,7 @@
 //   node extract/extract.mjs --split dev --dry-run                  no API calls: list pages and estimate tokens/cost
 //   then: node test-sets/score.mjs --pred predictions/dev1 --split dev
 //
-// Flags: --model (default claude-haiku-4-5; effort is ignored for Haiku)  --effort low|medium|high|xhigh|max (default medium)  --concurrency 3
+// Flags: --model (default claude-sonnet-5-5)  --effort low|medium|high|xhigh|max (default medium)  --concurrency 3
 //        --today YYYY-MM-DD  --force (re-extract pages that already have output)  --no-fallback
 // Needs ANTHROPIC_API_KEY in backend/.env (never commit it).
 //
@@ -32,7 +32,7 @@ export const PRICES = {
   'claude-sonnet-5-5': [2, 10, 2.5, 0.2],
   'claude-haiku-4-5': [1, 5, 1.25, 0.1],
 };
-export const priceFor = model => PRICES[model] || PRICES['claude-haiku-4-5'];
+export const priceFor = model => PRICES[model] || PRICES['claude-sonnet-5-5'];
 export const cost = (model, u) => {
   const [i, o, cw, cr] = priceFor(model);
   return ((u.input_tokens || 0) * i + (u.output_tokens || 0) * o + (u.cache_creation_input_tokens || 0) * cw + (u.cache_read_input_tokens || 0) * cr) / 1e6;
@@ -111,7 +111,7 @@ export async function pool(items, n, fn) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const opts = {
-    model: args.model || 'claude-haiku-4-5',
+    model: args.model || 'claude-sonnet-5-5',
     effort: args.effort || 'medium',
     today: args.today || new Date().toISOString().slice(0, 10),
     system: [{ type: 'text', text: buildSystemPrompt(), cache_control: { type: 'ephemeral' } }],
