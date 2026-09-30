@@ -22,69 +22,70 @@ export function loadScholarships(dir = path.join(here, 'test-sets/pages')) {
   return scholarships;
 }
 
-// Evaluate a single rule against a profile field.
-// Returns 'pass', 'fail', or 'unknown' (withheld or missing phase).
+// Field metadata from the contract (phase + type), used to decide what a missing value means.
+const VOCAB = new Map(JSON.parse(fs.readFileSync(path.join(here, 'contract/vocabulary.json'), 'utf8')).fields.map(f => [f.path, f]));
+
+// Leaf values at a path. "a.b[].c" fans out over the array b; a plain list leaf is returned whole.
+function resolve(obj, segs) {
+  if (obj === null || obj === undefined) return [];
+  if (!segs.length) return [obj];
+  const [seg, ...rest] = segs;
+  const m = seg.match(/^(.+)\[\]$/);
+  if (m) {
+    const arr = obj[m[1]];
+    return Array.isArray(arr) ? arr.flatMap(el => resolve(el, rest)) : [];
+  }
+  return resolve(obj[seg], rest);
+}
+
+// 'withheld' holds paths like "identity.tribal"; an entry covers that path and everything under it.
+const isWithheld = (profile, field) => {
+  const base = field.replace(/\[\]/g, '');
+  return (profile.withheld || []).some(w => base === w || base.startsWith(w + '.'));
+};
+
+// One op against one value -> boolean (null = unsupported op).
+function test(op, v, value) {
+  switch (op) {
+    case 'eq': return v === value;
+    case 'gte': return v >= value;
+    case 'lte': return v <= value;
+    case 'between': return v >= value[0] && v <= value[1];
+    case 'in': return value.includes(v);
+    case 'not_in': return !value.includes(v);
+    case 'contains_any': return Array.isArray(v) && v.some(x => value.includes(x));
+    case 'contains_all': return Array.isArray(v) && value.every(x => v.includes(x));
+    case 'prefix_any': return Array.isArray(v) && v.some(x => value.some(p => String(x).startsWith(String(p))));
+    case 'present': case 'exists': return v !== null && v !== undefined; // some labels say 'exists'; the contract says 'present'
+    case 'is_true': return v === true;
+    case 'is_false': return v === false;
+    default: return null;
+  }
+}
+
+// Evaluate a single rule against a profile.
+// Returns 'pass', 'fail', or 'unknown' (fuzzy, withheld, or not answered).
 function evaluateRule(profile, rule, phasesCompleted) {
   // Fuzzy rules always return unknown (needs human judgment)
   if (rule.kind === 'fuzzy') return 'unknown';
-
   const { field, op, value } = rule;
-  if (!field) return 'unknown';  // No field specified
+  if (!field) return 'unknown';
+  if (isWithheld(profile, field)) return 'unknown';
 
-  // Get the profile field value (supports nested paths like "geo.county")
-  let profileValue = profile;
-  for (const segment of field.split('.')) {
-    if (profileValue === null || profileValue === undefined) return 'unknown';
-    // Handle array notation like affiliations.union[] or academic.cip_codes[]
-    const match = segment.match(/^(.+)\[\]$/);
-    if (match) {
-      profileValue = profileValue[match[1]];
-      if (!Array.isArray(profileValue)) return 'unknown';
-      profileValue = profileValue; // Keep as array for array operations
-    } else {
-      profileValue = profileValue[segment];
-    }
+  const vals = resolve(profile, field.split('.'));
+  if (!vals.length) {
+    // Empty answers are pruned from the avatar. For list-like fields in a phase the user finished,
+    // empty means "none" (fail); for scalars (GPA, institution...) blank means "not sure" (unknown).
+    const meta = VOCAB.get(field);
+    // Only optional 'do you have any...' lists count: not core fields, and not derived ones (cip_codes comes from the major, which may be 'Undecided').
+    const listLike = field.includes('[]') || /_list$/.test(meta?.type || '');
+    const isNone = listLike && meta?.phase !== 'core' && meta?.source !== 'derived';
+    return isNone && phasesCompleted.includes(meta?.phase) ? 'fail' : 'unknown';
   }
-
-  // Withheld fields are unknown, not fail
-  if (profile.withheld?.includes(field)) return 'unknown';
-
-  // Missing data is unknown if the rule needs it
-  if (profileValue === null || profileValue === undefined) return 'unknown';
-
-  // Evaluate the operation
-  switch (op) {
-    case 'eq':
-      return profileValue === value ? 'pass' : 'fail';
-    case 'gte':
-      return profileValue >= value ? 'pass' : 'fail';
-    case 'lte':
-      return profileValue <= value ? 'pass' : 'fail';
-    case 'between':
-      const [min, max] = value;
-      return profileValue >= min && profileValue <= max ? 'pass' : 'fail';
-    case 'in':
-      return value.includes(profileValue) ? 'pass' : 'fail';
-    case 'not_in':
-      return !value.includes(profileValue) ? 'pass' : 'fail';
-    case 'contains_any':
-      if (!Array.isArray(profileValue)) return 'fail';
-      return profileValue.some(v => value.includes(v)) ? 'pass' : 'fail';
-    case 'contains_all':
-      if (!Array.isArray(profileValue)) return 'fail';
-      return value.every(v => profileValue.includes(v)) ? 'pass' : 'fail';
-    case 'prefix_any':
-      if (!Array.isArray(profileValue)) return 'fail';
-      return profileValue.some(v => value.some(p => String(v).startsWith(String(p)))) ? 'pass' : 'fail';
-    case 'present':
-      return profileValue !== null && profileValue !== undefined ? 'pass' : 'fail';
-    case 'is_true':
-      return profileValue === true ? 'pass' : 'fail';
-    case 'is_false':
-      return profileValue === false ? 'pass' : 'fail';
-    default:
-      return 'unknown';
-  }
+  const results = vals.map(v => test(op, v, value));
+  if (results.includes(null)) return 'unknown'; // unsupported op
+  // ponytail: array-of-object rules pass if ANY element passes; separate rules need not hit the same element.
+  return results.includes(true) ? 'pass' : 'fail';
 }
 
 // Evaluate one group: any rule passes = group passes.
@@ -108,11 +109,10 @@ export function evaluateScholarship(profile, scholarship) {
 }
 
 // Fast pre-filter: eliminate 90% without touching rules
-export function filter(profile, scholarships) {
-  const today = new Date().toISOString().split('T')[0];
+export function filter(profile, scholarships, now = Date.now()) {
   const deadline_floor = profile.effort?.deadline_floor || 14;  // days
-  const min_award = profile.effort?.min_award || 500;
-  const minDeadline = new Date(Date.now() + deadline_floor * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const min_award = profile.effort?.min_award ?? 500;
+  const minDeadline = new Date(now + deadline_floor * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
   return scholarships.filter(s => {
     // Must be a scholarship page
@@ -120,10 +120,10 @@ export function filter(profile, scholarships) {
     // Check deadline
     if (s.deadline && s.deadline < minDeadline) return false;
     // Check amount
-    if (s.amount?.max < min_award) return false;
+    if (s.amount?.max && s.amount.max < min_award) return false; // 0 = amount not stated: keep
     // Check geo scope
     if (s.geo_scope?.level === 'state' && s.geo_scope?.states) {
-      if (!s.geo_scope.states.includes(profile.geo?.state)) return false;
+      if (profile.geo?.state && !s.geo_scope.states.includes(profile.geo.state)) return false; // unknown state: keep
     }
     // Check academic level if specified
     if (s.levels?.length && profile.academic?.status) {
@@ -137,7 +137,7 @@ export function filter(profile, scholarships) {
 // score = amount × effort_fit
 // effort_fit = (1 - essay_burden) × (1 - recs_burden)
 export function scoreEffort(profile, scholarship) {
-  const budget_essay = profile.effort?.essay_words || 500;
+  const budget_essay = profile.effort?.essay_words ?? 500;
   const budget_recs = profile.effort?.recs === 'yes' ? 1 : profile.effort?.recs === 'maybe' ? 0.5 : 0;
 
   const essay_burden = scholarship.effort?.essay_words

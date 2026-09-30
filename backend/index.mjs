@@ -9,6 +9,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { initSupabase, createProfile, matchProfile, getMatches } from './db.mjs';
 import { filter, evaluateScholarship, score, rank } from './match.mjs';
+import { normalizeAvatar, splitAvatar } from './profile.mjs';
 
 const app = express();
 app.use(express.json());
@@ -37,8 +38,7 @@ async function requireAuth(req, res, next) {
 // Output: { count: N, dollars_total: X, top_3: [...] }
 app.post('/match/count', async (req, res) => {
   try {
-    const profile = req.body;
-    if (!profile.geo?.state) return res.status(400).json({ error: 'geo.state required' });
+    const profile = normalizeAvatar(req.body); // body is the questionnaire avatar (possibly partial)
 
     // Load scholarships from Supabase
     const { data: scholarships, error } = await supabase
@@ -83,16 +83,16 @@ app.post('/match/count', async (req, res) => {
 // Output: { profile_id, version, eligible_count, possible_count, top_matches }
 app.post('/profile', requireAuth, async (req, res) => {
   try {
-    const { core_json, sensitive_json } = req.body;
+    const { core_json } = req.body; // the questionnaire avatar
     const auth_user_id = req.userId;
     if (!core_json) return res.status(400).json({ error: 'core_json required' });
 
-    // Save profile
-    const profile = await createProfile(supabase, auth_user_id, core_json, sensitive_json);
+    // Save profile: sensitive sections are stored apart from the core profile
+    const { core, sensitive } = splitAvatar(core_json);
+    const profile = await createProfile(supabase, auth_user_id, core, Object.keys(sensitive).length ? sensitive : null);
 
     // Run matching
-    const fullProfile = { ...core_json, ...sensitive_json };
-    const matchResults = await matchProfile(supabase, profile.id, fullProfile);
+    const matchResults = await matchProfile(supabase, profile.id, normalizeAvatar(core_json));
 
     // Get top matches
     const matches = await getMatches(supabase, profile.id, 10);

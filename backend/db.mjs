@@ -3,7 +3,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { loadScholarships } from './match.mjs';
-import { evaluateScholarship, score } from './match.mjs';
+import { evaluateScholarship, score, filter } from './match.mjs';
 
 // Initialize Supabase client with SERVICE_ROLE_KEY (backend bypasses RLS)
 export function initSupabase() {
@@ -105,7 +105,9 @@ export async function matchProfile(supabase, profileId, profile) {
   if (scholarError) throw scholarError;
 
   // Evaluate each scholarship
+  // Same pre-filter as /match/count so the teaser count and the dashboard agree (closed, too small, wrong state/level)
   const matches = scholarships
+    .filter(s => filter(profile, [s.full_data]).length)
     .map(s => ({
       user_id: profileData.user_id,
       profile_id: profileId,
