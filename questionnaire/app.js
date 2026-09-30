@@ -485,10 +485,10 @@
 
   /* ───────────── navigation ───────────── */
   const currentScreen = () => screens.find(s => s.id === state.screen);
-  function go(id, dir = 1) {
+  async function go(id, dir = 1) {
     state.screen = id; state.visited[id] = true;
     save(); recompute();
-    renderScreen(dir); renderChrome();
+    await renderScreen(dir); renderChrome();
     window.scrollTo({ top: 0 });
   }
   function step(delta) {
@@ -581,10 +581,11 @@
         h('span', { class: 'tagp' }, 'Preview')));
   }
 
-  function resultsScreen(s) {
+  async function resultsScreen(s) {
     blocks = [];
-    const total = TW.mock.estimate(A);
-    const awards = TW.mock.awards(A, 4);
+    const estimate = await TW.api.getEstimate(A);
+    const total = estimate.count;
+    const awards = []; // Will be populated after submit
     return h('div', { class: 'screen' },
       h('span', { class: 'eyebrow' }, 'Core · First results'),
       h('h1', { tabindex: '-1' }, 'That is your core profile.'),
@@ -697,10 +698,10 @@
     if (h1) h1.focus({ preventScroll: true });
   }
 
-  function renderScreen(dir) {
+  async function renderScreen(dir) {
     const s = currentScreen();
     const build = { welcome: welcomeScreen, results: resultsScreen, consent: consentScreen, summary: summaryScreen }[s.kind] || questionScreen;
-    const el = build(s);
+    const el = await Promise.resolve(build(s)); // Handle both sync and async screens
     card.replaceChildren(el);
     if (!reduceMotion()) el.animate([{ opacity: 0, transform: `translateX(${dir * 14}px)` }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.22,1,.36,1)' });
     focusHeading();
