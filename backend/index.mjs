@@ -10,9 +10,11 @@ import { fileURLToPath } from 'url';
 import { initSupabase, createProfile, matchProfile, getMatches } from './db.mjs';
 import { filter, evaluateScholarship, score, rank } from './match.mjs';
 import { normalizeAvatar, splitAvatar } from './profile.mjs';
+import { rateLimit } from './ratelimit.mjs';
 
 const app = express();
-app.use(express.json());
+app.set('trust proxy', 1);   // behind one proxy/load balancer in production, so req.ip is the real client
+app.use(express.json({ limit: '100kb' }));
 
 const supabase = initSupabase();
 
@@ -36,7 +38,7 @@ async function requireAuth(req, res, next) {
 // POST /match/count - Stateless teaser endpoint
 // Input: { geo, academic, effort, affiliations, ... } (partial profile)
 // Output: { count: N, dollars_total: X, top_3: [...] }
-app.post('/match/count', async (req, res) => {
+app.post('/match/count', rateLimit({ max: 120, windowMs: 60_000 }), async (req, res) => {
   try {
     const profile = normalizeAvatar(req.body); // body is the questionnaire avatar (possibly partial)
 
@@ -116,6 +118,23 @@ app.post('/profile', requireAuth, async (req, res) => {
   } catch (error) {
     console.error('POST /profile:', error.message);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /waitlist - join the early-access list. Public. Input: { email, website? } ("website" is a hidden spam trap).
+// Always answers the same way for new and repeat emails, so it can't be used to find out who has signed up.
+app.post('/waitlist', rateLimit({ max: 5, windowMs: 3600_000, message: 'too many attempts, try again later' }), async (req, res) => {
+  try {
+    const { email, website } = req.body || {};
+    if (website) return res.status(201).json({ ok: true });                        // a bot filled the hidden field; pretend it worked
+    const e = typeof email === 'string' ? email.trim().toLowerCase() : '';
+    if (e.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return res.status(400).json({ error: 'please enter a valid email address' });
+    const { error } = await supabase.from('waitlist').insert({ email: e });
+    if (error && error.code !== '23505') throw error;                               // 23505 = already on the list
+    res.status(201).json({ ok: true });
+  } catch (error) {
+    console.error('POST /waitlist:', error.message);
+    res.status(500).json({ error: 'something went wrong, please try again' });
   }
 });
 
