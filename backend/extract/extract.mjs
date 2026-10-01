@@ -136,7 +136,7 @@ async function main() {
   const concurrency = Number(args.concurrency || 3);
   const split = args.split || 'dev';
   const ids = args.ids ? String(args.ids).split(',') : null;
-  let rows = readManifest(DEFAULT_DIR).filter(r => r.status === 200 && (ids ? ids.includes(r.id) : (split === 'all' || r.split === split)));
+  let rows = readManifest(DEFAULT_DIR).filter(r => r.status === 200 && (ids ? ids.includes(r.id) : (split === 'all' || (split === 'new' ? !r.split : r.split === split))));
   if (args.limit) rows = rows.slice(0, Number(args.limit));
   const runName = args.run || `run-${new Date().toISOString().replace(/[:T]/g, '-').slice(0, 16)}`;
   const outDir = path.join(TEST_SETS, 'predictions', runName);

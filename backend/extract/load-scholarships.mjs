@@ -53,7 +53,7 @@ for (const r of found) {
   else dropped.push(r);
 }
 const used = new Set();
-const rows = [...byName.values()].map(({ pageId, s }) => {
+let rows = [...byName.values()].map(({ pageId, s }) => {
   let key = `${pageId}#${slug(s.name)}`, n = 2;
   while (used.has(key)) key = `${pageId}#${slug(s.name)}-${n++}`;
   used.add(key);
@@ -67,8 +67,12 @@ const rows = [...byName.values()].map(({ pageId, s }) => {
 });
 
 const supabase = initSupabase();
-const { data: existing, error: exErr } = await supabase.from('scholarships').select('id, page_id, name');
+const { data: existing, error: exErr } = await supabase.from('scholarships').select('id, page_id, name, eligibility');
 if (exErr) throw exErr;
+// An existing record with more rules than the new one for the same award is kept as it is (the new extraction may have missed rules).
+const keepOld = new Set(existing.filter(e => { const r = rows.find(x => norm(x.name) === norm(e.name)); return r && allRules(e).length > allRules(r).length; }).map(e => norm(e.name)));
+rows = rows.filter(r => !keepOld.has(norm(r.name)));
+if (keepOld.size) console.log(`keeping ${keepOld.size} existing record(s) that have more rules than the new extraction`);
 const newNames = new Set(rows.map(r => norm(r.name)));
 const newKeys = new Set(rows.map(r => r.page_id));
 // An older row (page_id without '#') is superseded when an extracted record has the same award name OR comes from the same source page
