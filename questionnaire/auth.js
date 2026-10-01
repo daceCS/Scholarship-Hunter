@@ -11,6 +11,15 @@ TW.auth = (() => {
       if (error) throw error;
       if (!data.session) throw new Error('Account created, but email confirmation is on. Turn off "Confirm email" in Supabase (Authentication > Sign In / Providers > Email) for development.');
     },
+    async setPassword(password) {
+      const { error } = await (await client()).auth.updateUser({ password });
+      if (error) throw error;
+    },
+    // Emails a one-time link to /questionnaire/set-password.html. Always reports success so it can't be used to look up accounts.
+    async resetPassword(email) {
+      const { error } = await (await client()).auth.resetPasswordForEmail(email, { redirectTo: location.origin + '/questionnaire/set-password.html' });
+      if (error && error.status !== 400) throw error;
+    },
     async signIn(email, password) {
       const { error } = await (await client()).auth.signInWithPassword({ email, password });
       if (error) throw error;
@@ -26,11 +35,18 @@ TW.auth = (() => {
       const msg = mk('p', { className: 'fine' }); msg.setAttribute('role', 'status');
       const go = mk('button', { className: 'btn btn-primary', type: 'button' });
       const toggle = mk('button', { className: 'link-btn', type: 'button' });
+      const forgot = mk('button', { className: 'link-btn', type: 'button' }, 'Forgot password?');
       const render = () => {
         go.textContent = mode === 'signup' ? 'Create account' : 'Sign in';
         pw.autocomplete = mode === 'signup' ? 'new-password' : 'current-password';
         toggle.textContent = mode === 'signup' ? 'Already have an account? Sign in' : 'New here? Create an account';
         msg.textContent = '';
+        forgot.hidden = mode === 'signup';
+      };
+      forgot.onclick = async () => {
+        if (!email.value || !email.checkValidity()) { msg.textContent = 'Enter your email above first.'; return; }
+        try { await TW.auth.resetPassword(email.value.trim()); msg.textContent = 'If that email has an account, a reset link is on its way.'; }
+        catch (e) { msg.textContent = e.message; }
       };
       toggle.onclick = () => { mode = mode === 'signup' ? 'signin' : 'signup'; render(); };
       go.onclick = async () => {
@@ -42,7 +58,7 @@ TW.auth = (() => {
       };
       pw.addEventListener('keydown', e => { if (e.key === 'Enter') go.click(); });
       render();
-      return mk('div', { className: 'auth-form' }, email, pw, msg, mk('div', { className: 'actions' }, toggle, mk('span', { className: 'grow' }), go));
+      return mk('div', { className: 'auth-form' }, email, pw, msg, mk('div', { className: 'actions' }, toggle, forgot, mk('span', { className: 'grow' }), go));
     },
     async signOut() { await (await client()).auth.signOut(); },
     async fetch(path, opts = {}) {
