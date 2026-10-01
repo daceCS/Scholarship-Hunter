@@ -20,10 +20,11 @@ async function approve(emails) {
     const { data: row } = await supabase.from('waitlist').select('id, status').ilike('email', email).maybeSingle();
     if (!row) { console.log(`not on the list: ${email}`); continue; }
     const { error } = await supabase.auth.admin.inviteUserByEmail(email, { redirectTo });
-    // "already registered" means they have an account; still counts as approved
-    if (error && !/already.*(registered|exists)/i.test(error.message)) { console.log(`invite failed for ${email}: ${error.message}`); continue; }
+    // An existing account can't be invited (no email is sent). They are approved, but must use "Forgot password?" to get in.
+    const existing = error && /already.*(registered|exists)/i.test(error.message);
+    if (error && !existing) { console.log(`invite failed for ${email}: ${error.message}`); continue; }
     await supabase.from('waitlist').update({ status: 'approved', approved_at: new Date().toISOString() }).eq('id', row.id);
-    console.log(`approved and invited: ${email}`);
+    console.log(existing ? `approved, but NO email sent: ${email} already has an account (tell them to use "Forgot password?")` : `approved and invited: ${email}`);
   }
 }
 
