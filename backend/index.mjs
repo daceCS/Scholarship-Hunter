@@ -22,6 +22,8 @@ const supabase = initSupabase();
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 for (const dir of ['landing', 'questionnaire', 'dashboard']) app.use('/' + dir, express.static(path.join(root, dir)));
 
+app.get('/', (req, res) => res.redirect('/landing/'));
+
 // Public browser config (the anon key is public by design)
 app.get('/config', (req, res) => res.json({ supabaseUrl: process.env.SUPABASE_URL, supabaseAnonKey: process.env.SUPABASE_ANON_KEY }));
 
