@@ -23,6 +23,7 @@ export function loadScholarships(dir = path.join(here, 'test-sets/pages')) {
 }
 
 // Field metadata from the contract (phase + type), used to decide what a missing value means.
+import { canonInstitution } from './institutions.mjs';
 const VOCAB = new Map(JSON.parse(fs.readFileSync(path.join(here, 'contract/vocabulary.json'), 'utf8')).fields.map(f => [f.path, f]));
 
 // Leaf values at a path. "a.b[].c" fans out over the array b; a plain list leaf is returned whole.
@@ -72,7 +73,8 @@ function evaluateRule(profile, rule, phasesCompleted) {
   if (!field) return 'unknown';
   if (isWithheld(profile, field)) return 'unknown';
 
-  const vals = resolve(profile, field.split('.'));
+  const isInst = field === 'academic.institution';   // schools are written many ways; compare one canonical spelling
+  const vals = resolve(profile, field.split('.')).map(x => isInst ? canonInstitution(x) : x);
   if (!vals.length) {
     // Empty answers are pruned from the avatar. For list-like fields in a phase the user finished,
     // empty means "none" (fail); for scalars (GPA, institution...) blank means "not sure" (unknown).
@@ -82,7 +84,8 @@ function evaluateRule(profile, rule, phasesCompleted) {
     const isNone = listLike && meta?.phase !== 'core' && meta?.source !== 'derived';
     return isNone && phasesCompleted.includes(meta?.phase) ? 'fail' : 'unknown';
   }
-  const results = vals.map(v => test(op, v, value));
+  const target = !isInst ? value : Array.isArray(value) ? value.map(canonInstitution) : canonInstitution(value);
+  const results = vals.map(v => test(op, v, target));
   if (results.includes(null)) return 'unknown'; // unsupported op
   // ponytail: array-of-object rules pass if ANY element passes; separate rules need not hit the same element.
   return results.includes(true) ? 'pass' : 'fail';

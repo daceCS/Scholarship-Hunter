@@ -167,5 +167,12 @@ other.forEach(x => console.log('   - ' + x));
 // A record with no rules is open to everyone only when a person verified it; machine-extracted ones are 'possible'.
 const noRules = evaluateScholarship({}, { eligibility: [], status: 'draft' }) + '/' + evaluateScholarship({}, { eligibility: [], status: 'live' });
 if (noRules !== 'possible/eligible') { console.log(`✗ no-rule records: expected possible/eligible, got ${noRules}`); process.exitCode = 1; }
+// A school written two ways (questionnaire "University of California, San Diego" vs rule "UC San Diego") must still match.
+const instRule = value => ({ eligibility: [{ any_of: [{ kind: 'hard', op: 'eq', field: 'academic.institution', value, source_quote: 'x' }] }] });
+const instProfile = institution => ({ academic: { institution, status: 'undergrad' }, phases_completed: ['core', 'branch', 'sensitive'] });
+for (const [school, value, want] of [['University of California, San Diego', 'UC San Diego', 'eligible'], ['San Diego State University', 'UC San Diego', 'ineligible'], ['San Diego State University', 'SDSU', 'eligible']]) {
+  const got = evaluateScholarship(instProfile(school), instRule(value));
+  if (got !== want) { console.log(`✗ institution "${school}" vs rule "${value}": expected ${want}, got ${got}`); process.exitCode = 1; }
+}
 if (agree !== cells) process.exitCode = 1;
 else console.log('PASS');
