@@ -13,7 +13,8 @@
     "test:accuracy": "node accuracy.test.mjs",
     "extract": "node extract/extract.mjs",
     "test:analysis": "node dismissal-case.test.mjs",
-    "analyze:dismissals": "node analyze-dismissals.mjs"
+    "analyze:dismissals": "node analyze-dismissals.mjs",
+    "start:landing": "node landing-server.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.130.0",

@@ -1,4 +1,6 @@
-# Render Blueprint: one web service runs the API and serves landing/, questionnaire/ and dashboard/.
+# Render Blueprint: the public site is the landing page and the waitlist only (backend/landing-server.mjs).
+# The questionnaire, dashboard and matching API are not exposed. When they go live, switch startCommand to
+# "cd backend && node index.mjs" and add SUPABASE_ANON_KEY (the full app is backend/index.mjs).
 # Secrets are not stored here: Render asks for them when the blueprint is first applied (or set them in the dashboard).
 services:
   - type: web
@@ -6,14 +8,12 @@ services:
     runtime: node
     plan: starter            # always on; the free plan sleeps when idle
     buildCommand: cd backend && npm ci
-    startCommand: cd backend && node index.mjs
+    startCommand: cd backend && node landing-server.mjs
     healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
         value: 22
       - key: SUPABASE_URL
-        sync: false
-      - key: SUPABASE_ANON_KEY
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false

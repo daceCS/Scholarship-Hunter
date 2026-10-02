@@ -11,6 +11,7 @@ import { initSupabase, createProfile, matchProfile, getMatches } from './db.mjs'
 import { filter, evaluateScholarship, score, rank } from './match.mjs';
 import { normalizeAvatar, splitAvatar } from './profile.mjs';
 import { rateLimit } from './ratelimit.mjs';
+import { waitlistRoute } from './waitlist-route.mjs';
 
 const app = express();
 app.set('trust proxy', 1);   // behind one proxy/load balancer in production, so req.ip is the real client
@@ -123,22 +124,7 @@ app.post('/profile', requireAuth, async (req, res) => {
   }
 });
 
-// POST /waitlist - join the early-access list. Public. Input: { email, website? } ("website" is a hidden spam trap).
-// Always answers the same way for new and repeat emails, so it can't be used to find out who has signed up.
-app.post('/waitlist', rateLimit({ max: 5, windowMs: 3600_000, message: 'too many attempts, try again later' }), async (req, res) => {
-  try {
-    const { email, website } = req.body || {};
-    if (website) return res.status(201).json({ ok: true });                        // a bot filled the hidden field; pretend it worked
-    const e = typeof email === 'string' ? email.trim().toLowerCase() : '';
-    if (e.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return res.status(400).json({ error: 'please enter a valid email address' });
-    const { error } = await supabase.from('waitlist').insert({ email: e });
-    if (error && error.code !== '23505') throw error;                               // 23505 = already on the list
-    res.status(201).json({ ok: true });
-  } catch (error) {
-    console.error('POST /waitlist:', error.message);
-    res.status(500).json({ error: 'something went wrong, please try again' });
-  }
-});
+app.post('/waitlist', ...waitlistRoute(supabase));   // see waitlist-route.mjs
 
 // POST /feedback - a test user reports a problem with a scholarship's details or match
 // Auth: Bearer token. Input: { scholarship_id, kind, message? }. Stored for review (see feedback-report.mjs).
