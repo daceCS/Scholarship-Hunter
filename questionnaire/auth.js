@@ -43,7 +43,7 @@ TW.auth = (() => {
         catch (e) { go.disabled = false; msg.textContent = e.message; }
       };
       pw.addEventListener('keydown', e => { if (e.key === 'Enter') go.click(); });
-      const join = mk('p', { className: 'fine' }, 'Early access is invite-only. ', mk('a', { href: '/landing/#start' }, 'Join the waitlist'), '.');
+      const join = mk('p', { className: 'fine' }, 'Early access is invite-only. ', mk('a', { href: '/#start' }, 'Join the waitlist'), '.');
       return mk('div', { className: 'auth-form' }, email, pw, msg, mk('div', { className: 'actions' }, forgot, mk('span', { className: 'grow' }), go), join);
     },
     async signOut() { await (await client()).auth.signOut(); },

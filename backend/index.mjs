@@ -20,9 +20,9 @@ const supabase = initSupabase();
 
 // Serve frontends from one origin so localStorage + the Supabase session are shared (and no CORS needed)
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-for (const dir of ['landing', 'questionnaire', 'dashboard']) app.use('/' + dir, express.static(path.join(root, dir)));
-
-app.get('/', (req, res) => res.redirect('/landing/'));
+for (const dir of ['questionnaire', 'dashboard']) app.use('/' + dir, express.static(path.join(root, dir)));
+app.use(express.static(path.join(root, 'landing')));                       // the landing page is the site root: /, /privacy.html, /terms.html
+app.get(['/landing', '/landing/*'], (req, res) => res.redirect(301, '/' + (req.params[0] || '')));   // old /landing/ addresses
 
 // Public browser config (the anon key is public by design)
 app.get('/config', (req, res) => res.json({ supabaseUrl: process.env.SUPABASE_URL, supabaseAnonKey: process.env.SUPABASE_ANON_KEY }));
