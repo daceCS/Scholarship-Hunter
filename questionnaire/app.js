@@ -696,7 +696,7 @@
   function signInScreen(avatar) {
     return h('div', { class: 'screen' },
       h('h1', { tabindex: '-1' }, 'Save your profile.'),
-      h('p', { class: 'lede' }, 'Create an account so your matches are saved, or sign in if you already have one.'),
+      h('p', { class: 'lede' }, 'Sign in to save your profile and see your matches.'),
       TW.auth.form(async () => { await TW.api.submitAvatar(avatar); card.replaceChildren(doneScreen()); focusHeading(); }));
   }
 

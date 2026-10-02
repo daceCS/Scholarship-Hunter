@@ -50,7 +50,7 @@
     app.replaceChildren(h('div', { class: 'first' },
       h('span', { class: 'eyebrow' }, 'Dashboard'),
       h('h1', {}, 'Sign in to see your matches.'),
-      h('p', {}, 'New here? Build your profile first, or create an account now.'),
+      h('p', {}, 'New here? Build your profile first, then sign in to save it.'),
       TW.auth.form(() => location.reload()),
       h('div', { class: 'row' },
         h('a', { class: 'btn btn-ghost', href: '/questionnaire/' }, 'Build my profile'))));

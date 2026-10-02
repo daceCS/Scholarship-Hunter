@@ -1,4 +1,4 @@
-// E2E: anonymous questionnaire -> submit -> sign-up form -> create account -> dashboard shows matches.
+// E2E: anonymous questionnaire -> submit -> sign-in form -> dashboard shows matches.
 // Also checks the API rejects unauthenticated / forged requests.
 import 'dotenv/config';
 import assert from 'assert';
@@ -46,15 +46,17 @@ try {
   await page.getByRole('heading', { name: 'Save your profile.' }).waitFor({ timeout: 5000 });
   console.log('✓ submit without session asks for email');
 
-  // Create the account through the real form; submit then saves the pending profile
+  // Accounts are invite-only, so the test user is created the way an invitation would (admin API), then signs in through the real form; submit then saves the pending profile
+  const { error: cuErr } = await admin.auth.admin.createUser({ email, password, email_confirm: true });
+  assert.ifError(cuErr);
   await page.getByPlaceholder('you@example.com').fill(email);
   await page.getByPlaceholder(/Password/).fill(password);
-  await page.getByRole('button', { name: 'Create account' }).click();
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await page.getByRole('heading', { name: 'Profile submitted.' }).waitFor({ timeout: 15000 });
   await page.getByRole('button', { name: /dashboard/ }).click();
   await page.getByText('Burger King Scholars').first().waitFor({ timeout: 10000 });
   assert.equal(await page.evaluate(() => localStorage.getItem('tw.pending')), null, 'pending profile should be flushed');
-  console.log('✓ create account -> profile saved -> dashboard shows matches');
+  console.log('✓ sign in -> profile saved -> dashboard shows matches');
 
   // Unverified badge + report a problem (needs the feedback table: run backend/feedback.sql once)
   await page.getByText('Unverified details').first().waitFor({ timeout: 5000 });
@@ -74,7 +76,6 @@ try {
   console.log('✓ no bare $0 awards; sign-out returns to sign-in');
 
   // Wrong password rejected, right password signs back in
-  await page.getByRole('button', { name: 'Already have an account? Sign in' }).click();
   await page.getByPlaceholder('you@example.com').fill(email);
   await page.getByPlaceholder(/Password/).fill('wrong-password-1');
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
