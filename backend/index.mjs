@@ -203,6 +203,7 @@ app.get('/matches', requireAuth, async (req, res) => {
         amount: m.scholarships.amount,
         deadline: m.scholarships.deadline,
         apply_url: m.scholarships.apply_url,
+        source_url: m.scholarships.source_url,
         effort: m.scholarships.effort,
         // 'live' = a person checked the details; anything else (draft, review) is machine-extracted and unverified
         verified: m.scholarships.review_status === 'live',

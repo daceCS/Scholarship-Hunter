@@ -135,7 +135,8 @@
             due: m.deadline ? new Date(m.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'TBD',
             id: m.name,
             sid: m.scholarship_id,
-            url: m.apply_url,
+            url: m.apply_url || m.source_url,
+            page: m.source_url || m.apply_url,
             verified: !!m.verified,
             due2: m.deadline ? nextDue(new Date(m.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })) : { days: 999 }
           }));
@@ -194,7 +195,7 @@
         const st = status[m.id];
         const soon = m.due2.days <= 14;
         return h('article', { class: 'match' + (i === 0 && sort === 'match' && filter === 'all' ? ' top' : '') + (st === 'dismissed' ? ' is-dismissed' : '') },
-          h('div', {}, h('h3', {}, m.name), h('div', { class: 'org' }, m.org)),
+          h('div', {}, h('h3', {}, m.page ? h('a', { href: m.page, target: '_blank', rel: 'noopener', title: 'Opens the provider page in a new tab' }, m.name) : m.name), h('div', { class: 'org' }, m.org)),
           h('div', { class: 'amt' }, award(m.amt)),
           h('div', { class: 'meta' },
             h('span', { class: 'tagp pct' }, icon('ph-fill ph-target'), (m.possible ? 'Possible match' : 'Eligible')),

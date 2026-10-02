@@ -56,6 +56,9 @@ try {
   await page.getByRole('button', { name: /dashboard/ }).click();
   await page.getByText('Burger King Scholars').first().waitFor({ timeout: 10000 });
   assert.equal(await page.evaluate(() => localStorage.getItem('tw.pending')), null, 'pending profile should be flushed');
+  const link = page.locator('.match h3 a').first();
+  assert.match(await link.getAttribute('href'), /^https?:\/\//, 'match title should link to the provider page');
+  assert.equal(await link.getAttribute('target'), '_blank', 'link should open in a new tab');
   console.log('✓ sign in -> profile saved -> dashboard shows matches');
 
   // Unverified badge + report a problem (needs the feedback table: run backend/feedback.sql once)
