@@ -212,3 +212,13 @@ PORT=3000 (optional, default 3000)
 ---
 
 **Status:** API ready. Wire questionnaire → POST /profile. Wire dashboard → GET /matches.
+
+## POST /dismiss and DELETE /dismiss/:scholarship_id
+
+"Not a match": removes a scholarship from the signed-in user's dashboard. Auth: Bearer token. Run `dismissals.sql` once to create the table.
+
+`POST /dismiss` body: `{ "scholarship_id": 123, "reason": "dont_qualify", "note": "optional, up to 500 characters" }`
+`reason` is one of `dont_qualify`, `wrong_school_or_level`, `not_interested`, `amount_too_small`, `deadline_too_soon`, `other` (default `other`). Returns `201 { ok: true }`.
+`DELETE /dismiss/123` puts it back. `GET /matches` marks each match with `dismissed: true | false`.
+
+Removals are analyzed on demand with `node analyze-dismissals.mjs` (`--dry-run` shows what would be sent, `--report` summarizes). What the agent sees is defined in `dismissal-case.mjs`: anonymous, and only the profile answers that scholarship's rules read.

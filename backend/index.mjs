@@ -172,16 +172,18 @@ app.post('/feedback', requireAuth, async (req, res) => {
 });
 
 // POST /dismiss - remove a scholarship from the user's dashboard ("Not a match"). Auth: Bearer token.
-// Input: { scholarship_id, reason?: 'not_a_match' | 'not_interested' }. DELETE /dismiss/:scholarship_id brings it back.
+// Input: { scholarship_id, reason?, note? } where reason is one of DISMISS_REASONS. DELETE /dismiss/:scholarship_id brings it back.
 // Stored per user + scholarship, so it stays hidden when matches are rebuilt. See dismissals.sql.
+const DISMISS_REASONS = ['dont_qualify', 'wrong_school_or_level', 'not_interested', 'amount_too_small', 'deadline_too_soon', 'other'];
 app.post('/dismiss', requireAuth, async (req, res) => {
   try {
-    const { scholarship_id, reason = 'not_a_match' } = req.body || {};
-    if (!['not_a_match', 'not_interested'].includes(reason)) return res.status(400).json({ error: 'reason must be not_a_match or not_interested' });
+    const { scholarship_id, reason = 'other', note = '' } = req.body || {};
+    if (!DISMISS_REASONS.includes(reason)) return res.status(400).json({ error: `reason must be one of ${DISMISS_REASONS.join(', ')}` });
+    if (typeof note !== 'string' || note.length > 500) return res.status(400).json({ error: 'note must be text of at most 500 characters' });
     const { data: sch, error: schErr } = await supabase.from('scholarships').select('id').eq('id', scholarship_id).maybeSingle();
     if (schErr) throw schErr;
     if (!sch) return res.status(404).json({ error: 'unknown scholarship' });
-    const { error } = await supabase.from('dismissals').upsert({ user_id: req.userId, scholarship_id: sch.id, reason }, { onConflict: 'user_id,scholarship_id' });
+    const { error } = await supabase.from('dismissals').upsert({ user_id: req.userId, scholarship_id: sch.id, reason, note: note.trim() || null, analysis: null, analyzed_at: null }, { onConflict: 'user_id,scholarship_id' });
     if (error) throw error;
     res.status(201).json({ ok: true });
   } catch (error) {

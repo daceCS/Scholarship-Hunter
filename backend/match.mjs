@@ -114,6 +114,15 @@ export function evaluateScholarship(profile, scholarship) {
   return 'eligible';
 }
 
+// Per-rule verdicts for diagnosis tools (analyze-dismissals.mjs): [{ group, verdict, rules: [{ ..., verdict }] }], verdicts are pass / fail / unknown.
+export function explainScholarship(profile, scholarship) {
+  const phasesCompleted = profile.phases_completed || [];
+  return (scholarship.eligibility || []).map((g, group) => ({
+    group, verdict: evaluateGroup(profile, g, phasesCompleted),
+    rules: (g.any_of || []).map(r => ({ kind: r.kind, field: r.field, op: r.op, value: r.value, description: r.description, source_quote: r.source_quote, verdict: evaluateRule(profile, r, phasesCompleted) })),
+  }));
+}
+
 // Fast pre-filter: eliminate 90% without touching rules
 export function filter(profile, scholarships, now = Date.now()) {
   const deadline_floor = profile.effort?.deadline_floor || 14;  // days

@@ -149,3 +149,5 @@ dialog.report h2{font-size:18px;margin:0 0 14px}
 .rp-field{display:block;width:100%;margin-bottom:10px;padding:10px 12px;border:1px solid var(--line-2);border-radius:12px;font:inherit;font-size:14px;background:var(--surface);color:var(--ink)}
 .rp-out{min-height:20px;margin:0 0 10px;font-size:13px;color:var(--ink-2)}
 .rp-row{display:flex;gap:8px;justify-content:flex-end}
+.ds-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.ds-opt{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--ink);cursor:pointer}

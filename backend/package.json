@@ -11,7 +11,9 @@
     "test:match": "node match.test.mjs",
     "test:e2e": "node test-auth-flow.mjs",
     "test:accuracy": "node accuracy.test.mjs",
-    "extract": "node extract/extract.mjs"
+    "extract": "node extract/extract.mjs",
+    "test:analysis": "node dismissal-case.test.mjs",
+    "analyze:dismissals": "node analyze-dismissals.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.130.0",

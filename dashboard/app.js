@@ -100,6 +100,31 @@
     reportDialog.showModal();
   }
 
+  /* ───────────── not a match: ask why ───────────── */
+  const DISMISS_REASONS = [['dont_qualify', 'I do not meet one of the requirements'], ['wrong_school_or_level', 'It is for a different school or education level'],
+    ['not_interested', 'I am not interested in this one'], ['amount_too_small', 'The award is too small'], ['deadline_too_soon', 'The deadline is too soon'], ['other', 'Something else']];
+  let dismissDialog;
+  function openDismiss(m, onConfirm) {
+    if (!dismissDialog) {
+      const title = h('h2', { id: 'ds-title' });
+      const opts = DISMISS_REASONS.map(([v, t], i) => h('label', { class: 'ds-opt' }, h('input', { type: 'radio', name: 'ds-reason', value: v, checked: i === 0 }), t));
+      const note = h('textarea', { class: 'rp-field', rows: 3, maxlength: 500, placeholder: 'Which requirement, or anything else we should know (optional)', 'aria-label': 'Details' });
+      const fine = h('p', { class: 'rp-out' }, 'We use your answer, with the parts of your profile that matter for this award, to make matches better. We never send your name or email.');
+      const go = h('button', { class: 'btn btn-primary btn-sm', type: 'button' }, 'Remove it');
+      const cancel = h('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: () => dismissDialog.close() }, 'Cancel');
+      go.onclick = () => { const reason = dismissDialog.querySelector('input[name=ds-reason]:checked').value; dismissDialog.close(); dismissDialog._onConfirm(reason, note.value); };
+      dismissDialog = h('dialog', { class: 'report', 'aria-labelledby': 'ds-title' }, title, h('div', { class: 'ds-opts' }, opts), note, fine, h('div', { class: 'rp-row' }, cancel, go));
+      dismissDialog._parts = { title, note, opts };
+      document.body.append(dismissDialog);
+    }
+    const { title, note, opts } = dismissDialog._parts;
+    title.textContent = 'Why is this not a match? ' + m.name;
+    opts.forEach((o, i) => { o.querySelector('input').checked = i === 0; });
+    note.value = '';
+    dismissDialog._onConfirm = onConfirm;
+    dismissDialog.showModal();
+  }
+
   /* ───────────── render ───────────── */
   const SECTIONS = [
     ['academic', 'Academic'], ['geo', 'Location'], ['affiliations', 'Affiliations'], ['activities', 'Activities'],
@@ -193,15 +218,16 @@
         [['match', 'Best match'], ['amount', 'Highest award'], ['due', 'Soonest deadline']].map(([v, t]) => h('option', { value: v, selected: v === sort }, t)));
 
       // Removing a match is saved on the server, so it stays gone on every device. Undone the same way.
-      const toggleDismiss = async m => {
+      const setDismissed = async (m, dismiss, reason, note) => {
         const was = m.dismissed;
-        m.dismissed = !was; flash = ''; render();
+        m.dismissed = dismiss; flash = ''; render();
         try {
-          const r = was ? await TW.auth.fetch('/dismiss/' + m.sid, { method: 'DELETE' })
-            : await TW.auth.fetch('/dismiss', { method: 'POST', body: JSON.stringify({ scholarship_id: m.sid, reason: 'not_a_match' }) });
+          const r = !dismiss ? await TW.auth.fetch('/dismiss/' + m.sid, { method: 'DELETE' })
+            : await TW.auth.fetch('/dismiss', { method: 'POST', body: JSON.stringify({ scholarship_id: m.sid, reason, note }) });
           if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'HTTP ' + r.status);
         } catch (e) { m.dismissed = was; flash = 'Could not save that: ' + e.message; render(); }
       };
+      const toggleDismiss = m => m.dismissed ? setDismissed(m, false) : openDismiss(m, (reason, note) => setDismissed(m, true, reason, note));
       const setStatus = (m, key) => { if (status[m.id] === key) delete status[m.id]; else status[m.id] = key; saveStatus(); render(); };
       const card = (m, i) => {
         const st = status[m.id];

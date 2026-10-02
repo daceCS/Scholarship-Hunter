@@ -26,6 +26,7 @@
   <li><b>Your profile:</b> your answers to the questionnaire, such as your education, school, major, GPA, ZIP code, activities, minimum award and the time you can spend per week. Every question can be skipped.</li>
   <li><b>Optional sensitive answers:</b> only if you choose to continue past a consent step, we ask about things like heritage, first-generation status, languages, gender and identity, health and home circumstances, and finances, because many scholarships are restricted by them. These are stored separately from the rest of your profile. Skipping a question is never treated as an answer.</li>
   <li><b>Your matches:</b> the scholarships we find for you, saved with your account.</li>
+  <li><b>Matches you remove:</b> when you mark a scholarship "Not a match", we keep which scholarship it was, the reason you chose, and any note you wrote.</li>
   <li><b>Problem reports:</b> if you report a problem with a scholarship, we keep your message, the scholarship, and the date.</li>
   <li><b>Technical data:</b> our hosting provider keeps standard server logs (such as IP address and pages requested), and we use your IP address briefly to limit abuse.</li>
 </ul>
@@ -36,9 +37,11 @@
   <li>To find scholarships you may qualify for and show them to you.</li>
   <li>To email you invitations, password resets and messages about your account.</li>
   <li>To fix mistakes, using the problem reports you send us.</li>
+  <li>To improve matching: when you remove a match, an AI model reviews your reason and note, together with the parts of your profile that matter for that scholarship, to work out why it was shown. A person then decides what to change.</li>
   <li>To keep the service secure and prevent abuse.</li>
 </ul>
-<p>We do not sell your information, we do not use it for advertising, and we do not use your answers to train AI models. Matching runs on our own rules. We use AI only to read public scholarship web pages, never your personal answers.</p>
+<p>We do not sell your information and we do not use it for advertising. Matching runs on our own rules. We use AI in two ways: to read public scholarship web pages, and to review why you removed a match.</p>
+<p>For the second use we send our AI provider your reason, your note, and only the profile answers that matter for that scholarship, such as your school or GPA. Your sensitive answers are included only if that scholarship's own rules use them. We never send your name or email address. Anything you type in the note is sent as you wrote it, so please do not put personal details in it. We do not train AI models on your answers.</p>
 
 <h2>Who else handles your data</h2>
 <p>We use these providers to run the service. They process data only to do that job:</p>
@@ -46,6 +49,7 @@
   <li><b>Supabase</b>: database and sign-in.</li>
   <li><b>Render</b>: hosting.</li>
   <li><b>Resend</b>: sending our emails.</li>
+  <li><b>Anthropic</b>: the AI provider that reviews the reasons you give for removing a match.</li>
   <li><b>Google Fonts and unpkg</b>: our pages load fonts and icons from them, so they can see your IP address and browser type.</li>
 </ul>
 <p>We may also share information if the law requires it, or to protect the safety of our users or the service.</p>
