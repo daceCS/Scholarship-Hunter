@@ -1,0 +1,18 @@
+/* Shared by privacy.html and terms.html; same tokens as the landing page. */
+:root{--bg:#F6F7F9;--surface:#fff;--ink:#0E1116;--ink-2:#4A515C;--ink-3:#6B7280;--line:#E3E6EB;--accent:#FFC93C;--r-card:20px}
+@media (prefers-color-scheme:dark){:root{--bg:#0E1116;--surface:#171B22;--ink:#F2F4F7;--ink-2:#B6BCC7;--ink-3:#8B93A1;--line:#262C36}}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Geist',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.top{max-width:760px;margin:0 auto;padding:24px 16px 0;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.logo{font-weight:600;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo-mark{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--accent);color:#0E1116}
+main{max-width:760px;margin:24px auto 64px;padding:40px 24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card)}
+h1{font-size:clamp(30px,5vw,40px);letter-spacing:-.035em;line-height:1.1;font-weight:600}
+h2{font-size:20px;letter-spacing:-.02em;margin:36px 0 8px;font-weight:600}
+p,li{color:var(--ink-2);margin-top:10px}
+ul{padding-left:22px}
+.meta{color:var(--ink-3);font-size:14px;margin-top:8px}
+.note{margin-top:24px;padding:14px 16px;border-radius:12px;background:var(--bg);border:1px solid var(--line);font-size:15px}
+footer{max-width:760px;margin:0 auto 40px;padding:0 16px;color:var(--ink-3);font-size:14px;display:flex;gap:16px;flex-wrap:wrap}
+@media (max-width:560px){main{padding:28px 18px;margin:16px 12px 40px}}
