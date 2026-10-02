@@ -1,0 +1,19 @@
+# Render Blueprint: one web service runs the API and serves landing/, questionnaire/ and dashboard/.
+# Secrets are not stored here: Render asks for them when the blueprint is first applied (or set them in the dashboard).
+services:
+  - type: web
+    name: tuitionwing
+    runtime: node
+    plan: starter            # always on; the free plan sleeps when idle
+    buildCommand: cd backend && npm ci
+    startCommand: cd backend && node index.mjs
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
