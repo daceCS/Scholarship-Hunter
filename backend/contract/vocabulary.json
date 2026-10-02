@@ -86,6 +86,27 @@
       ]
     },
     {
+      "path": "academic.transfer_interest",
+      "type": "enum",
+      "values": [
+        "yes",
+        "maybe",
+        "no"
+      ],
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked",
+      "note": "Planning to transfer to another school. Use with academic.transfer_targets for awards limited to transfer students."
+    },
+    {
+      "path": "academic.transfer_targets",
+      "type": "string_list",
+      "phase": "core",
+      "role": "eligibility",
+      "source": "asked",
+      "note": "Schools the student is considering transferring to. Compared by school, not spelling (UCSD = UC San Diego)."
+    },
+    {
       "path": "academic.year",
       "type": "number",
       "phase": "core",

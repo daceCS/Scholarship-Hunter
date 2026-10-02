@@ -55,6 +55,19 @@ window.TW = window.TW || {};
           prompt: 'What year will you be in this coming school year?', options: yearOpts }
       ] },
 
+    { id: 'edu-transfer', phase: 'core', section: 'Academic', when: a => a['edu.status'] === 'undergrad',
+      title: 'Are you planning to transfer?',
+      lede: 'Some awards are only for students moving to a new school, and they usually name the school.',
+      questions: [
+        { id: 'edu.transfer.interest', type: 'single', yield: 'med',
+          prompt: 'Do you plan to transfer to a different school?',
+          options: O(['yes', 'Yes, I plan to transfer'], ['maybe', 'Maybe, I am considering it'], ['no', 'No, I plan to stay where I am']) },
+        { id: 'edu.transfer.targets', type: 'autocomplete', multiple: true, source: 'institutions', yield: 'med',
+          when: a => a['edu.transfer.interest'] === 'yes' || a['edu.transfer.interest'] === 'maybe',
+          prompt: 'Which schools are you considering?', placeholder: 'Start typing a school name',
+          hint: 'Add every school you might apply to. Not on the list? Type it in anyway.' }
+      ] },
+
     { id: 'edu-field', phase: 'core', section: 'Academic',
       title: 'What are you studying?',
       lede: 'Add more than one if you are torn. It only widens your matches.',

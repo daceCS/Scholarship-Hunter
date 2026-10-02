@@ -62,6 +62,8 @@ window.TW = window.TW || {};
       academic: {
         status: A['edu.status'],
         institution: A['edu.institution'],
+        transfer_interest: A['edu.transfer.interest'],
+        transfer_targets: arr('edu.transfer.targets'),
         year: num(A['edu.year']),
         majors: arr('edu.major'),
         concentration: A['edu.concentration'],

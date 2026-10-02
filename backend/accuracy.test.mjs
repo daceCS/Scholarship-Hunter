@@ -174,5 +174,22 @@ for (const [school, value, want] of [['University of California, San Diego', 'UC
   const got = evaluateScholarship(instProfile(school), instRule(value));
   if (got !== want) { console.log(`✗ institution "${school}" vs rule "${value}": expected ${want}, got ${got}`); process.exitCode = 1; }
 }
+// Awards for transfer students: current undergrads who plan to transfer, to a named school. Built from real questionnaire answers.
+const transferAward = { eligibility: [
+  { any_of: [{ kind: 'hard', field: 'academic.status', op: 'eq', value: 'undergrad', source_quote: 'x' }] },
+  { any_of: [{ kind: 'hard', field: 'academic.transfer_interest', op: 'in', value: ['yes', 'maybe'], source_quote: 'x' }] },
+  { any_of: [{ kind: 'hard', field: 'academic.transfer_targets', op: 'contains_any', value: ['UC San Diego'], source_quote: 'x' }] }] };
+const CC = { 'edu.status': 'undergrad', 'edu.institution': 'Palomar College', 'edu.year': '2', 'edu.major': ['Undecided'], 'geo.current': 'San Marcos, CA', 'geo.zip': '92069', 'id.citizenship': 'us_citizen' };
+for (const [label, extra, want] of [
+  ['plans to transfer to UCSD', { 'edu.transfer.interest': 'yes', 'edu.transfer.targets': ['University of California, San Diego'] }, 'eligible'],
+  ['plans to transfer, but to SDSU', { 'edu.transfer.interest': 'yes', 'edu.transfer.targets': ['San Diego State University'] }, 'ineligible'],
+  ['plans to stay', { 'edu.transfer.interest': 'no' }, 'ineligible'],
+  ['maybe, no schools named yet', { 'edu.transfer.interest': 'maybe' }, 'possible'],
+  ['did not answer', {}, 'possible'],
+  ['high school senior', { 'edu.status': 'hs_senior' }, 'ineligible'],
+]) {
+  const got = evaluateScholarship(normalizeAvatar(avatarFor({ completed: 'all', answers: { ...CC, ...extra } })), transferAward);
+  if (got !== want) { console.log(`✗ transfer award, student ${label}: expected ${want}, got ${got}`); process.exitCode = 1; }
+}
 if (agree !== cells) process.exitCode = 1;
 else console.log('PASS');

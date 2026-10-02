@@ -73,8 +73,9 @@ function evaluateRule(profile, rule, phasesCompleted) {
   if (!field) return 'unknown';
   if (isWithheld(profile, field)) return 'unknown';
 
-  const isInst = field === 'academic.institution';   // schools are written many ways; compare one canonical spelling
-  const vals = resolve(profile, field.split('.')).map(x => isInst ? canonInstitution(x) : x);
+  const isInst = field === 'academic.institution' || field === 'academic.transfer_targets';   // schools are written many ways; compare one canonical spelling
+  const canon = x => Array.isArray(x) ? x.map(canonInstitution) : canonInstitution(x);
+  const vals = resolve(profile, field.split('.')).map(x => isInst ? canon(x) : x);
   if (!vals.length) {
     // Empty answers are pruned from the avatar. For list-like fields in a phase the user finished,
     // empty means "none" (fail); for scalars (GPA, institution...) blank means "not sure" (unknown).
@@ -84,7 +85,7 @@ function evaluateRule(profile, rule, phasesCompleted) {
     const isNone = listLike && meta?.phase !== 'core' && meta?.source !== 'derived';
     return isNone && phasesCompleted.includes(meta?.phase) ? 'fail' : 'unknown';
   }
-  const target = !isInst ? value : Array.isArray(value) ? value.map(canonInstitution) : canonInstitution(value);
+  const target = isInst ? canon(value) : value;
   const results = vals.map(v => test(op, v, target));
   if (results.includes(null)) return 'unknown'; // unsupported op
   // ponytail: array-of-object rules pass if ANY element passes; separate rules need not hit the same element.
