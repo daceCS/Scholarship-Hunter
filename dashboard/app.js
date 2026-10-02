@@ -28,7 +28,8 @@
   const icon = cls => h('i', { class: cls, 'aria-hidden': 'true' });
 
   /* ───────────── load profile ───────────── */
-  /* dashboard state: id -> 'saved' | 'applying' | 'applied' | 'dismissed' */
+  /* dashboard state: id -> 'saved' | 'applying' | 'applied' (kept in this browser). Removed matches ("Not a match") are kept on the server. */
+  let flash = '';   // one-line message under the matches heading (e.g. a failed save)
   let status = {};
   try { status = JSON.parse(localStorage.getItem(DASH)) || {}; } catch (e) { /* start empty */ }
   const saveStatus = () => { try { localStorage.setItem(DASH, JSON.stringify(status)); } catch (e) { /* keep in memory */ } };
@@ -104,7 +105,7 @@
     ['academic', 'Academic'], ['geo', 'Location'], ['affiliations', 'Affiliations'], ['activities', 'Activities'],
     ['career', 'Career'], ['identity', 'Identity'], ['circumstances', 'Circumstances'], ['financial', 'Financial'], ['exclusions', 'Already tried']
   ];
-  const FILTERS = [['all', 'All'], ['saved', 'Saved'], ['applying', 'Applying'], ['applied', 'Applied'], ['dismissed', 'Dismissed']];
+  const FILTERS = [['all', 'All'], ['saved', 'Saved'], ['applying', 'Applying'], ['applied', 'Applied'], ['dismissed', 'Not a match']];
   let filter = 'all', sort = 'match';
 
   async function start() {
@@ -138,6 +139,7 @@
             url: m.apply_url || m.source_url,
             page: m.source_url || m.apply_url,
             verified: !!m.verified,
+            dismissed: !!m.dismissed,   // removed by the user ("Not a match"); kept on the server
             due2: m.deadline ? nextDue(new Date(m.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })) : { days: 999 }
           }));
           total = all.length;
@@ -159,19 +161,19 @@
     document.getElementById('who').textContent = A['edu.institution'] || city || '';
 
     function view() {
-      const active = all.filter(m => status[m.id] !== 'dismissed');
+      const active = all.filter(m => !m.dismissed);
       const open = active.filter(m => status[m.id] !== 'applied');
       const dated = open.filter(m => m.due2.date); // awards with no listed deadline have no date
       const soonest = dated.slice().sort((a, b) => a.due2.days - b.due2.days)[0];
       const potential = open.reduce((s, m) => s + m.amt, 0);
-      const counts = { all: all.filter(m => status[m.id] !== 'dismissed').length };
-      for (const [k] of FILTERS.slice(1)) counts[k] = all.filter(m => status[m.id] === k).length;
+      const counts = { all: active.length, dismissed: all.length - active.length };
+      for (const [k] of FILTERS.slice(1, -1)) counts[k] = active.filter(m => status[m.id] === k).length;
 
       const done = SECTIONS.filter(([k]) => avatar[k]);
       const strength = Math.round(done.length / SECTIONS.length * 100);
       const missing = SECTIONS.filter(([k]) => !avatar[k]);
 
-      let rows = all.filter(m => filter === 'all' ? status[m.id] !== 'dismissed' : status[m.id] === filter);
+      let rows = all.filter(m => filter === 'dismissed' ? m.dismissed : !m.dismissed && (filter === 'all' || status[m.id] === filter));
       rows.sort(sort === 'amount' ? (a, b) => b.amt - a.amt : sort === 'due' ? (a, b) => a.due2.days - b.due2.days : (a, b) => b.pct - a.pct);
 
       const hero = h('section', { class: 'hero' },
@@ -190,11 +192,21 @@
       const sortSel = h('select', { class: 'sort', id: 'sort', 'aria-label': 'Sort matches', onchange: e => { sort = e.target.value; render(); } },
         [['match', 'Best match'], ['amount', 'Highest award'], ['due', 'Soonest deadline']].map(([v, t]) => h('option', { value: v, selected: v === sort }, t)));
 
+      // Removing a match is saved on the server, so it stays gone on every device. Undone the same way.
+      const toggleDismiss = async m => {
+        const was = m.dismissed;
+        m.dismissed = !was; flash = ''; render();
+        try {
+          const r = was ? await TW.auth.fetch('/dismiss/' + m.sid, { method: 'DELETE' })
+            : await TW.auth.fetch('/dismiss', { method: 'POST', body: JSON.stringify({ scholarship_id: m.sid, reason: 'not_a_match' }) });
+          if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'HTTP ' + r.status);
+        } catch (e) { m.dismissed = was; flash = 'Could not save that: ' + e.message; render(); }
+      };
       const setStatus = (m, key) => { if (status[m.id] === key) delete status[m.id]; else status[m.id] = key; saveStatus(); render(); };
       const card = (m, i) => {
         const st = status[m.id];
         const soon = m.due2.days <= 14;
-        return h('article', { class: 'match' + (i === 0 && sort === 'match' && filter === 'all' ? ' top' : '') + (st === 'dismissed' ? ' is-dismissed' : '') },
+        return h('article', { class: 'match' + (i === 0 && sort === 'match' && filter === 'all' ? ' top' : '') + (m.dismissed ? ' is-dismissed' : '') },
           h('div', {}, h('h3', {}, m.page ? h('a', { href: m.page, target: '_blank', rel: 'noopener', title: 'Opens the provider page in a new tab' }, m.name) : m.name), h('div', { class: 'org' }, m.org)),
           h('div', { class: 'amt' }, award(m.amt)),
           h('div', { class: 'meta' },
@@ -206,7 +218,7 @@
               h('button', { class: 'act', type: 'button', 'aria-pressed': String(st === 'saved'), onclick: () => setStatus(m, 'saved') }, icon(st === 'saved' ? 'ph-fill ph-bookmark-simple' : 'ph ph-bookmark-simple'), 'Save'),
               h('button', { class: 'act', type: 'button', 'aria-pressed': String(st === 'applying'), onclick: () => setStatus(m, 'applying') }, icon('ph ph-pencil-line'), 'Applying'),
               h('button', { class: 'act', type: 'button', 'aria-pressed': String(st === 'applied'), onclick: () => setStatus(m, 'applied') }, icon('ph ph-check'), 'Applied'),
-              h('button', { class: 'act', type: 'button', 'aria-pressed': String(st === 'dismissed'), onclick: () => setStatus(m, 'dismissed') }, icon('ph ph-eye-slash'), st === 'dismissed' ? 'Restore' : 'Hide'),
+              h('button', { class: 'act', type: 'button', title: m.dismissed ? 'Put it back in your matches' : 'Remove it from your matches. You can bring it back from the Not a match tab.', 'aria-pressed': String(m.dismissed), onclick: () => toggleDismiss(m) }, icon('ph ph-eye-slash'), m.dismissed ? 'Restore' : 'Not a match'),
               m.url ? h('a', { class: 'act', href: m.url, target: '_blank', rel: 'noopener' }, icon('ph ph-arrow-square-out'), 'Open page') : null,
               m.sid ? h('button', { class: 'act report-btn', type: 'button', onclick: () => openReport(m) }, icon('ph ph-flag'), 'Report a problem') : null));
       };
@@ -214,6 +226,7 @@
       const matches = h('section', { class: 'card', 'aria-labelledby': 'mh' },
         h('div', { class: 'card-head' }, h('h2', { id: 'mh' }, 'Your matches'), sortSel),
         filterBar,
+        flash ? h('p', { class: 'fine', role: 'alert' }, icon('ph ph-warning'), flash) : null,
         h('div', { class: 'list' }, rows.length ? rows.map(card)
           : h('div', { class: 'empty' }, filter === 'all' ? 'No matches yet. Add more to your profile to find awards.' : 'Nothing here yet. Use the buttons on a match to move it into this list.')),
         h('p', { class: 'fine' }, icon('ph ph-info'), 'Details are read automatically from each provider’s page and can be wrong or out of date. If something looks off, use "Report a problem".'));

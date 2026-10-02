@@ -171,6 +171,36 @@ app.post('/feedback', requireAuth, async (req, res) => {
   }
 });
 
+// POST /dismiss - remove a scholarship from the user's dashboard ("Not a match"). Auth: Bearer token.
+// Input: { scholarship_id, reason?: 'not_a_match' | 'not_interested' }. DELETE /dismiss/:scholarship_id brings it back.
+// Stored per user + scholarship, so it stays hidden when matches are rebuilt. See dismissals.sql.
+app.post('/dismiss', requireAuth, async (req, res) => {
+  try {
+    const { scholarship_id, reason = 'not_a_match' } = req.body || {};
+    if (!['not_a_match', 'not_interested'].includes(reason)) return res.status(400).json({ error: 'reason must be not_a_match or not_interested' });
+    const { data: sch, error: schErr } = await supabase.from('scholarships').select('id').eq('id', scholarship_id).maybeSingle();
+    if (schErr) throw schErr;
+    if (!sch) return res.status(404).json({ error: 'unknown scholarship' });
+    const { error } = await supabase.from('dismissals').upsert({ user_id: req.userId, scholarship_id: sch.id, reason }, { onConflict: 'user_id,scholarship_id' });
+    if (error) throw error;
+    res.status(201).json({ ok: true });
+  } catch (error) {
+    console.error('POST /dismiss:', error.message);
+    res.status(500).json({ error: error.message.includes('dismissals') ? 'dismissals are not set up yet (run backend/dismissals.sql)' : error.message });
+  }
+});
+
+app.delete('/dismiss/:id', requireAuth, async (req, res) => {
+  try {
+    const { error } = await supabase.from('dismissals').delete().eq('user_id', req.userId).eq('scholarship_id', req.params.id);
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('DELETE /dismiss:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // GET /matches - Fetch user's matches
 // Auth: Bearer token. Query: ?limit=100
 // Output: { matches: [...] } with scholarship details
@@ -194,10 +224,14 @@ app.get('/matches', requireAuth, async (req, res) => {
 
     // Get matches
     const matches = await getMatches(supabase, profileId, parseInt(limit));
+    const { data: dis, error: disErr } = await supabase.from('dismissals').select('scholarship_id').eq('user_id', user_id);
+    if (disErr) console.warn('GET /matches: dismissals unavailable (run backend/dismissals.sql):', disErr.message);
+    const dismissed = new Set((dis || []).map(d => d.scholarship_id));
 
     res.json({
       matches: matches.map(m => ({
         scholarship_id: m.scholarships.id,
+        dismissed: dismissed.has(m.scholarships.id),
         name: m.scholarships.name,
         provider: m.scholarships.provider_org,
         amount: m.scholarships.amount,

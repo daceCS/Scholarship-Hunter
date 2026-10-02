@@ -72,6 +72,25 @@ try {
   console.log('✓ matches are marked unverified; a problem report is accepted');
   await page.keyboard.press('Escape');
 
+  // "Not a match": removes a scholarship, survives a reload, can be restored (needs dismissals.sql; skipped until that table exists)
+  const { error: disTable } = await admin.from('dismissals').select('user_id').limit(1);
+  if (disTable) console.log('- "Not a match" skipped: table missing (run backend/dismissals.sql in the Supabase SQL editor)');
+  else {
+    const firstName = await page.locator('.match h3').first().innerText();
+    await page.getByRole('button', { name: 'Not a match' }).first().click();
+    await page.waitForFunction(n => ![...document.querySelectorAll('.match h3')].some(e => e.innerText === n), firstName, { timeout: 8000 });
+    await page.reload();
+    await page.locator('.match h3').first().waitFor({ timeout: 10000 });
+    assert.ok(!(await page.locator('.match h3').allInnerTexts()).includes(firstName), 'removed match must stay removed after a reload');
+    await page.getByRole('button', { name: /^Not a match/ }).first().click();       // the filter chip
+    await page.locator('.match h3', { hasText: firstName }).first().waitFor({ timeout: 5000 });
+    await page.getByRole('button', { name: 'Restore' }).first().click();
+    await page.waitForTimeout(1200);
+    await page.reload(); await page.locator('.match h3').first().waitFor({ timeout: 10000 });
+    assert.ok((await page.locator('.match h3').allInnerTexts()).includes(firstName), 'restored match should be back');
+    console.log('✓ "Not a match" removes a scholarship, survives a reload, and can be restored');
+  }
+
   // (All unstated-amount awards in the current data are past their deadline, so they are filtered out; no "Amount varies" expected.)
   assert.equal(await page.getByText('$0', { exact: true }).count(), 0, 'no bare $0 awards');
   await page.getByRole('button', { name: 'Sign out' }).click();
